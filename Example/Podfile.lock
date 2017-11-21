@@ -1,0 +1,16 @@
+PODS:
+  - KalturaPlayer (0.0.1)
+
+DEPENDENCIES:
+  - KalturaPlayer (from `../`)
+
+EXTERNAL SOURCES:
+  KalturaPlayer:
+    :path: ../
+
+SPEC CHECKSUMS:
+  KalturaPlayer: affadbe5c823bfd8cd40ada01b07afc621b54a26
+
+PODFILE CHECKSUM: 34c600ed42f93cd9bdb6d7fd65360777c95c5013
+
+COCOAPODS: 1.3.1

@@ -1,0 +1,13 @@
+Pod::Spec.new do |s|
+  
+  s.name             = 'KalturaPlayer'
+  s.version          = '0.0.1'
+  s.summary          = 'KalturaPlayer -- Kaltura Player for iOS'
+  s.homepage         = 'https://github.com/kaltura/kaltura-player-ios'
+  s.license          = { :type => 'AGPLv3', :file => 'LICENSE' }
+  s.author           = { 'Kaltura' => 'community@kaltura.com' }
+  s.source           = { :git => 'https://github.com/kaltura/kaltura-player-ios.git', :tag => 'v' + s.version.to_s }
+  s.ios.deployment_target = '9.0'
+  s.source_files = 'Sources/**/*'
+end
+

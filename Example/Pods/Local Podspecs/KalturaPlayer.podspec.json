@@ -1,0 +1,21 @@
+{
+  "name": "KalturaPlayer",
+  "version": "0.0.1",
+  "summary": "KalturaPlayer -- Kaltura Player for iOS",
+  "homepage": "https://github.com/kaltura/kaltura-player-ios",
+  "license": {
+    "type": "AGPLv3",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "Kaltura": "community@kaltura.com"
+  },
+  "source": {
+    "git": "https://github.com/kaltura/kaltura-player-ios.git",
+    "tag": "v0.0.1"
+  },
+  "platforms": {
+    "ios": "9.0"
+  },
+  "source_files": "Sources/**/*"
+}

@@ -1,0 +1,6 @@
+framework module KalturaPlayer {
+  umbrella header "KalturaPlayer-umbrella.h"
+
+  export *
+  module * { export * }
+}
