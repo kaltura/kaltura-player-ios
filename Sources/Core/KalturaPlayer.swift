@@ -21,7 +21,6 @@ public class KalturaPlayer {
     var preferredFormat: PKMediaSource.MediaFormat = .unknown
     var referrer: String = ""
     var serverUrl: String = ""
-    var useStaticMediaProvider: Bool = false
     
     internal init(partnerId: Int64, ks: String?, pluginConfig: PluginConfig?, options: KalturaPlayerOptions?) {
         self.partnerId = partnerId
@@ -31,7 +30,6 @@ public class KalturaPlayer {
             self.autoPlay = options.autoPlay
             self.autoPrepare = options.autoPrepare
             self.preferredFormat = options.preferredFormat
-            self.useStaticMediaProvider = options.useStaticMediaProvider
             self.serverUrl = options.serverUrl + (options.serverUrl.hasSuffix("/") ? "" : "/")
         } else {
             self.serverUrl = getDefaultServerUrl()
@@ -73,10 +71,18 @@ public class KalturaPlayer {
     }
     
     func buildReferrer(appReferrer: String?) -> String {
-        if let _ = appReferrer {
-            return appReferrer!
+        if let url = appReferrer, verifyUrl(url) {
+            return url
         }
+        
         return "app://\(Bundle.main.bundleIdentifier ?? "")"
+    }
+    
+    func verifyUrl(_ urlString: String) -> Bool {
+        if let url = URL(string: urlString) {
+            return UIApplication.shared.canOpenURL(url)
+        }
+        return false
     }
     
     func loadPlayer(pluginConfig: PluginConfig?) {
@@ -90,7 +96,7 @@ public class KalturaPlayer {
             fatalError("player isn't initilized")
         }
         
-        PlayManifestRequestAdapter.install(player: player, referrer: referrer)
+        KalturaPlaybackRequestAdapter.install(in: player, withReferrer: referrer)
     }
     
     func mediaLoadCompleted(entry: PKMediaEntry?, error: Error?, callback: @escaping (PKMediaEntry?, Error?) -> Void) {
@@ -266,7 +272,6 @@ public class KalturaPlayer {
 public struct KalturaPlayerOptions {
     var autoPlay: Bool
     var autoPrepare: Bool
-    var useStaticMediaProvider: Bool
     var preferredFormat: PKMediaSource.MediaFormat
     var serverUrl: String
     var referrer: String

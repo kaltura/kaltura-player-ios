@@ -21,15 +21,13 @@ public class KalturaOvpPlayer: KalturaPlayer {
     }
     
     override func loadMedia(entryId: String, callback: @escaping (PKMediaEntry?, Error?) -> Void) {
-        var provider: MediaEntryProvider?
-        if useStaticMediaProvider {
-            provider = StaticMediaEntryBuilder.provider(partnerId: partnerId, ks: ks, serverUrl: serverUrl, entryId: entryId, format: preferredFormat)
-        } else if let _ = sessionProvider {
-            provider = OVPMediaProvider(sessionProvider!)
-            (provider as! OVPMediaProvider).set(entryId: entryId)
-        }
-        provider?.loadMedia { [weak self] (entry, error) in
-            self?.mediaLoadCompleted(entry: entry, error: error, callback: callback)
+        if let _ = sessionProvider {
+            let provider = OVPMediaProvider(sessionProvider!)
+            provider.set(entryId: entryId)
+            
+            provider.loadMedia { [weak self] (entry, error) in
+                self?.mediaLoadCompleted(entry: entry, error: error, callback: callback)
+            }
         }
     }
     
@@ -54,9 +52,7 @@ public class KalturaOvpPlayer: KalturaPlayer {
     }
     
     override func initializeBackendComponents() {
-        if !useStaticMediaProvider {
-            sessionProvider = SimpleOVPSessionProvider(serverURL: serverUrl, partnerId: partnerId, ks: ks)
-        }
+        sessionProvider = SimpleOVPSessionProvider(serverURL: serverUrl, partnerId: partnerId, ks: ks)
     }
     
     func getKavaAnalyticsConfig() -> KavaPluginConfig {
