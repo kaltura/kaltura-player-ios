@@ -8,6 +8,17 @@ Pod::Spec.new do |s|
   s.author           = { 'Kaltura' => 'community@kaltura.com' }
   s.source           = { :git => 'https://github.com/kaltura/kaltura-player-ios.git', :tag => 'v' + s.version.to_s }
   s.ios.deployment_target = '9.0'
-  s.source_files = 'Sources/**/*'
+
+s.subspec 'Core' do |sp|
+    sp.source_files = 'Sources/Core/*'
+    sp.dependency 'PlayKit/Core'
+end
+
+s.subspec 'OVP' do |sp|
+    sp.source_files = 'Sources/OVP/*'
+    sp.dependency 'PlayKitKava'
+    sp.dependency 'KalturaPlayer/Core'
+end
+
 end
 
