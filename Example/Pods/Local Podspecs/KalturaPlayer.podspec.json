@@ -17,5 +17,27 @@
   "platforms": {
     "ios": "9.0"
   },
-  "source_files": "Sources/**/*"
+  "subspecs": [
+    {
+      "name": "Core",
+      "source_files": "Sources/Core/*",
+      "dependencies": {
+        "PlayKit/Core": [
+
+        ]
+      }
+    },
+    {
+      "name": "OVP",
+      "source_files": "Sources/OVP/*",
+      "dependencies": {
+        "PlayKitKava": [
+
+        ],
+        "KalturaPlayer/Core": [
+
+        ]
+      }
+    }
+  ]
 }

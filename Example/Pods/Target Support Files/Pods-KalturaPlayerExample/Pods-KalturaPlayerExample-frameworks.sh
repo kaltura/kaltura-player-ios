@@ -102,10 +102,24 @@ strip_invalid_archs() {
 
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
+  install_framework "${BUILT_PRODUCTS_DIR}/KalturaNetKit/KalturaNetKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/KalturaPlayer/KalturaPlayer.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Log/Log.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/PlayKit/PlayKit.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/PlayKitKava/PlayKitKava.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/PlayKitUtils/PlayKitUtils.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/SwiftyXMLParser/SwiftyXMLParser.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
+  install_framework "${BUILT_PRODUCTS_DIR}/KalturaNetKit/KalturaNetKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/KalturaPlayer/KalturaPlayer.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Log/Log.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/PlayKit/PlayKit.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/PlayKitKava/PlayKitKava.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/PlayKitUtils/PlayKitUtils.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/SwiftyXMLParser/SwiftyXMLParser.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
   wait
