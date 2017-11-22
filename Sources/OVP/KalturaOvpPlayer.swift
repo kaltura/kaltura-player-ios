@@ -16,11 +16,11 @@ public class KalturaOvpPlayer: KalturaPlayer {
     
     var sessionProvider: SimpleOVPSessionProvider?
     
-    override public init(partnerId: Int64, ks: String?, pluginConfig: PluginConfig?, options: KalturaPlayerOptions?) {
-        super.init(partnerId: partnerId, ks: ks, pluginConfig: pluginConfig, options: options)
+    override public init(partnerId: Int64, ks: String?, pluginConfig: PluginConfig?, options: KalturaPlayerOptions?) throws {
+        try super.init(partnerId: partnerId, ks: ks, pluginConfig: pluginConfig, options: options)
     }
     
-    override func loadMedia(entryId: String, callback: @escaping (PKMediaEntry?, Error?) -> Void) {
+    override public func loadMedia(entryId: String, callback: ((PKMediaEntry?, Error?) -> Void)? = nil) {
         if let _ = sessionProvider {
             let provider = OVPMediaProvider(sessionProvider!)
             provider.set(entryId: entryId)
@@ -32,7 +32,9 @@ public class KalturaOvpPlayer: KalturaPlayer {
     }
     
     override func getKalturaPluginConfigs() -> [String : Any]  {
-        return [KavaPlugin.pluginName : getKavaAnalyticsConfig()]
+        // FIXME temporarily disabled Kava
+        //return [KavaPlugin.pluginName : getKavaAnalyticsConfig()]
+        return [:]
     }
     
     override func getDefaultServerUrl() -> String {
@@ -48,7 +50,8 @@ public class KalturaOvpPlayer: KalturaPlayer {
     
     override func updateKS(_ ks: String) {
         sessionProvider?.ks = ks
-        player.updatePluginConfig(pluginName: KavaPlugin.pluginName, config: getKavaAnalyticsConfig())
+        // FIXME temporarily disabled Kava
+        //player.updatePluginConfig(pluginName: KavaPlugin.pluginName, config: getKavaAnalyticsConfig())
     }
     
     override func initializeBackendComponents() {

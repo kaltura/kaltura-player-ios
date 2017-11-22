@@ -14,7 +14,7 @@ public class KalturaPlayer {
     
     var player: Player!
     var autoPlay: Bool = false
-    var autoPrepare: Bool = false
+    var preload: Bool = false
     var startPosition: Double = 0.0
     var mediaEntry: PKMediaEntry?
     
@@ -22,15 +22,18 @@ public class KalturaPlayer {
     var referrer: String = ""
     var serverUrl: String = ""
     
-    internal init(partnerId: Int64, ks: String?, pluginConfig: PluginConfig?, options: KalturaPlayerOptions?) {
+    internal init(partnerId: Int64, ks: String?, pluginConfig: PluginConfig?, options: KalturaPlayerOptions?) throws {
         self.partnerId = partnerId
         self.ks = ks
         
         if let options = options {
             self.autoPlay = options.autoPlay
-            self.autoPrepare = options.autoPrepare
+            self.preload = options.preload || options.autoPlay
             self.preferredFormat = options.preferredFormat
-            self.serverUrl = options.serverUrl + (options.serverUrl.hasSuffix("/") ? "" : "/")
+        }
+        
+        if let url = options?.serverUrl {
+            self.serverUrl = url + (url.hasSuffix("/") ? "" : "/")
         } else {
             self.serverUrl = getDefaultServerUrl()
         }
@@ -39,13 +42,13 @@ public class KalturaPlayer {
         
         initializeBackendComponents()
         registerPlugins()
-        loadPlayer(pluginConfig: pluginConfig)
+        try loadPlayer(pluginConfig: pluginConfig)
     }
     
     public func setMedia(_ mediaEntry: PKMediaEntry) {
         self.mediaEntry = mediaEntry
         
-        if autoPrepare {
+        if preload {
             prepare()
         }
     }
@@ -85,26 +88,28 @@ public class KalturaPlayer {
         return false
     }
     
-    func loadPlayer(pluginConfig: PluginConfig?) {
+    func loadPlayer(pluginConfig: PluginConfig?) throws {
         let kalturaConfigs = getKalturaPluginConfigs()
         for (key, value) in kalturaConfigs {
             pluginConfig?.config[key] = value
         }
-        do {
-            self.player = try PlayKitManager.shared.loadPlayer(pluginConfig: pluginConfig)
-        } catch {
-            fatalError("player isn't initilized")
-        }
+        
+        self.player = try PlayKitManager.shared.loadPlayer(pluginConfig: pluginConfig)
         
         KalturaPlaybackRequestAdapter.install(in: player, withReferrer: referrer)
     }
     
-    func mediaLoadCompleted(entry: PKMediaEntry?, error: Error?, callback: @escaping (PKMediaEntry?, Error?) -> Void) {
+    func mediaLoadCompleted(entry: PKMediaEntry?, error: Error?, callback: ((PKMediaEntry?, Error?) -> Void)?) {
         if let _ = entry {
             removeUnpreferredFormatsIfNeeded(entry: entry!)
         }
-        DispatchQueue.main.async {
-            callback(entry, error)
+        mediaEntry = entry
+
+        DispatchQueue.main.async { [weak self] in
+            callback?(entry, error)
+            if error == nil && self?.preload == true {
+                self?.prepare()
+            }
         }
     }
     
@@ -124,19 +129,19 @@ public class KalturaPlayer {
     }
     
     // Player controls
-    @objc var duration: TimeInterval {
+    @objc public var duration: TimeInterval {
         return player.duration
     }
     
-    @objc var currentState: PlayerState {
+    @objc public var currentState: PlayerState {
         return player.currentState
     }
     
-    @objc var isPlaying: Bool {
+    @objc public var isPlaying: Bool {
         return player.isPlaying
     }
     
-    @objc weak var view: PlayerView? {
+    @objc public weak var view: PlayerView? {
         get {
             return player.view
         }
@@ -145,7 +150,7 @@ public class KalturaPlayer {
         }
     }
     
-    @objc var currentTime: TimeInterval {
+    @objc public var currentTime: TimeInterval {
         get {
             return player.currentTime
         }
@@ -154,60 +159,60 @@ public class KalturaPlayer {
         }
     }
     
-    @objc var currentAudioTrack: String? {
+    @objc public var currentAudioTrack: String? {
         return player.currentAudioTrack
     }
     
-    @objc var currentTextTrack: String? {
+    @objc public var currentTextTrack: String? {
         return player.currentTextTrack
     }
     
-    @objc var rate: Float {
+    @objc public var rate: Float {
         return player.rate
     }
     
-    @objc var loadedTimeRanges: [PKTimeRange]? {
+    @objc public var loadedTimeRanges: [PKTimeRange]? {
         return player.loadedTimeRanges
     }
     
-    @objc func addObserver(_ observer: AnyObject, event: PKEvent.Type, block: @escaping (PKEvent) -> Void) {
+    @objc public func addObserver(_ observer: AnyObject, event: PKEvent.Type, block: @escaping (PKEvent) -> Void) {
         player.addObserver(observer, event: event, block: block)
     }
     
-    @objc func addObserver(_ observer: AnyObject, events: [PKEvent.Type], block: @escaping (PKEvent) -> Void) {
+    @objc public func addObserver(_ observer: AnyObject, events: [PKEvent.Type], block: @escaping (PKEvent) -> Void) {
         player.addObserver(observer, events: events, block: block)
     }
     
-    @objc func removeObserver(_ observer: AnyObject, event: PKEvent.Type) {
+    @objc public func removeObserver(_ observer: AnyObject, event: PKEvent.Type) {
         player.removeObserver(observer, event: event)
     }
     
-    @objc func removeObserver(_ observer: AnyObject, events: [PKEvent.Type]) {
+    @objc public func removeObserver(_ observer: AnyObject, events: [PKEvent.Type]) {
         player.removeObserver(observer, events: events)
     }
     
-    @objc func updatePluginConfig(pluginName: String, config: Any) {
+    @objc public func updatePluginConfig(pluginName: String, config: Any) {
         player.updatePluginConfig(pluginName: pluginName, config: config)
     }
     
-    @objc func getController(type: PKController.Type) -> PKController? {
+    @objc public func getController(type: PKController.Type) -> PKController? {
         return player.getController(type: type)
     }
 
-    @objc func addPeriodicObserver(interval: TimeInterval, observeOn dispatchQueue: DispatchQueue?, using block: @escaping (TimeInterval) -> Void) -> UUID {
+    @objc public func addPeriodicObserver(interval: TimeInterval, observeOn dispatchQueue: DispatchQueue?, using block: @escaping (TimeInterval) -> Void) -> UUID {
         return player.addPeriodicObserver(interval: interval, observeOn: dispatchQueue, using: block)
     }
     
     
-    @objc func addBoundaryObserver(boundaries: [PKBoundary], observeOn dispatchQueue: DispatchQueue?, using block: @escaping (TimeInterval, Double) -> Void) -> UUID {
+    @objc public func addBoundaryObserver(boundaries: [PKBoundary], observeOn dispatchQueue: DispatchQueue?, using block: @escaping (TimeInterval, Double) -> Void) -> UUID {
         return player.addBoundaryObserver(boundaries: boundaries, observeOn: dispatchQueue, using: block)
     }
     
-    @objc func removePeriodicObserver(_ token: UUID) {
+    @objc public func removePeriodicObserver(_ token: UUID) {
         player.removePeriodicObserver(token)
     }
     
-    @objc func removeBoundaryObserver(_ token: UUID) {
+    @objc public func removeBoundaryObserver(_ token: UUID) {
         player.removeBoundaryObserver(token)
     }
     
@@ -244,11 +249,11 @@ public class KalturaPlayer {
     }
     
     //abstract methods
-    func getDefaultServerUrl() -> String {
+    public func loadMedia(entryId: String, callback: ((PKMediaEntry?, Error?) -> Void)? = nil) {
         fatalError("must be implemented in subclass")
     }
-    
-    func loadMedia(entryId: String, callback: @escaping (PKMediaEntry?, Error?) -> Void) {
+
+    func getDefaultServerUrl() -> String {
         fatalError("must be implemented in subclass")
     }
     
@@ -270,9 +275,13 @@ public class KalturaPlayer {
 }
 
 public struct KalturaPlayerOptions {
-    var autoPlay: Bool
-    var autoPrepare: Bool
-    var preferredFormat: PKMediaSource.MediaFormat
-    var serverUrl: String
-    var referrer: String
+    public var autoPlay: Bool = false
+    public var preload: Bool = false
+    public var preferredFormat: PKMediaSource.MediaFormat = .unknown
+    public var serverUrl: String?
+    public var referrer: String?
+    
+    public init() {
+        
+    }
 }
