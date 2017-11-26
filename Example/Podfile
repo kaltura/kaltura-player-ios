@@ -17,6 +17,7 @@ target 'KalturaPlayerExample' do
     
     if defined? KALTURA_PLAYER_LOCAL 
         pod 'KalturaPlayer/OVP', :path => KALTURA_PLAYER_LOCAL
+        pod 'KalturaPlayer/UI', :path => KALTURA_PLAYER_LOCAL
     else
         pod 'KalturaPlayer', :git => KALTURA_PLAYER_GIT, :branch => KALTURA_PLAYER_BRANCH
     end

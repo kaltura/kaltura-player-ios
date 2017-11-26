@@ -20,5 +20,13 @@ s.subspec 'OVP' do |sp|
     sp.dependency 'KalturaPlayer/Core'
 end
 
+s.subspec 'UI' do |sp|
+    sp.source_files = 'Sources/UI/**/*.{swift}'
+    sp.resource_bundles = {
+        'KalturaPlayer' => ['Sources/UI/**/*.{xcassets,storyboard,xib}']
+    }
+    sp.dependency 'KalturaPlayer/Core'
+end
+
 end
 

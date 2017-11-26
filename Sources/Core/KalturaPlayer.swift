@@ -9,6 +9,7 @@ import Foundation
 import PlayKit
 
 public class KalturaPlayer {
+    
     var partnerId: Int64
     var ks: String?
     
@@ -22,6 +23,8 @@ public class KalturaPlayer {
     var referrer: String = ""
     var serverUrl: String = ""
     
+    var uiManager: KalturaPlayerUIManager?
+    
     internal init(partnerId: Int64, ks: String?, pluginConfig: PluginConfig?, options: KalturaPlayerOptions?) throws {
         self.partnerId = partnerId
         self.ks = ks
@@ -30,6 +33,7 @@ public class KalturaPlayer {
             self.autoPlay = options.autoPlay
             self.preload = options.preload || options.autoPlay
             self.preferredFormat = options.preferredFormat
+            self.uiManager = options.uiManager
         }
         
         if let url = options?.serverUrl {
@@ -147,6 +151,7 @@ public class KalturaPlayer {
         }
         set {
             player.view = newValue
+            uiManager?.addControlsView(to: player)
         }
     }
     
@@ -280,8 +285,14 @@ public struct KalturaPlayerOptions {
     public var preferredFormat: PKMediaSource.MediaFormat = .unknown
     public var serverUrl: String?
     public var referrer: String?
+    public var uiManager: KalturaPlayerUIManager?
     
     public init() {
         
     }
 }
+
+public protocol KalturaPlayerUIManager {
+    func addControlsView(to player: Player)
+}
+

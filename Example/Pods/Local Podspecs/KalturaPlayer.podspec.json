@@ -38,6 +38,20 @@
 
         ]
       }
+    },
+    {
+      "name": "UI",
+      "source_files": "Sources/UI/**/*.{swift}",
+      "resource_bundles": {
+        "KalturaPlayer": [
+          "Sources/UI/**/*.{xcassets,storyboard,xib}"
+        ]
+      },
+      "dependencies": {
+        "KalturaPlayer/Core": [
+
+        ]
+      }
     }
   ]
 }
