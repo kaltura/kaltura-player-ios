@@ -7,8 +7,9 @@
 
 import Foundation
 import PlayKit
+import KalturaNetKit
 
-public class KalturaPlayer {
+public class KalturaPlayer<MediaOptions> {
     
     var partnerId: Int64
     var ks: String?
@@ -76,7 +77,7 @@ public class KalturaPlayer {
         self.ks = ks
         updateKS(ks)
     }
-    
+
     func buildReferrer(appReferrer: String?) -> String {
         if let url = appReferrer, verifyUrl(url) {
             return url
@@ -94,11 +95,17 @@ public class KalturaPlayer {
     
     func loadPlayer(pluginConfig: PluginConfig?) throws {
         let kalturaConfigs = getKalturaPluginConfigs()
-        for (key, value) in kalturaConfigs {
-            pluginConfig?.config[key] = value
+        
+        var _pluginConfig = pluginConfig
+        if _pluginConfig == nil {
+            _pluginConfig = PluginConfig(config: kalturaConfigs)
+        } else {
+            for (key, value) in kalturaConfigs {
+                _pluginConfig?.config[key] = value
+            }
         }
         
-        self.player = try PlayKitManager.shared.loadPlayer(pluginConfig: pluginConfig)
+        self.player = try PlayKitManager.shared.loadPlayer(pluginConfig: _pluginConfig)
         
         KalturaPlaybackRequestAdapter.install(in: player, withReferrer: referrer)
     }
@@ -254,7 +261,7 @@ public class KalturaPlayer {
     }
     
     //abstract methods
-    public func loadMedia(entryId: String, callback: ((PKMediaEntry?, Error?) -> Void)? = nil) {
+    public func loadMedia(mediaOptions: MediaOptions, callback: ((PKMediaEntry?, Error?) -> Void)? = nil) {
         fatalError("must be implemented in subclass")
     }
 

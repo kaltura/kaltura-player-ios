@@ -10,26 +10,28 @@ import UIKit
 import KalturaPlayer
 import PlayKit
 
-class ViewController: UIViewController {
+let ovpPartnerId: Int64 = 2215841
+let ovpEntryId = "1_w9zx2eti"
 
-    var player: KalturaPlayer?
+class OVPViewController: UIViewController {
+    
+    var player: KalturaOvpPlayer?
     var playheadTimer: Timer?
     @IBOutlet weak var playerContainer: PlayerView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        var options = KalturaPlayerOptions()
-        options.preload = true
-        options.uiManager = DefaultKalturaUIMananger()
-        options.autoPlay = true
+        var playerOptions = KalturaPlayerOptions()
+        playerOptions.preload = true
+        playerOptions.uiManager = DefaultKalturaUIMananger()
+        
+        let mediaOptions = OVPMediaOptions(entryId: ovpEntryId)
         
         // 1. Load the player
         do {
-            self.player = try KalturaOvpPlayer(partnerId: 2215841, ks: nil, pluginConfig: nil, options: options)
-            self.player?.loadMedia(entryId: "1_w9zx2eti")/* { [weak self] (entry, error) in
-                self?.player?.prepare()
-            }*/
+            self.player = try KalturaOvpPlayer(partnerId: ovpPartnerId, ks: nil, pluginConfig: nil, options: playerOptions)
+            self.player?.loadMedia(mediaOptions: mediaOptions)
             self.player?.view = self.playerContainer
             
         } catch let e {
@@ -38,4 +40,5 @@ class ViewController: UIViewController {
         }
     }
 }
+
 

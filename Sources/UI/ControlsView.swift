@@ -83,8 +83,10 @@ class ControlsView: UIView {
     }
     
     func registerToEvents() {
-        player?.addObserver(self, events: [PlayerEvent.playing, PlayerEvent.pause, PlayerEvent.seeked, PlayerEvent.ended], block: { [weak self] (event) in
-            if type(of: event) == PlayerEvent.playing {
+        player?.addObserver(self, events: [PlayerEvent.loadedMetadata, PlayerEvent.playing, PlayerEvent.pause, PlayerEvent.seeked, PlayerEvent.ended], block: { [weak self] (event) in
+            if type(of: event) == PlayerEvent.loadedMetadata {
+                self?.playbackUpdate()
+            } else if type(of: event) == PlayerEvent.playing {
                 self?.o_playPauseButton.setImage(UIImage.init(named: "pause", in: self?.bundle, compatibleWith: nil), for: .normal)
                 self?.o_playPauseButton.tag = 1
                 self?.startSliderTimer()

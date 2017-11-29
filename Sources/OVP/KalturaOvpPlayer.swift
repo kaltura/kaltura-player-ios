@@ -9,23 +9,34 @@ import Foundation
 import PlayKit
 import PlayKitKava
 
-public class KalturaOvpPlayer: KalturaPlayer {
+public struct OVPMediaOptions {
+    var entryId: String
+    
+    public init(entryId: String) {
+        self.entryId = entryId
+    }
+}
+
+public class KalturaOvpPlayer: KalturaPlayer<OVPMediaOptions> {
     let DEFAULT_SERVER_URL = "https://cdnapisec.kaltura.com/"
     
     static var pluginsRegistered: Bool = false
-    
+
     var sessionProvider: SimpleOVPSessionProvider?
-    
+
     override public init(partnerId: Int64, ks: String?, pluginConfig: PluginConfig?, options: KalturaPlayerOptions?) throws {
         try super.init(partnerId: partnerId, ks: ks, pluginConfig: pluginConfig, options: options)
     }
     
-    override public func loadMedia(entryId: String, callback: ((PKMediaEntry?, Error?) -> Void)? = nil) {
+    override public func loadMedia(mediaOptions: OVPMediaOptions, callback: ((PKMediaEntry?, Error?) -> Void)? = nil) {
         if let _ = sessionProvider {
             let provider = OVPMediaProvider(sessionProvider!)
-            provider.set(entryId: entryId)
+            provider.set(entryId: mediaOptions.entryId)
             
             provider.loadMedia { [weak self] (entry, error) in
+                if let error = error {
+                    PKLog.error(error.localizedDescription)
+                }
                 self?.mediaLoadCompleted(entry: entry, error: error, callback: callback)
             }
         }

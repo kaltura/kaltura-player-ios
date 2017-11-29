@@ -8,8 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		3644A067706D693A216F6D2C /* Pods_KalturaPlayerExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 714CA429390891856F730C23 /* Pods_KalturaPlayerExample.framework */; };
+		BDE0CDF81FCD430800F709FB /* OVPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE0CDF71FCD430800F709FB /* OVPViewController.swift */; };
 		BDE67C2B1FC40C4F0046B66A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE67C2A1FC40C4F0046B66A /* AppDelegate.swift */; };
-		BDE67C2D1FC40C4F0046B66A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE67C2C1FC40C4F0046B66A /* ViewController.swift */; };
+		BDE67C2D1FC40C4F0046B66A /* OTTViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE67C2C1FC40C4F0046B66A /* OTTViewController.swift */; };
 		BDE67C301FC40C4F0046B66A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDE67C2E1FC40C4F0046B66A /* Main.storyboard */; };
 		BDE67C321FC40C4F0046B66A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BDE67C311FC40C4F0046B66A /* Assets.xcassets */; };
 		BDE67C351FC40C4F0046B66A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDE67C331FC40C4F0046B66A /* LaunchScreen.storyboard */; };
@@ -19,9 +20,10 @@
 		0940E8FBEF2F0EDD1DCD4701 /* Pods-KalturaPlayerExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KalturaPlayerExample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-KalturaPlayerExample/Pods-KalturaPlayerExample.debug.xcconfig"; sourceTree = "<group>"; };
 		54D27D8BE2AAD6FF1E4D464B /* Pods-KalturaPlayerExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KalturaPlayerExample.release.xcconfig"; path = "Pods/Target Support Files/Pods-KalturaPlayerExample/Pods-KalturaPlayerExample.release.xcconfig"; sourceTree = "<group>"; };
 		714CA429390891856F730C23 /* Pods_KalturaPlayerExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KalturaPlayerExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BDE0CDF71FCD430800F709FB /* OVPViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OVPViewController.swift; sourceTree = "<group>"; };
 		BDE67C271FC40C4F0046B66A /* KalturaPlayerExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KalturaPlayerExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDE67C2A1FC40C4F0046B66A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		BDE67C2C1FC40C4F0046B66A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		BDE67C2C1FC40C4F0046B66A /* OTTViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OTTViewController.swift; sourceTree = "<group>"; };
 		BDE67C2F1FC40C4F0046B66A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		BDE67C311FC40C4F0046B66A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BDE67C341FC40C4F0046B66A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -62,11 +64,12 @@
 			isa = PBXGroup;
 			children = (
 				BDE67C2A1FC40C4F0046B66A /* AppDelegate.swift */,
-				BDE67C2C1FC40C4F0046B66A /* ViewController.swift */,
-				BDE67C2E1FC40C4F0046B66A /* Main.storyboard */,
 				BDE67C311FC40C4F0046B66A /* Assets.xcassets */,
-				BDE67C331FC40C4F0046B66A /* LaunchScreen.storyboard */,
 				BDE67C361FC40C4F0046B66A /* Info.plist */,
+				BDE67C331FC40C4F0046B66A /* LaunchScreen.storyboard */,
+				BDE67C2E1FC40C4F0046B66A /* Main.storyboard */,
+				BDE67C2C1FC40C4F0046B66A /* OTTViewController.swift */,
+				BDE0CDF71FCD430800F709FB /* OVPViewController.swift */,
 			);
 			path = KalturaPlayerExample;
 			sourceTree = "<group>";
@@ -189,6 +192,7 @@
 				"${BUILT_PRODUCTS_DIR}/Log/Log.framework",
 				"${BUILT_PRODUCTS_DIR}/PlayKit/PlayKit.framework",
 				"${BUILT_PRODUCTS_DIR}/PlayKitKava/PlayKitKava.framework",
+				"${BUILT_PRODUCTS_DIR}/PlayKitOTT/PlayKitOTT.framework",
 				"${BUILT_PRODUCTS_DIR}/PlayKitUtils/PlayKitUtils.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyXMLParser/SwiftyXMLParser.framework",
@@ -200,6 +204,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Log.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PlayKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PlayKitKava.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PlayKitOTT.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PlayKitUtils.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyXMLParser.framework",
@@ -231,8 +236,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BDE67C2D1FC40C4F0046B66A /* ViewController.swift in Sources */,
+				BDE67C2D1FC40C4F0046B66A /* OTTViewController.swift in Sources */,
 				BDE67C2B1FC40C4F0046B66A /* AppDelegate.swift in Sources */,
+				BDE0CDF81FCD430800F709FB /* OVPViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

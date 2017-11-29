@@ -12,12 +12,18 @@ Pod::Spec.new do |s|
 s.subspec 'Core' do |sp|
     sp.source_files = 'Sources/Core/*'
     sp.dependency 'PlayKit/Core'
+    sp.dependency 'PlayKitKava'
 end
 
 s.subspec 'OVP' do |sp|
-    sp.source_files = 'Sources/OVP/*'
-    sp.dependency 'PlayKitKava'
+    sp.source_files = 'Sources/OVP/**/*'
     sp.dependency 'KalturaPlayer/Core'
+end
+
+s.subspec 'OTT' do |sp|
+    sp.source_files = 'Sources/OTT/**/*'
+    sp.dependency 'KalturaPlayer/Core'
+    sp.dependency 'PlayKitOTT'
 end
 
 s.subspec 'UI' do |sp|

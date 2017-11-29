@@ -24,17 +24,29 @@
       "dependencies": {
         "PlayKit/Core": [
 
+        ],
+        "PlayKitKava": [
+
         ]
       }
     },
     {
       "name": "OVP",
-      "source_files": "Sources/OVP/*",
+      "source_files": "Sources/OVP/**/*",
       "dependencies": {
-        "PlayKitKava": [
+        "KalturaPlayer/Core": [
+
+        ]
+      }
+    },
+    {
+      "name": "OTT",
+      "source_files": "Sources/OTT/**/*",
+      "dependencies": {
+        "KalturaPlayer/Core": [
 
         ],
-        "KalturaPlayer/Core": [
+        "PlayKitOTT": [
 
         ]
       }
