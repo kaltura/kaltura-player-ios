@@ -42,6 +42,16 @@ class OTTViewController: UIViewController {
                     self.player?.loadMedia(mediaOptions: mediaOptions)
                     self.player?.view = self.playerContainer
                     
+                    self.player?.addObserver(self, event: OTTBackendErrorEvent.self, block: { (event) in
+                        if type(of: event) == OTTBackendErrorEvent.ksExpired {
+                            PhoenixAnonymousSession.get(baseUrl: ottServerUrl, partnerId: ottPartnerId) { (ks, error) in
+                                if let ks = ks {
+                                    self.player?.setKS(ks)
+                                }
+                            }
+                        }
+                    })
+                    
                 } catch let e {
                     // error loading the player
                     print("error:", e.localizedDescription)

@@ -18,6 +18,7 @@ end
 s.subspec 'OVP' do |sp|
     sp.source_files = 'Sources/OVP/**/*'
     sp.dependency 'KalturaPlayer/Core'
+    sp.dependency 'PlayKitOVP'
 end
 
 s.subspec 'OTT' do |sp|

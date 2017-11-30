@@ -11,6 +11,7 @@ PODS:
     - PlayKitOTT
   - KalturaPlayer/OVP (0.0.1):
     - KalturaPlayer/Core
+    - PlayKitOVP
   - KalturaPlayer/UI (0.0.1):
     - KalturaPlayer/Core
   - Log (1.0)
@@ -19,30 +20,38 @@ PODS:
   - PlayKit/AnalyticsCommon (3.3.x-dev):
     - PlayKit/Core
   - PlayKit/Core (3.3.x-dev):
-    - KalturaNetKit (~> 0.0)
     - Log (= 1.0)
     - SwiftyJSON (= 3.1.4)
     - SwiftyXMLParser (= 3.0.3)
   - PlayKitKava (1.0.0):
+    - KalturaNetKit
     - PlayKit/AnalyticsCommon
     - PlayKit/Core
   - PlayKitOTT (1.0.0):
+    - KalturaNetKit
     - PlayKit/AnalyticsCommon
     - PlayKit/Core
     - PlayKitUtils
+  - PlayKitOVP (1.0.0):
+    - KalturaNetKit
+    - PlayKit/Core
   - PlayKitUtils (0.1.4)
   - SwiftyJSON (3.1.4)
   - SwiftyXMLParser (3.0.3)
 
 DEPENDENCIES:
+  - KalturaNetKit (from `../../netkit-ios`)
   - KalturaPlayer/OTT (from `../`)
   - KalturaPlayer/OVP (from `../`)
   - KalturaPlayer/UI (from `../`)
   - PlayKit (from `../../playkit-ios`)
   - PlayKitKava (from `../../playkit-ios-kava`)
   - PlayKitOTT (from `../../playkit-ios-ott`)
+  - PlayKitOVP (from `../../playkit-ios-ovp`)
 
 EXTERNAL SOURCES:
+  KalturaNetKit:
+    :path: ../../netkit-ios
   KalturaPlayer:
     :path: ../
   PlayKit:
@@ -51,18 +60,21 @@ EXTERNAL SOURCES:
     :path: ../../playkit-ios-kava
   PlayKitOTT:
     :path: ../../playkit-ios-ott
+  PlayKitOVP:
+    :path: ../../playkit-ios-ovp
 
 SPEC CHECKSUMS:
-  KalturaNetKit: d37b3c6fc08da9935677fc547c59b25abc3574a3
-  KalturaPlayer: 96a27ce1257511375143b02a5fdb3e87a67a493c
+  KalturaNetKit: 569e0759470db560df9ba0eeeafedc0995c5bfbe
+  KalturaPlayer: aea0c6bcf77abbc0e3d09757c037a72f3bd6b6e5
   Log: 5e368c9528db07517d18d2d04ff5fe2b6f5a1e21
-  PlayKit: 685e471b4320295dffdb05adb335910477c95f2f
-  PlayKitKava: 4b321cf411a4aabdd0ff50433cc408562d487077
-  PlayKitOTT: 7a28c13ba0106123803bb10d4a44fa51d910c6f1
+  PlayKit: 58212e94622e5cdc4f42b52af6d9b12467015549
+  PlayKitKava: 1700602e1236c8c706ce7b25751c1651976a6f84
+  PlayKitOTT: ca45680ca70015830d4aa0b49d7ad14f14f5e7b5
+  PlayKitOVP: f392ca296777f5cafd1486be85e0593d41959185
   PlayKitUtils: 8f03f72690805e20718be6f913547e0966c835f9
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
   SwiftyXMLParser: 9c6cc0310e778266a63d8eba50d9e07925aab0fb
 
-PODFILE CHECKSUM: afdcc82a95f4b8ff6edc524e8a0d237fd1a19449
+PODFILE CHECKSUM: 3d85f5aa7709ab68e6ff591326d730bc16b13f1c
 
 COCOAPODS: 1.3.1

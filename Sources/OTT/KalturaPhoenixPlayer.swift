@@ -8,7 +8,6 @@
 import Foundation
 import PlayKit
 import PlayKitOTT
-import KalturaNetKit
 import PlayKitKava
 
 public struct PhoenixMediaOptions {

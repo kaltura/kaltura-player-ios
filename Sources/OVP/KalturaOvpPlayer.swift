@@ -8,6 +8,7 @@
 import Foundation
 import PlayKit
 import PlayKitKava
+import PlayKitOVP
 
 public struct OVPMediaOptions {
     var entryId: String
@@ -22,23 +23,25 @@ public class KalturaOvpPlayer: KalturaPlayer<OVPMediaOptions> {
     
     static var pluginsRegistered: Bool = false
 
-    var sessionProvider: SimpleOVPSessionProvider?
-
+    var provider: OVPMediaProvider?
+    
     override public init(partnerId: Int64, ks: String?, pluginConfig: PluginConfig?, options: KalturaPlayerOptions?) throws {
         try super.init(partnerId: partnerId, ks: ks, pluginConfig: pluginConfig, options: options)
     }
     
     override public func loadMedia(mediaOptions: OVPMediaOptions, callback: ((PKMediaEntry?, Error?) -> Void)? = nil) {
-        if let _ = sessionProvider {
-            let provider = OVPMediaProvider(sessionProvider!)
-            provider.set(entryId: mediaOptions.entryId)
-            
-            provider.loadMedia { [weak self] (entry, error) in
-                if let error = error {
-                    PKLog.error(error.localizedDescription)
-                }
-                self?.mediaLoadCompleted(entry: entry, error: error, callback: callback)
+        provider = OVPMediaProvider()
+        provider?
+            .set(baseUrl: serverUrl)
+            .set(ks: ks)
+            .set(partnerId: partnerId)
+            .set(entryId: mediaOptions.entryId)
+        
+        provider?.loadMedia { [weak self] (entry, error) in
+            if let error = error {
+                PKLog.error(error.localizedDescription)
             }
+            self?.mediaLoadCompleted(entry: entry, error: error, callback: callback)
         }
     }
     
@@ -60,13 +63,11 @@ public class KalturaOvpPlayer: KalturaPlayer<OVPMediaOptions> {
     }
     
     override func updateKS(_ ks: String) {
-        sessionProvider?.ks = ks
         // FIXME temporarily disabled Kava
         //player.updatePluginConfig(pluginName: KavaPlugin.pluginName, config: getKavaAnalyticsConfig())
     }
     
     override func initializeBackendComponents() {
-        sessionProvider = SimpleOVPSessionProvider(serverURL: serverUrl, partnerId: partnerId, ks: ks)
     }
     
     func getKavaAnalyticsConfig() -> KavaPluginConfig {

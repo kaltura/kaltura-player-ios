@@ -36,6 +36,9 @@
       "dependencies": {
         "KalturaPlayer/Core": [
 
+        ],
+        "PlayKitOVP": [
+
         ]
       }
     },
