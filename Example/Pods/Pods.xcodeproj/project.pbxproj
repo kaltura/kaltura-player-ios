@@ -166,7 +166,7 @@
 		BB28E0BB20D537978E6339753F778EA4 /* AnalyticsPluginProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492A0D03C2DE73CDF43B441597DE29B5 /* AnalyticsPluginProtocol.swift */; };
 		BB70084AF1D5B5B37C6A26ED0F9E7CA6 /* PKAdCuePoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303791A36E2C0CCC86CAC7C2340B1273 /* PKAdCuePoints.swift */; };
 		BBFD90A5FD95A6E211C270B92D253013 /* AnalyticsConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B2B5430F67D3A711B747940044317D1 /* AnalyticsConfig.swift */; };
-		BD9CC53B1FD05267000350F1 /* OTTBackendErrorEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9CC53A1FD05267000350F1 /* OTTBackendErrorEvent.swift */; };
+		BD9CC53C1FD057E6000350F1 /* OTTBackendErrorEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9CC53A1FD05267000350F1 /* OTTBackendErrorEvent.swift */; };
 		BDBDBAD6455F001F0D7DBAB613BB0A2E /* OTTBaseObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E30058C831EFD7DC7DC3A9584CCA9E8 /* OTTBaseObject.swift */; };
 		BED96AB5D65C794870FAE3879E66A689 /* OVPRuleAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9D380A5685CBD7278611D5BC7A90B4 /* OVPRuleAction.swift */; };
 		BEE3458071A268E291E4D12C9B6D6700 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6298DCD86022ABBD2E559185B7B235FC /* Theme.swift */; };
@@ -2293,6 +2293,7 @@
 				220A7ED2B678E760C0DDCB421981AED6 /* OTTRefreshedSession.swift in Sources */,
 				5CBC6D86BF9AB81A1A6E9FE1F00AEC21 /* OTTResponseParser.swift in Sources */,
 				C8836837E8F11CE49712642A929819C2 /* OTTRuleAction.swift in Sources */,
+				BD9CC53C1FD057E6000350F1 /* OTTBackendErrorEvent.swift in Sources */,
 				CA24627FE4F307F9038FDB3BC2A0B0B5 /* OttUserService.swift in Sources */,
 				363591379610AC4D2D7CFBCAFE690CD4 /* PhoenixAnalyticsPlugin.swift in Sources */,
 				599BE9053D6B6F5A103E9875199920FF /* PhoenixAnonymousSession.swift in Sources */,
@@ -2338,7 +2339,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BD9CC53B1FD05267000350F1 /* OTTBackendErrorEvent.swift in Sources */,
 				9E496E0067BE52581C17DF6715E168BB /* ControlsView.swift in Sources */,
 				D9D397FB35EE3D0D5E869CFD770CE76F /* KalturaOvpPlayer.swift in Sources */,
 				AAE281AAFEA36DB04A86102CF8B0BC5C /* KalturaPhoenixPlayer.swift in Sources */,
