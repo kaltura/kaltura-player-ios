@@ -80,7 +80,7 @@ public class KalturaPhoenixPlayer: KalturaPlayer<PhoenixMediaOptions> {
     }
     
     func getKavaAnalyticsConfig() -> KavaPluginConfig {
-        return KavaPluginConfig(partnerId: Int(partnerId), ks: ks, playbackContext: nil, referrer: referrer, customVar1: nil, customVar2: nil, customVar3: nil)
+        return KavaPluginConfig(partnerId: Int(partnerId), ks: nil, playbackContext: nil, referrer: referrer, customVar1: nil, customVar2: nil, customVar3: nil)
     }
     
     func getPhoenixAnalyticsConfig() -> PhoenixAnalyticsPluginConfig {
