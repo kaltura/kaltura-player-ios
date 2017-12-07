@@ -25,7 +25,7 @@ class OTTViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        PhoenixAnonymousSession.get(baseUrl: ottServerUrl, partnerId: ottPartnerId) { (ks, error) in
+        KalturaPhoenixAnonymousSession.start(baseUrl: ottServerUrl, partnerId: ottPartnerId) { (ks, error) in
             if let error = error {
                 PKLog.error(error.localizedDescription)
             } else {
@@ -44,7 +44,7 @@ class OTTViewController: UIViewController {
                     
                     self.player?.addObserver(self, event: OTTBackendErrorEvent.self, block: { (event) in
                         if type(of: event) == OTTBackendErrorEvent.ksExpired {
-                            PhoenixAnonymousSession.get(baseUrl: ottServerUrl, partnerId: ottPartnerId) { (ks, error) in
+                            KalturaPhoenixAnonymousSession.start(baseUrl: ottServerUrl, partnerId: ottPartnerId) { (ks, error) in
                                 if let ks = ks {
                                     self.player?.setKS(ks)
                                 }

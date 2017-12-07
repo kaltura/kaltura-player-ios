@@ -64,7 +64,7 @@ EXTERNAL SOURCES:
     :path: ../../playkit-ios-ovp
 
 SPEC CHECKSUMS:
-  KalturaNetKit: 569e0759470db560df9ba0eeeafedc0995c5bfbe
+  KalturaNetKit: 9a993f26e27d38721d61d96583f4a66460b67398
   KalturaPlayer: aea0c6bcf77abbc0e3d09757c037a72f3bd6b6e5
   Log: 5e368c9528db07517d18d2d04ff5fe2b6f5a1e21
   PlayKit: 58212e94622e5cdc4f42b52af6d9b12467015549

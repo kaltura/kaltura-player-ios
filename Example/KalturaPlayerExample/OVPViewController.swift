@@ -24,7 +24,7 @@ class OVPViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        OVPWidgetSession.get(baseUrl: ovpBaseUrl, partnerId: ovpPartnerId) { (ks, error) in
+        KalturaOVpAnonymousSession.start(baseUrl: ovpBaseUrl, partnerId: ovpPartnerId) { (ks, error) in
             if let error = error {
                 PKLog.error(error.localizedDescription)
             } else {
