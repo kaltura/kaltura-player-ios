@@ -41,7 +41,7 @@ public enum KalturaOVpAnonymousSessionError: PKError {
                     completion(nil, error)
                 } else {
                     guard let responseData = response.data else { return }
-                    if let widgetSession = OVPMultiResponseParser.parseSingleItem(json: JSON(responseData)) as? OVPStartWidgetSessionResponse {
+                    if let widgetSession = OVPResponseParser.parse(data: responseData) as? OVPStartWidgetSessionResponse {
                         completion(widgetSession.ks, nil)
                     } else {
                         completion(nil, KalturaOVpAnonymousSessionError.unableToParseData(data: responseData).asNSError)

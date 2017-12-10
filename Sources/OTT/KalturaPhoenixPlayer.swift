@@ -38,6 +38,7 @@ public class KalturaPhoenixPlayer: KalturaPlayer<PhoenixMediaOptions> {
         mediaProvider = PhoenixMediaProvider()
             .set(ks: ks)
             .set(baseUrl: serverUrl)
+            .set(partnerId: partnerId)
             .set(type: mediaOptions.assetType)
             .set(assetId: mediaOptions.assetId)
             .set(fileIds: mediaOptions.fileIds)

@@ -25,38 +25,19 @@ class OTTViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        KalturaPhoenixAnonymousSession.start(baseUrl: ottServerUrl, partnerId: ottPartnerId) { (ks, error) in
-            if let error = error {
-                PKLog.error(error.localizedDescription)
-            } else {
-                var playerOptions = KalturaPlayerOptions()
-                playerOptions.autoPlay = true
-                playerOptions.uiManager = DefaultKalturaUIMananger()
-                playerOptions.serverUrl = ottServerUrl
-                
-                let mediaOptions = PhoenixMediaOptions(assetId: ottAssetId, fileIds: [ottFileId])
-                
-                // 1. Load the player
-                do {
-                    self.player = try KalturaPhoenixPlayer(partnerId: ottPartnerId, ks: ks, pluginConfig: nil, options: playerOptions)
-                    self.player?.loadMedia(mediaOptions: mediaOptions)
-                    self.player?.view = self.playerContainer
-                    
-                    self.player?.addObserver(self, event: OTTBackendErrorEvent.self, block: { (event) in
-                        if type(of: event) == OTTBackendErrorEvent.ksExpired {
-                            KalturaPhoenixAnonymousSession.start(baseUrl: ottServerUrl, partnerId: ottPartnerId) { (ks, error) in
-                                if let ks = ks {
-                                    self.player?.setKS(ks)
-                                }
-                            }
-                        }
-                    })
-                    
-                } catch let e {
-                    // error loading the player
-                    print("error:", e.localizedDescription)
-                }
-            }
+        var playerOptions = KalturaPlayerOptions()
+        playerOptions.autoPlay = true
+        playerOptions.uiManager = DefaultKalturaUIMananger()
+        playerOptions.serverUrl = ottServerUrl
+        
+        let mediaOptions = PhoenixMediaOptions(assetId: ottAssetId, fileIds: [ottFileId])
+        
+        do {
+            self.player = try KalturaPhoenixPlayer(partnerId: ottPartnerId, ks: nil, pluginConfig: nil, options: playerOptions)
+            self.player?.loadMedia(mediaOptions: mediaOptions)
+            self.player?.view = self.playerContainer
+        } catch let e {
+            print("error:", e.localizedDescription)
         }
     }
 }

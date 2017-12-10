@@ -24,28 +24,22 @@ class OVPViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        KalturaOVpAnonymousSession.start(baseUrl: ovpBaseUrl, partnerId: ovpPartnerId) { (ks, error) in
-            if let error = error {
-                PKLog.error(error.localizedDescription)
-            } else {
-                var playerOptions = KalturaPlayerOptions()
-                playerOptions.serverUrl = ovpBaseUrl
-                playerOptions.preload = true
-                playerOptions.uiManager = DefaultKalturaUIMananger()
-                
-                let mediaOptions = OVPMediaOptions(entryId: ovpEntryId)
-                
-                // 1. Load the player
-                do {
-                    self.player = try KalturaOvpPlayer(partnerId: ovpPartnerId, ks: ks, pluginConfig: nil, options: playerOptions)
-                    self.player?.loadMedia(mediaOptions: mediaOptions)
-                    self.player?.view = self.playerContainer
-                    
-                } catch let e {
-                    // error loading the player
-                    print("error:", e.localizedDescription)
-                }
-            }
+        var playerOptions = KalturaPlayerOptions()
+        playerOptions.serverUrl = ovpBaseUrl
+        playerOptions.preload = true
+        playerOptions.uiManager = DefaultKalturaUIMananger()
+        
+        let mediaOptions = OVPMediaOptions(entryId: ovpEntryId)
+        
+        // 1. Load the player
+        do {
+            self.player = try KalturaOvpPlayer(partnerId: ovpPartnerId, ks: nil, pluginConfig: nil, options: playerOptions)
+            self.player?.loadMedia(mediaOptions: mediaOptions)
+            self.player?.view = self.playerContainer
+            
+        } catch let e {
+            // error loading the player
+            print("error:", e.localizedDescription)
         }
     }
 }
