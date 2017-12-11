@@ -25,13 +25,12 @@ class OTTViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        var playerOptions = KalturaPlayerOptions()
+        var playerOptions = KalturaPlayerOptions(partnerId: ottPartnerId)
+        playerOptions.serverUrl = ottServerUrl
         playerOptions.autoPlay = true
         playerOptions.uiManager = DefaultKalturaUIMananger()
-        playerOptions.serverUrl = ottServerUrl
-        playerOptions.partnerId = ottPartnerId
         
-        self.player = KalturaPhoenixPlayer.create(pluginConfig: nil, options: playerOptions)
+        self.player = KalturaPhoenixPlayer.create(with: playerOptions)
         
         let mediaOptions = PhoenixMediaOptions(assetId: ottAssetId, fileIds: [ottFileId])
         self.player?.loadMedia(mediaOptions: mediaOptions)

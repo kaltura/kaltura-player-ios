@@ -25,15 +25,14 @@ class OVPViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        var playerOptions = KalturaPlayerOptions()
-        playerOptions.serverUrl = ovpBaseUrl
-        playerOptions.preload = true
-        playerOptions.uiManager = DefaultKalturaUIMananger()
-        playerOptions.partnerId = ovpPartnerId
-        
         PlayerConfigManager.shared.retrieve(by: uiconfId, baseUrl: ovpBaseUrl, partnerId: ovpPartnerId, ks: nil) { (uiConf, error) in
+            var playerOptions = KalturaPlayerOptions(partnerId: ovpPartnerId)
+            playerOptions.serverUrl = ovpBaseUrl
+            playerOptions.preload = true
+            playerOptions.uiManager = DefaultKalturaUIMananger()
             playerOptions.uiConf = uiConf
-            self.player = KalturaOvpPlayer.create(pluginConfig: nil, options: playerOptions)
+            
+            self.player = KalturaOvpPlayer.create(with: playerOptions)
             
             let mediaOptions = OVPMediaOptions(entryId: ovpEntryId)
             self.player?.loadMedia(mediaOptions: mediaOptions)

@@ -26,28 +26,27 @@ public class KalturaPlayer<T: MediaOptions> {
     
     var uiManager: KalturaPlayerUIManager?
     
-    internal init(partnerId: Int64, ks: String?, pluginConfig: PluginConfig?, options: KalturaPlayerOptions?) throws {
-        self.partnerId = partnerId
-        self.ks = ks
+    internal init(options: KalturaPlayerOptions?) throws {
+        guard let options = options else { throw NSError.init() }
         
-        if let options = options {
-            self.autoPlay = options.autoPlay
-            self.preload = options.preload || options.autoPlay
-            self.preferredFormat = options.preferredFormat
-            self.uiManager = options.uiManager
-        }
+        self.partnerId = options.partnerId
         
-        if let url = options?.serverUrl {
+        self.ks = options.ks
+        self.autoPlay = options.autoPlay
+        self.preload = options.preload || options.autoPlay
+        self.preferredFormat = options.preferredFormat
+        self.uiManager = options.uiManager
+        
+        if let url = options.serverUrl {
             self.serverUrl = url + (url.hasSuffix("/") ? "" : "/")
         } else {
             self.serverUrl = getDefaultServerUrl()
         }
         
-        self.referrer = buildReferrer(appReferrer: options?.referrer)
+        self.referrer = buildReferrer(appReferrer: options.referrer)
         
-        initializeBackendComponents()
         registerPlugins()
-        try loadPlayer(pluginConfig: pluginConfig)
+        try loadPlayer(pluginConfig: options.pluginConfig)
     }
     
     public func setMedia(_ mediaEntry: PKMediaEntry) {
@@ -277,10 +276,6 @@ public class KalturaPlayer<T: MediaOptions> {
         fatalError("must be implemented in subclass")
     }
     
-    func initializeBackendComponents() {
-        fatalError("must be implemented in subclass")
-    }
-    
     func updateKS(_ ks: String) {
         fatalError("must be implemented in subclass")
     }
@@ -293,12 +288,13 @@ public struct KalturaPlayerOptions {
     public var serverUrl: String?
     public var referrer: String?
     public var uiManager: KalturaPlayerUIManager?
-    public var partnerId: Int64 = -1
+    public var partnerId: Int64
     public var ks: String?
     public var uiConf: PlayerConfigObject?
+    public var pluginConfig: PluginConfig?
     
-    public init() {
-        
+    public init(partnerId: Int64) {
+        self.partnerId = partnerId
     }
 }
 

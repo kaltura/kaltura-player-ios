@@ -25,18 +25,13 @@ public class KalturaOvpPlayer: KalturaPlayer<OVPMediaOptions> {
 
     var provider: OVPMediaProvider?
     
-    public static func create(pluginConfig: PluginConfig?, options: KalturaPlayerOptions?) -> KalturaOvpPlayer? {
-        guard let partnerId = options?.partnerId else { return nil }
+    public static func create(with options: KalturaPlayerOptions?) -> KalturaOvpPlayer? {
         do {
-            return try KalturaOvpPlayer(partnerId: partnerId, ks: options?.ks, pluginConfig: pluginConfig, options: options)
+            return try KalturaOvpPlayer(options: options)
         } catch let e {
             print("error on player initializing:", e.localizedDescription)
         }
         return nil
-    }
-    
-    override internal init(partnerId: Int64, ks: String?, pluginConfig: PluginConfig?, options: KalturaPlayerOptions?) throws {
-        try super.init(partnerId: partnerId, ks: ks, pluginConfig: pluginConfig, options: options)
     }
     
     override public func loadMedia(mediaOptions: OVPMediaOptions, callback: ((PKMediaEntry?, Error?) -> Void)? = nil) {
@@ -59,9 +54,7 @@ public class KalturaOvpPlayer: KalturaPlayer<OVPMediaOptions> {
     }
     
     override func getKalturaPluginConfigs() -> [String : Any]  {
-        // FIXME temporarily disabled Kava
-        //return [KavaPlugin.pluginName : getKavaAnalyticsConfig()]
-        return [:]
+        return [KavaPlugin.pluginName : getKavaAnalyticsConfig()]
     }
     
     override func getDefaultServerUrl() -> String {
@@ -76,11 +69,7 @@ public class KalturaOvpPlayer: KalturaPlayer<OVPMediaOptions> {
     }
     
     override func updateKS(_ ks: String) {
-        // FIXME temporarily disabled Kava
-        //player.updatePluginConfig(pluginName: KavaPlugin.pluginName, config: getKavaAnalyticsConfig())
-    }
-    
-    override func initializeBackendComponents() {
+        player.updatePluginConfig(pluginName: KavaPlugin.pluginName, config: getKavaAnalyticsConfig())
     }
     
     func getKavaAnalyticsConfig() -> KavaPluginConfig {

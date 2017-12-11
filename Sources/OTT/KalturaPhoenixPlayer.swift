@@ -30,18 +30,13 @@ public class KalturaPhoenixPlayer: KalturaPlayer<PhoenixMediaOptions> {
     
     var mediaProvider: PhoenixMediaProvider?
     
-    public static func create(pluginConfig: PluginConfig?, options: KalturaPlayerOptions?) -> KalturaPhoenixPlayer? {
-        guard let partnerId = options?.partnerId else { return nil }
+    public static func create(with options: KalturaPlayerOptions?) -> KalturaPhoenixPlayer? {
         do {
-            return try KalturaPhoenixPlayer(partnerId: partnerId, ks: options?.ks, pluginConfig: pluginConfig, options: options)
+            return try KalturaPhoenixPlayer(options: options)
         } catch let e {
             print("error on player initializing:", e.localizedDescription)
         }
         return nil
-    }
-    
-    override internal init(partnerId: Int64, ks: String?, pluginConfig: PluginConfig?, options: KalturaPlayerOptions?) throws {
-        try super.init(partnerId: partnerId, ks: ks, pluginConfig: pluginConfig, options: options)
     }
     
     public override func loadMedia(mediaOptions: PhoenixMediaOptions, callback: ((PKMediaEntry?, Error?) -> Void)? = nil) {
@@ -67,9 +62,7 @@ public class KalturaPhoenixPlayer: KalturaPlayer<PhoenixMediaOptions> {
     }
     
     override func getKalturaPluginConfigs() -> [String : Any]  {
-        // FIXME temporarily disabled analytics
-        //return [KavaPlugin.pluginName : getKavaAnalyticsConfig(), PhoenixAnalyticsPlugin.pluginName : getPhoenixAnalyticsConfig()]
-        return [PhoenixAnalyticsPlugin.pluginName : getPhoenixAnalyticsConfig()]
+        return [KavaPlugin.pluginName : getKavaAnalyticsConfig(), PhoenixAnalyticsPlugin.pluginName : getPhoenixAnalyticsConfig()]
     }
     
     override func getDefaultServerUrl() -> String {
@@ -77,8 +70,7 @@ public class KalturaPhoenixPlayer: KalturaPlayer<PhoenixMediaOptions> {
     }
     
     override func updateKS(_ ks: String) {
-        // FIXME temporarily disabled analytics
-        //player.updatePluginConfig(pluginName: KavaPlugin.pluginName, config: getKavaAnalyticsConfig())
+        player.updatePluginConfig(pluginName: KavaPlugin.pluginName, config: getKavaAnalyticsConfig())
         player.updatePluginConfig(pluginName: PhoenixAnalyticsPlugin.pluginName, config: getPhoenixAnalyticsConfig())
     }
     
@@ -88,9 +80,6 @@ public class KalturaPhoenixPlayer: KalturaPlayer<PhoenixMediaOptions> {
             PlayKitManager.shared.registerPlugin(PhoenixAnalyticsPlugin.self)
             KalturaPhoenixPlayer.pluginsRegistered = true
         }
-    }
-    
-    override func initializeBackendComponents() {
     }
     
     func getKavaAnalyticsConfig() -> KavaPluginConfig {
