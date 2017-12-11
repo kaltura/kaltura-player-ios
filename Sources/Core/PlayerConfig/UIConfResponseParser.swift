@@ -9,7 +9,7 @@ import Foundation
 import SwiftyJSON
 
 public class UIConfResponseParser: NSObject {
-    public static func parse(data: Any?) -> UIConfBaseObject? {
+    public static func parse(data: Any?) -> PlayerConfigBaseObject? {
         if let data = data, let objectType = classByJsonObject(json: data) {
             return objectType.init(json: data)
         } else {
@@ -19,7 +19,7 @@ public class UIConfResponseParser: NSObject {
     
     static let classNameKey = "objectType"
     
-    static func classByJsonObject(json: Any?) -> UIConfBaseObject.Type? {
+    static func classByJsonObject(json: Any?) -> PlayerConfigBaseObject.Type? {
         
         guard let js = json else {
             return nil
@@ -30,9 +30,9 @@ public class UIConfResponseParser: NSObject {
         if let name = className{
             switch name {
             case "KalturaUiConf":
-                return UIConfObject.self
+                return PlayerConfigObject.self
             case "KalturaAPIException":
-                return UIConfError.self
+                return PlayerConfigError.self
             default:
                 return nil
             }

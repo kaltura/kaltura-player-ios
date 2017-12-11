@@ -7,6 +7,6 @@
 
 import Foundation
 
-public protocol UIConfBaseObject {
+public protocol PlayerConfigBaseObject {
     init?(json: Any)
 }

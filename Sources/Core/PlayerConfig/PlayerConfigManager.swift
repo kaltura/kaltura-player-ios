@@ -9,13 +9,13 @@ import Foundation
 import KalturaNetKit
 import SwiftyJSON
 
-public class UIConfManager {
+public class PlayerConfigManager {
     
-    public static let shared = UIConfManager()
+    public static let shared = PlayerConfigManager()
     
-    private var data: [Int : UIConfObject] = [:]
+    private var data: [Int : PlayerConfigObject] = [:]
     
-    public func retrieve(by id: Int, baseUrl: String, partnerId: Int64? = nil, ks: String? = nil, completion: @escaping (UIConfObject?, UIConfError?) -> Void) {
+    public func retrieve(by id: Int, baseUrl: String, partnerId: Int64? = nil, ks: String? = nil, completion: @escaping (PlayerConfigObject?, PlayerConfigError?) -> Void) {
         if let conf = data[id] {
             completion(conf, nil)
         } else {
@@ -24,9 +24,9 @@ public class UIConfManager {
                 request.set(completion: { (response) in
                     if let data = response.data {
                         let uiconf = UIConfResponseParser.parse(data: data)
-                        if let error = uiconf as? UIConfError {
+                        if let error = uiconf as? PlayerConfigError {
                             completion(nil, error)
-                        } else if let uiConfObj = uiconf as? UIConfObject {
+                        } else if let uiConfObj = uiconf as? PlayerConfigObject {
                             self.data[id] = uiConfObj
                             completion(uiConfObj, nil)
                         }

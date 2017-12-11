@@ -8,7 +8,7 @@
 import Foundation
 import SwiftyJSON
 
-public class UIConfObject : UIConfBaseObject {
+public class PlayerConfigObject : PlayerConfigBaseObject {
     var id: Int
     
     let idKey = "id"

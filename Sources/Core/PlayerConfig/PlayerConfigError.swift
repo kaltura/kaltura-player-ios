@@ -8,22 +8,10 @@
 // https://www.gnu.org/licenses/agpl-3.0.html
 // ===================================================================================================
 
-
-//{
-//    "code": "INVALID_KS",
-//    "message": "Invalid KS \"djJ8MjIw5MXyl39EU-cKOiXxMdCjh0ieKyUfgME8r5cEvz4Pwa-UkKf8-qMh2xcMOrVb6Ccq5cdqX_jE5EhlnpwbWAOl2DHzmMOmozMggZ59tzTbYeg646gkW5tDKv5ZQgqd5IvjVMRE=\", Error \"-1,INVALID_STR\"",
-//    "objectType": "KalturaAPIException",
-//    "args": {
-//        "KSID": "djJ8MjIw5MXyl39EU-cKOiXxMdCjh0ieKyUfgME8r5cEvz4Pwa-UkKf8-qMh2xcMOrVb6Ccq5cdqX_jE5EhlnpwbWAOl2DHzmMOmozMggZ59tzTbYeg646gkW5tDKv5ZQgqd5IvjVMRE=",
-//        "ERR_CODE": "-1",
-//        "ERR_DESC": "INVALID_STR"
-//    }
-//},
-
 import UIKit
 import SwiftyJSON
 
-public class UIConfError : UIConfBaseObject {
+public class PlayerConfigError : PlayerConfigBaseObject {
     
     var code: String?
     var message: String?

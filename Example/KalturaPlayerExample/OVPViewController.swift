@@ -31,7 +31,7 @@ class OVPViewController: UIViewController {
         playerOptions.uiManager = DefaultKalturaUIMananger()
         playerOptions.partnerId = ovpPartnerId
         
-        UIConfManager.shared.retrieve(by: uiconfId, baseUrl: ovpBaseUrl, partnerId: ovpPartnerId, ks: nil) { (uiConf, error) in
+        PlayerConfigManager.shared.retrieve(by: uiconfId, baseUrl: ovpBaseUrl, partnerId: ovpPartnerId, ks: nil) { (uiConf, error) in
             playerOptions.uiConf = uiConf
             self.player = KalturaOvpPlayer.create(pluginConfig: nil, options: playerOptions)
             

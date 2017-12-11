@@ -295,7 +295,7 @@ public struct KalturaPlayerOptions {
     public var uiManager: KalturaPlayerUIManager?
     public var partnerId: Int64 = -1
     public var ks: String?
-    public var uiConf: UIConfObject?
+    public var uiConf: PlayerConfigObject?
     
     public init() {
         
