@@ -12,7 +12,7 @@ import PlayKit
 import PlayKitOTT
 
 let ottServerUrl = "http://api-preprod.ott.kaltura.com/v4_5/api_v3"
-let ottPartnerId: Int64 = 198
+let ottPartnerId = 198
 let ottAssetId = "259153"
 let ottFileId = "804398"
 

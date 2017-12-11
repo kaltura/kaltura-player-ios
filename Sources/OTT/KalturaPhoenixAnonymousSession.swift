@@ -32,7 +32,7 @@ public enum KalturaPhoenixAnonymousSessionError: PKError {
 }
 
 @objc public class KalturaPhoenixAnonymousSession : NSObject {
-    @objc public class func start(baseUrl: String, partnerId: Int64, completion: @escaping (String?, Error?) -> Void) {
+    @objc public class func start(baseUrl: String, partnerId: Int, completion: @escaping (String?, Error?) -> Void) {
         if let b = OttUserService.anonymousLogin(baseURL: baseUrl, partnerId: partnerId) {
             b.set(completion: { (response) in
                 if let error = response.error {

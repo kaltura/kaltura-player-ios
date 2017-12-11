@@ -10,7 +10,7 @@ import SwiftyJSON
 import KalturaNetKit
 
 public class UIConfService {
-    public static func get(baseUrl: String, uiconfId: Int, partnerId: Int64? = nil, ks: String? = nil) -> KalturaRequestBuilder? {
+    public static func get(baseUrl: String, uiconfId: Int, partnerId: Int? = nil, ks: String? = nil) -> KalturaRequestBuilder? {
         if let request: KalturaRequestBuilder = KalturaRequestBuilder(url: baseUrl, service: "uiconf", action: "get") {
              request
                 .setParam(key: "id", value: "\(uiconfId)")

@@ -12,7 +12,7 @@ import PlayKit
 import PlayKitOVP
 
 let ovpBaseUrl = "http://cdnapisec.kaltura.com"
-let ovpPartnerId: Int64 = 2215841
+let ovpPartnerId = 2215841
 let ovpEntryId = "1_w9zx2eti"
 let uiconfId = 41188731
 

@@ -15,7 +15,7 @@ public class PlayerConfigManager {
     
     private var data: [Int : PlayerConfigObject] = [:]
     
-    public func retrieve(by id: Int, baseUrl: String, partnerId: Int64? = nil, ks: String? = nil, completion: @escaping (PlayerConfigObject?, PlayerConfigError?) -> Void) {
+    public func retrieve(by id: Int, baseUrl: String, partnerId: Int? = nil, ks: String? = nil, completion: @escaping (PlayerConfigObject?, PlayerConfigError?) -> Void) {
         if let conf = data[id] {
             completion(conf, nil)
         } else {

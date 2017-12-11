@@ -11,7 +11,7 @@ import KalturaNetKit
 
 public class KalturaPlayer<T: MediaOptions> {
     
-    var partnerId: Int64
+    var partnerId: Int
     var ks: String?
     
     var player: Player!
@@ -288,12 +288,12 @@ public struct KalturaPlayerOptions {
     public var serverUrl: String?
     public var referrer: String?
     public var uiManager: KalturaPlayerUIManager?
-    public var partnerId: Int64
+    public var partnerId: Int
     public var ks: String?
     public var uiConf: PlayerConfigObject?
     public var pluginConfig: PluginConfig?
     
-    public init(partnerId: Int64) {
+    public init(partnerId: Int) {
         self.partnerId = partnerId
     }
 }

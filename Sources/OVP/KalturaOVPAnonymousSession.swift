@@ -33,7 +33,7 @@ public enum KalturaOVpAnonymousSessionError: PKError {
 }
 
 @objc public class KalturaOVpAnonymousSession : NSObject {
-    @objc public class func start(baseUrl: String, partnerId: Int64, completion: @escaping (String?, Error?) -> Void) {
+    @objc public class func start(baseUrl: String, partnerId: Int, completion: @escaping (String?, Error?) -> Void) {
         if let b = OVPSessionService.startWidgetSession(baseURL: baseUrl + "/api_v3", partnerId: partnerId) {
             b.setOVPBasicParams()
             b.set(completion: { (response) in

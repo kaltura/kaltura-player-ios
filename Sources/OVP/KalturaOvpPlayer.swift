@@ -73,6 +73,6 @@ public class KalturaOvpPlayer: KalturaPlayer<OVPMediaOptions> {
     }
     
     func getKavaAnalyticsConfig() -> KavaPluginConfig {
-        return KavaPluginConfig(partnerId: Int(partnerId), ks: ks, playbackContext: nil, referrer: referrer, customVar1: nil, customVar2: nil, customVar3: nil)
+        return KavaPluginConfig(partnerId: partnerId, ks: ks, playbackContext: nil, referrer: referrer, customVar1: nil, customVar2: nil, customVar3: nil)
     }
 }
