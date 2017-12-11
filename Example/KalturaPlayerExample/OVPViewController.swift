@@ -11,9 +11,10 @@ import KalturaPlayer
 import PlayKit
 import PlayKitOVP
 
-let ovpBaseUrl = "https://cdnapisec.kaltura.com/"
+let ovpBaseUrl = "http://cdnapisec.kaltura.com"
 let ovpPartnerId: Int64 = 2215841
 let ovpEntryId = "1_w9zx2eti"
+let uiconfId = 41188731
 
 class OVPViewController: UIViewController {
     
@@ -28,18 +29,15 @@ class OVPViewController: UIViewController {
         playerOptions.serverUrl = ovpBaseUrl
         playerOptions.preload = true
         playerOptions.uiManager = DefaultKalturaUIMananger()
+        playerOptions.partnerId = ovpPartnerId
         
-        let mediaOptions = OVPMediaOptions(entryId: ovpEntryId)
-        
-        // 1. Load the player
-        do {
-            self.player = try KalturaOvpPlayer(partnerId: ovpPartnerId, ks: nil, pluginConfig: nil, options: playerOptions)
+        UIConfManager.shared.retrieve(by: uiconfId, baseUrl: ovpBaseUrl, partnerId: ovpPartnerId, ks: nil) { (uiConf, error) in
+            playerOptions.uiConf = uiConf
+            self.player = KalturaOvpPlayer.create(pluginConfig: nil, options: playerOptions)
+            
+            let mediaOptions = OVPMediaOptions(entryId: ovpEntryId)
             self.player?.loadMedia(mediaOptions: mediaOptions)
             self.player?.view = self.playerContainer
-            
-        } catch let e {
-            // error loading the player
-            print("error:", e.localizedDescription)
         }
     }
 }

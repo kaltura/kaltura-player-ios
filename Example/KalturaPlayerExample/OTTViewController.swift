@@ -29,16 +29,13 @@ class OTTViewController: UIViewController {
         playerOptions.autoPlay = true
         playerOptions.uiManager = DefaultKalturaUIMananger()
         playerOptions.serverUrl = ottServerUrl
+        playerOptions.partnerId = ottPartnerId
+        
+        self.player = KalturaPhoenixPlayer.create(pluginConfig: nil, options: playerOptions)
         
         let mediaOptions = PhoenixMediaOptions(assetId: ottAssetId, fileIds: [ottFileId])
-        
-        do {
-            self.player = try KalturaPhoenixPlayer(partnerId: ottPartnerId, ks: nil, pluginConfig: nil, options: playerOptions)
-            self.player?.loadMedia(mediaOptions: mediaOptions)
-            self.player?.view = self.playerContainer
-        } catch let e {
-            print("error:", e.localizedDescription)
-        }
+        self.player?.loadMedia(mediaOptions: mediaOptions)
+        self.player?.view = self.playerContainer
     }
 }
 

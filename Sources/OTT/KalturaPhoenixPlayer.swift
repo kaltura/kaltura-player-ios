@@ -10,7 +10,7 @@ import PlayKit
 import PlayKitOTT
 import PlayKitKava
 
-public struct PhoenixMediaOptions {
+public class PhoenixMediaOptions: MediaOptions {
     var assetId: String
     var fileIds: [String]
     
@@ -30,11 +30,24 @@ public class KalturaPhoenixPlayer: KalturaPlayer<PhoenixMediaOptions> {
     
     var mediaProvider: PhoenixMediaProvider?
     
-    public override init(partnerId: Int64, ks: String?, pluginConfig: PluginConfig?, options: KalturaPlayerOptions?) throws {
+    public static func create(pluginConfig: PluginConfig?, options: KalturaPlayerOptions?) -> KalturaPhoenixPlayer? {
+        guard let partnerId = options?.partnerId else { return nil }
+        do {
+            return try KalturaPhoenixPlayer(partnerId: partnerId, ks: options?.ks, pluginConfig: pluginConfig, options: options)
+        } catch let e {
+            print("error on player initializing:", e.localizedDescription)
+        }
+        return nil
+    }
+    
+    override internal init(partnerId: Int64, ks: String?, pluginConfig: PluginConfig?, options: KalturaPlayerOptions?) throws {
         try super.init(partnerId: partnerId, ks: ks, pluginConfig: pluginConfig, options: options)
     }
     
-    override public func loadMedia(mediaOptions: PhoenixMediaOptions, callback: ((PKMediaEntry?, Error?) -> Void)? = nil) {
+    public override func loadMedia(mediaOptions: PhoenixMediaOptions, callback: ((PKMediaEntry?, Error?) -> Void)? = nil) {
+        if let mediaKS = mediaOptions.ks {
+            setKS(mediaKS)
+        }
         mediaProvider = PhoenixMediaProvider()
             .set(ks: ks)
             .set(baseUrl: serverUrl)

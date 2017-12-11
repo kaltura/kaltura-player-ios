@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '9.0'
 
 s.subspec 'Core' do |sp|
-    sp.source_files = 'Sources/Core/*'
+    sp.source_files = 'Sources/Core/**/*'
     sp.dependency 'PlayKit/Core'
     sp.dependency 'PlayKitKava'
 end

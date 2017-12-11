@@ -10,7 +10,7 @@ import PlayKit
 import PlayKitKava
 import PlayKitOVP
 
-public struct OVPMediaOptions {
+public class OVPMediaOptions: MediaOptions {
     var entryId: String
     
     public init(entryId: String) {
@@ -19,17 +19,30 @@ public struct OVPMediaOptions {
 }
 
 public class KalturaOvpPlayer: KalturaPlayer<OVPMediaOptions> {
-    let DEFAULT_SERVER_URL = "https://cdnapisec.kaltura.com/"
+    let DEFAULT_SERVER_URL = "https://cdnapisec.kaltura.com"
     
     static var pluginsRegistered: Bool = false
 
     var provider: OVPMediaProvider?
     
-    override public init(partnerId: Int64, ks: String?, pluginConfig: PluginConfig?, options: KalturaPlayerOptions?) throws {
+    public static func create(pluginConfig: PluginConfig?, options: KalturaPlayerOptions?) -> KalturaOvpPlayer? {
+        guard let partnerId = options?.partnerId else { return nil }
+        do {
+            return try KalturaOvpPlayer(partnerId: partnerId, ks: options?.ks, pluginConfig: pluginConfig, options: options)
+        } catch let e {
+            print("error on player initializing:", e.localizedDescription)
+        }
+        return nil
+    }
+    
+    override internal init(partnerId: Int64, ks: String?, pluginConfig: PluginConfig?, options: KalturaPlayerOptions?) throws {
         try super.init(partnerId: partnerId, ks: ks, pluginConfig: pluginConfig, options: options)
     }
     
     override public func loadMedia(mediaOptions: OVPMediaOptions, callback: ((PKMediaEntry?, Error?) -> Void)? = nil) {
+        if let mediaKS = mediaOptions.ks {
+            setKS(mediaKS)
+        }
         provider = OVPMediaProvider()
         provider?
             .set(baseUrl: serverUrl)

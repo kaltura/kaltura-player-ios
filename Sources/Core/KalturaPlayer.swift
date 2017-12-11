@@ -9,7 +9,7 @@ import Foundation
 import PlayKit
 import KalturaNetKit
 
-public class KalturaPlayer<MediaOptions> {
+public class KalturaPlayer<T: MediaOptions> {
     
     var partnerId: Int64
     var ks: String?
@@ -261,7 +261,7 @@ public class KalturaPlayer<MediaOptions> {
     }
     
     //abstract methods
-    public func loadMedia(mediaOptions: MediaOptions, callback: ((PKMediaEntry?, Error?) -> Void)? = nil) {
+    public func loadMedia(mediaOptions: T, callback: ((PKMediaEntry?, Error?) -> Void)? = nil) {
         fatalError("must be implemented in subclass")
     }
 
@@ -293,6 +293,9 @@ public struct KalturaPlayerOptions {
     public var serverUrl: String?
     public var referrer: String?
     public var uiManager: KalturaPlayerUIManager?
+    public var partnerId: Int64 = -1
+    public var ks: String?
+    public var uiConf: UIConfObject?
     
     public init() {
         

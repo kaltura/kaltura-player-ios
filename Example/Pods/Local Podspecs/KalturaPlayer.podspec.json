@@ -20,7 +20,7 @@
   "subspecs": [
     {
       "name": "Core",
-      "source_files": "Sources/Core/*",
+      "source_files": "Sources/Core/**/*",
       "dependencies": {
         "PlayKit/Core": [
 
