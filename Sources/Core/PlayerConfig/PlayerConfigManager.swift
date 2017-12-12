@@ -16,7 +16,9 @@ public class PlayerConfigManager {
     public static let shared = PlayerConfigManager()
     
     private var data: [Int : PlayerConfigObject] = [:]
-    
+    private var timeIntervalForUpdating: Double = 24 * 3600
+    private var timeIntervalForExpiry: Double = 3 * 24 * 3600
+
     private var _directoryPath: String?
     private var directoryPath: String {
         if _directoryPath == nil {
@@ -30,17 +32,34 @@ public class PlayerConfigManager {
         createRootFolder()
     }
     
+    public func configure(timeIntervalForUpdating: Double, timeIntervalForExpiry: Double) {
+        self.timeIntervalForUpdating = timeIntervalForUpdating
+        self.timeIntervalForExpiry = timeIntervalForExpiry
+    }
+    
     public func retrieve(by id: Int, baseUrl: String, partnerId: Int? = nil, ks: String? = nil, completion: @escaping (PlayerConfigObject?, PlayerConfigError?) -> Void) {
+        var uiConfFound = false
+        
         if let uiconf = data[id] {
+            uiConfFound = true
             completion(uiconf, nil)
-        } else if let jsonObject = readFromDisk(configId: id) {
-            if let uiconf = UIConfResponseParser.parse(data: jsonObject) as? PlayerConfigObject {
+        } else if let tuple = readFromDisk(configId: id) {
+            if let uiconf = UIConfResponseParser.parse(data: tuple.0) as? PlayerConfigObject {
+                uiConfFound = true
                 data[id] = uiconf
                 completion(uiconf, nil)
-            } else {
-                completion(nil, PlayerConfigError(message: "Unknown error on parse json object", code: nil, args: nil))
+                
+                if tuple.1 { //update if needed
+                    loadFromRemote(by: id, baseUrl: baseUrl, partnerId: partnerId, ks: ks) { (data, error) in
+                        if let data = data, let uiconf = UIConfResponseParser.parse(data: data) as? PlayerConfigObject {
+                            self.saveToDisk(configId: id, configJsonObject: data)
+                            self.data[id] = uiconf
+                        }
+                    }
+                }
             }
-        } else {
+        }
+        if !uiConfFound {
             loadFromRemote(by: id, baseUrl: baseUrl, partnerId: partnerId, ks: ks) { (data, error) in
                 if let data = data {
                     let result = UIConfResponseParser.parse(data: data)
@@ -58,14 +77,34 @@ public class PlayerConfigManager {
         }
     }
     
-    private func readFromDisk(configId: Int) -> Any? {
+    private func readFromDisk(configId: Int) -> (Any, Bool)? {
         let filePath = configPath(id: configId)
         guard FileManager.default.fileExists(atPath: filePath) else { return nil }
         
+        var shouldUpdateFile = false
+        let fileUrl = URL(fileURLWithPath: filePath)
         do {
-            let data = try Data.init(contentsOf: URL(fileURLWithPath: filePath), options: NSData.ReadingOptions())
+            let date = try fileUrl.resourceValues(forKeys: Set([URLResourceKey.attributeModificationDateKey])).attributeModificationDate
+            if let date = date {
+                let timeIntervalSinceLastModify = Date().timeIntervalSince(date)
+                if timeIntervalSinceLastModify > timeIntervalForExpiry {
+                    return nil
+                } else if timeIntervalSinceLastModify > timeIntervalForUpdating {
+                    shouldUpdateFile = true
+                }
+            } else {
+                print("retrieving date of file failed: reason unknown")
+                return nil
+            }
+        } catch let error as NSError {
+            print("retrieving date of file failed: \(error.localizedDescription)")
+            return nil
+        }
+        
+        do {
+            let data = try Data.init(contentsOf: fileUrl, options: NSData.ReadingOptions())
             do {
-                return try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions())
+                return (try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions()), shouldUpdateFile)
             } catch let error as NSError {
                 print("converting data to json failed: \(error.localizedDescription)")
                 return nil
