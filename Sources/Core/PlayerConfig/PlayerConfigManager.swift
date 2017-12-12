@@ -138,12 +138,18 @@ public class PlayerConfigManager {
     
     private func loadFromRemote(by id: Int, baseUrl: String, partnerId: Int?, ks: String?, completion: @escaping (Any?, Error?) -> Void) {
         if let request = UIConfService.get(baseUrl: baseUrl + (baseUrl.hasSuffix("/") ? "" : "/") + "api_v3", uiconfId: id, partnerId: partnerId, ks: ks) {
-            request.setOVPBasicParams()
+            setBasicParams(on: request)
             request.set(completion: { (response) in
                 completion(response.data, response.error)
             })
             USRExecutor.shared.send(request: request.build())
         }
+    }
+    
+    private func setBasicParams(on request: KalturaRequestBuilder) {
+        request.setClientTag(clientTag: "kalturaPlayer")
+        request.setApiVersion(apiVersion: "3.3.0")
+        request.setFormat(format: 1)
     }
     
     private func createRootFolder() {

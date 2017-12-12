@@ -3,12 +3,13 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 48;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		005F839D3ED3D459A036099FD1F3EE02 /* OTTAccessControlMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4346B7C183EA53C05F81264A9FDB3BA /* OTTAccessControlMessage.swift */; };
 		00E8A38D3BC3E638F6B28314B2542E51 /* PKPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D32B8CD69C69E7E17CE41EC16B058D /* PKPlugin.swift */; };
+		048C46035BB3DD70B39EB927CAF02205 /* MediaOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31825AF20BA22F12C612C92812B5BCBA /* MediaOptions.swift */; };
 		0554DFBE3F65AC3E208E53C852D916F6 /* RequestExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9EE82DD19ED3D1FF45180212BA1F154 /* RequestExtension.swift */; };
 		0579052B79E0DB3404C3CF9E64EACAC4 /* PKTracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D61E10056CA3BD06DA30D68FA0484F7 /* PKTracks.swift */; };
 		06737F1B7A3A8F4951F40A599AB7CE40 /* AVPlayerWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84FE99120C80E26B7FB864038163AA7 /* AVPlayerWrapper.swift */; };
@@ -28,13 +29,12 @@
 		19B26E1C9C7E0ED282DC4C78AB93AEEB /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C71DC37F47884B1E03948BC8008EE8D3 /* SwiftyJSON.framework */; };
 		1C48ED45250C41BFAC4269583A40ACC7 /* Log.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5141626C466B61915F94687F72472798 /* Log.framework */; };
 		1FB895D91C16CD8739573B90D0F5AC3B /* FormatsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F17D1B5135BC262A1B6BFA52C154A50 /* FormatsHelper.swift */; };
-		20F3FC1D682208FC29CD0280EF0D99CE /* MediaOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31825AF20BA22F12C612C92812B5BCBA /* MediaOptions.swift */; };
-		218EB12C9758EA1FF84530F27455F1C1 /* KalturaPlayer-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = D3BC6DC6773028B929D3F5CA17DF3289 /* KalturaPlayer-dummy.m */; };
 		22F664E811DDD14CB2D7A89128D6DEDE /* Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1290880271B37CEE3F0F374BB3374FFA /* Platform.swift */; };
 		250EAD28B9BB9B36260A970EA4274A66 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F0296F1A0BC1050C22FAEFA897EE42 /* Foundation.framework */; };
 		25D724CF68E464ABED096CFADA3CB07B /* KavaPluginConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021A8EB5D07DCF5FC2833C79B9FBA418 /* KavaPluginConfig.swift */; };
 		263C76AB58F34F362F858AE74FA2DD30 /* OTTObjectMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AC165387ADEE3AECB23C1682E6ED33 /* OTTObjectMapper.swift */; };
 		27FD0DCEC4285EC12DFE21699E3D1668 /* SwiftyJSON-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = C622A7D380B5701DED8916389F8A7C4F /* SwiftyJSON-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2853EDA9AEB1F368D2662F1B7BDCE603 /* UIConfResponseParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF94E0FD3339569CE9E33C2A78129370 /* UIConfResponseParser.swift */; };
 		287324D3098CCD4ED2F224778C875081 /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE80E3AC559BC4C1F4B3D0B301598DF /* Formatter.swift */; };
 		2A236B6299A2C3801C30571B737673FD /* PlayerConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8222D97E191F367253B61D7C8B7A55CC /* PlayerConfig.swift */; };
 		2A59036AE7B5604C45ACEA823AD7FC0A /* BasePlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF00F65BF71E1FE1048F642700646F4 /* BasePlugin.swift */; };
@@ -43,6 +43,7 @@
 		2B526AE5600BC42A175AD49A1705A9A5 /* Pods-KalturaPlayerExample-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A4B70C3E8F36FCC993F9F444FDDF77D /* Pods-KalturaPlayerExample-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2BD266405294715C28F7703FFF583E03 /* PlayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 693843DC1ECC48EA4A3026F0B88FFBB8 /* PlayKit.framework */; };
 		2F6F55C2FA9C6CADA3CF25AFF4123D2A /* Log-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = FAAB2CCE5E904380D8760AEBAF59B9A5 /* Log-dummy.m */; };
+		306D8AD6159AAB45490FED0D1F2CDD73 /* KalturaPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892C997AABE3398A598947F284E4766B /* KalturaPlayer.swift */; };
 		32A3EC1D9E6EC51CC423371E53637D32 /* OVPStartWidgetSessionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211ADDA44666F588836B95386241EDA7 /* OVPStartWidgetSessionResponse.swift */; };
 		33A718DCFD1AD9CCD2AD9A79AE3C7F91 /* Element.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00CB15781DEE3A5CD273C5CD4A07EB29 /* Element.swift */; };
 		37A28D289765C766EB26971CCD5EDD97 /* KavaEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B014107187DF231F2C3A3EE230D54727 /* KavaEvent.swift */; };
@@ -50,12 +51,12 @@
 		38DB355116CFCC4643A89B7F7793DB88 /* OVPLiveStreamEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495B87FB7DBFDE4761048766C4C50AA5 /* OVPLiveStreamEntry.swift */; };
 		3BBD363AA896388A34ABF054A3F9E836 /* OVPDRM.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B74F61B2D49A4E45DCD5A2E81D7E83 /* OVPDRM.swift */; };
 		3C2EEFA5AF587DBD515F43A3FEBCFDF3 /* RequestExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B121C08F38D9BCFB9EF2623AA953DF97 /* RequestExecutor.swift */; };
+		3ECA9F29AB55165819397EEA99FF22D1 /* UIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE842DAAFC78F6ED399B68F329E30CB /* UIManager.swift */; };
+		3FDB94CB30DCEB593246337D2BDBA3E2 /* PlayerConfigError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5061E0A8C134738E0DDC00C3DC464D53 /* PlayerConfigError.swift */; };
 		400BB6E939D8019603101098B93F20D0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F0296F1A0BC1050C22FAEFA897EE42 /* Foundation.framework */; };
 		40EC567C07819FE50259B8625BA5855A /* PKController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0844D2D4B068EEAD93C53F1F0CA4B00B /* PKController.swift */; };
 		44A6C381DBE02FC24D364D6A8482BF53 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6298DCD86022ABBD2E559185B7B235FC /* Theme.swift */; };
-		457AF2ACD0FF970F727F7C54262A17FD /* PlayerConfigManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F647CB3195154177B6E531BA920D996F /* PlayerConfigManager.swift */; };
 		4581FE53A3A44A2D56FD6D51DA14CFB9 /* PKTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72B60AC4F26FCEA70AB460E8150E781 /* PKTimer.swift */; };
-		4686C078853335B3BDEC68997492A246 /* KalturaOVPAnonymousSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 886DF8B5E10C237B3D68691C4E489BC1 /* KalturaOVPAnonymousSession.swift */; };
 		49B5BBBC508614D3C0CB82754C155072 /* OVPBaseObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1685CD8FD14C6D20C24600E748F93273 /* OVPBaseObject.swift */; };
 		4A151D06260D1491068CE15ADF5FE678 /* PlayKit-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 754DBBB741170B61B30FB9C6E20B7EB0 /* PlayKit-dummy.m */; };
 		4C29576F79EED8CD1AD0894CFA0D4A00 /* PlayerLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCC080595015643EDDC6E87160B0CF4 /* PlayerLoader.swift */; };
@@ -83,18 +84,17 @@
 		6662FC5587FAFFBB8A2BD066CE9530C6 /* ResponseSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA233C74C438CEECD854E7340F108BF4 /* ResponseSerializer.swift */; };
 		692A7DC403B8B110BF8370D5D22DB820 /* KalturaBaseObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970A9B7699B072E7904D4A4CC8A5EF3F /* KalturaBaseObject.swift */; };
 		69381F131862B1E142964DA0B6EBB0D0 /* SwiftyXMLParser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 593928C7B4B4FC9761DFEE7DD8BE5673 /* SwiftyXMLParser.framework */; };
-		6BA72003714BC926FE228EEF7C8C4246 /* UIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE842DAAFC78F6ED399B68F329E30CB /* UIManager.swift */; };
 		6C11E633413A59494F8A7A7569D03B36 /* AVPlayerEngine+AssetLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9430EDA94F3675A19A08599AB5306573 /* AVPlayerEngine+AssetLoading.swift */; };
 		6C3C79E752423011FBBF6BC1C4DC36AC /* KalturaNetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44B340EC0CA80BF56D8A558E3D78D1E4 /* KalturaNetKit.framework */; };
 		6D45AE82641E55FAF89C469211DB072D /* PlayerController+TimeMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED32A514A6265B33AA554932919CD7D /* PlayerController+TimeMonitor.swift */; };
 		6E3532820C61490B8E1B3ABDD4660100 /* PKLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02F05F175CA69D6812B20031113DD54 /* PKLog.swift */; };
 		7166768444C43E99B1E485885BBBD5AC /* KalturaNetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44B340EC0CA80BF56D8A558E3D78D1E4 /* KalturaNetKit.framework */; };
+		72387C751B953506CC829D06B49D988B /* PlayerConfigBaseObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAAB778DB55BEA853CF8504A6F5004F /* PlayerConfigBaseObject.swift */; };
 		724F487767066D04D31CB458A26EBEAE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F0296F1A0BC1050C22FAEFA897EE42 /* Foundation.framework */; };
 		7353A567BCF9DD00B6D189AEDD6E530F /* Log.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5141626C466B61915F94687F72472798 /* Log.framework */; };
 		75DD1130AC6FDFC2E2FCFB40051740DE /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = B263D362D512AF1063D5E10040ABB921 /* SwiftyJSON.swift */; };
 		7615CAD225BFC8D0F3EEF27D81EF514C /* KavaHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701FBF6609BAFD3520149DE4DB77A6EC /* KavaHelper.swift */; };
 		7702A9FA8D91032D7FDB3E617662E007 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76630CF654098DFABEC6755A2F457894 /* Parser.swift */; };
-		78634A0757D03DC93F31699BD92A92B1 /* KalturaPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892C997AABE3398A598947F284E4766B /* KalturaPlayer.swift */; };
 		788E4597411F7B98795FDD2D6AE268CD /* XML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C68B7E561AD5D25FB1E285E112FE6 /* XML.swift */; };
 		799C7B32E755EFC1D5B961EB603F8434 /* PlayKitUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A92D41B9340A75B19E41C95B4AB5CEE5 /* PlayKitUtils.framework */; };
 		79FF16C4D1EC613AFEB3957F9E7AEB27 /* PlayKitKava.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31A6B2D9960CB585A748CA515A3CCB1E /* PlayKitKava.framework */; };
@@ -116,7 +116,6 @@
 		8A0393C49AAF7E4D56A8FC8FAF60B296 /* OVPSessionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F05C3DBDA49F016B42618692C0D209B /* OVPSessionService.swift */; };
 		8AF442CC42A61022E40C9D1641834ADF /* BaseOTTAnalyticsPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB158BCFC08E23AA8635AFD28F1B694 /* BaseOTTAnalyticsPlugin.swift */; };
 		8B006432D3F006F824FE268E878EDBD8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F0296F1A0BC1050C22FAEFA897EE42 /* Foundation.framework */; };
-		8C73CB38E26D3A92695541725DAFAEAF /* PlayerConfigObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F030954704F18A52A7CC9D63056793 /* PlayerConfigObject.swift */; };
 		8C9A591D66EF69FB80C5278BF418B35D /* PlayKitOVP-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 13F25F4E544D7DDE78ECCAD9B402D8F6 /* PlayKitOVP-dummy.m */; };
 		8E7969E34F5E57A4C11A6850287DA8B9 /* KalturaNetKit-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5BCC9A70365AE753227777A8A24C38 /* KalturaNetKit-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8F8C9BEB361FF9D2E1E98381A1F03928 /* PhoenixAnalyticsPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DC262A13DA54DD40B2DF50797DD3B1 /* PhoenixAnalyticsPlugin.swift */; };
@@ -124,7 +123,9 @@
 		92AC6814D8EFB66A593D98D11D9DDCBD /* LocalAssetsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D41041AD5112607F3172E91A26C9B3 /* LocalAssetsManager.swift */; };
 		92FFCB8631CF9F52061A13554DB2BBB8 /* SwiftyJSON-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 869652871CA937A5063D760D3556D161 /* SwiftyJSON-dummy.m */; };
 		9567AF2C8BAE3DAB7ACCBA268248182A /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = E468F8250C3559189B27EFD99F3673A8 /* Response.swift */; };
+		980DED18C9FD1BC9655836D6B4C0CDA2 /* KalturaPlayer-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = D3BC6DC6773028B929D3F5CA17DF3289 /* KalturaPlayer-dummy.m */; };
 		99A6D0C2B96DF41A04F60002BF41853B /* PKVRController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940A9F325733E839B37A973839A9EC02 /* PKVRController.swift */; };
+		9A8ACB8A9EDAC1C6621DFAD54B8C930B /* ControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA73459DA890D1E44AF5F7D605ED7A0D /* ControlsView.swift */; };
 		9C4415546BA0E9C15AB9C9FEE82F592B /* OVPPlaybackContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49697E0F45F89428BA72FEE44AC5EB29 /* OVPPlaybackContext.swift */; };
 		9C4667A7EB9885D2702084CE29E4A56F /* Log-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 54651BB675E72CD6F105F1F4C27B3E2C /* Log-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9C584D4130F8A044662843405EC1D0A9 /* SwiftyXMLParser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 593928C7B4B4FC9761DFEE7DD8BE5673 /* SwiftyXMLParser.framework */; };
@@ -147,12 +148,12 @@
 		AA4AC6B0545FC350CABDD5BBA6CF9D06 /* OVPResponseParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 267F42EB23A47F4215BFDE43D5A4C799 /* OVPResponseParser.swift */; };
 		AB961EDE141604A116AA3FD66F4C4739 /* KalturaMultiRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCE156E3C5E50A6E0E9B06A9FED8C6EA /* KalturaMultiRequestBuilder.swift */; };
 		ABFF5DE835ED3504B939B64A68968ADF /* KalturaNetKit-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = C549E3719C50570629819E064219C53B /* KalturaNetKit-dummy.m */; };
+		AD248F6332F8B1A509B7C205FFEACCF0 /* KalturaPhoenixPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FBCDF0E21900B6B1623E21672BA476 /* KalturaPhoenixPlayer.swift */; };
 		ADB1099C32FA93E28A2EDC7B36A4D664 /* PlayKitUtils-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 523A980D2B2E33B051C2B242EC74FE23 /* PlayKitUtils-dummy.m */; };
-		AF006D3EF35709EEE3CDB17DE96499F1 /* UIConfResponseParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 329E02F14DCC9D8BCCED4ACA80EF1F4D /* UIConfResponseParser.swift */; };
 		B0655D27F96B85DDCFC9C6238496E4E3 /* OTTPlaybackContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7BD1AB5A91034D7A849AEF8FC9EEAF /* OTTPlaybackContext.swift */; };
 		B269B1EF0F8EA5114B67BC99765FA5EF /* PKPlaybackInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40BD1ED0204CB33D7D626CAB418128D8 /* PKPlaybackInfo.swift */; };
 		B26EFC125A399566AEFAF723F87F24AD /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E39F4B9CF362E1DB3D997B59D53F56D /* ArrayExtension.swift */; };
-		B35F57B7DA71C7AEEF4DCE9372A8312C /* PlayerConfigBaseObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876E66572E36A265D63AE23011EB498F /* PlayerConfigBaseObject.swift */; };
+		B288D9372F8DED92B4BA6518192AA3AD /* UIConfService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC06726C5F5206BEBE1FD164B16B91D /* UIConfService.swift */; };
 		B4F2099F0F627F6D3AAC62C8A9616AC9 /* SwiftyXMLParser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 593928C7B4B4FC9761DFEE7DD8BE5673 /* SwiftyXMLParser.framework */; };
 		B55F0B0F8A2E2F790B1618062FD13A3D /* PlayKit-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 3CCD922A2172A401B2DEFF7A8BDC5E27 /* PlayKit-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B614CCB1E274A1926F73380488EEC84D /* SwiftyXMLParser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 593928C7B4B4FC9761DFEE7DD8BE5673 /* SwiftyXMLParser.framework */; };
@@ -167,21 +168,22 @@
 		BC8463DB40DD5CF6A21A069AF463B724 /* PKEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 405DAFC0AC22DA0A6E9A0CC2EB16FF17 /* PKEvent.swift */; };
 		BEBE9D3CEF2C454A942B49C8ADB9D1A8 /* VRPlayerEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = D296AC364D90E6A1A51979234E77F081 /* VRPlayerEngine.swift */; };
 		BFCFE27F7DE90FDB949D5A0F10D76CED /* OVPObjectMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BBB01045C78B3380B9416156AB36474 /* OVPObjectMapper.swift */; };
-		C0EE2793DDAEB2518DA1045BA3F4BC6E /* PlayerConfigError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1302C45904AC4ACB3F7E03F1664FED08 /* PlayerConfigError.swift */; };
 		C2CDA44F540580B2740FA7361D097F93 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3456701D49DFD4CE0C49E859179F7D2A /* Logger.swift */; };
 		C2D0BEA179EAD52FD8825E2282FCC8EA /* TimeObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31BD99868B1DC816E569F765E64B3B8 /* TimeObserver.swift */; };
 		C4F9DCD23F2C92557F6C987129FEB17C /* PKPlayerSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F2F4F7766230B06082D737C1E5055A7 /* PKPlayerSettings.swift */; };
 		C58018A9C098A4A1918A17287743FE7C /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C71DC37F47884B1E03948BC8008EE8D3 /* SwiftyJSON.framework */; };
+		C771832D9C22964AD5FD87630699F015 /* KalturaOVPAnonymousSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 886DF8B5E10C237B3D68691C4E489BC1 /* KalturaOVPAnonymousSession.swift */; };
 		C785AEFA445ECE6807E5391387C758AB /* OVPSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01676B703189D8637ECF96DFBC2722E6 /* OVPSource.swift */; };
+		C78EC11B569E209BEE83785A7D7E06F6 /* KalturaPlaybackRequestAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CA8C45BCAE44D3D5F6B7F264CB9D1F5 /* KalturaPlaybackRequestAdapter.swift */; };
 		C7C660314CF3D0C87A1490735F532B95 /* OVPRuleAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E631768FC7B1A0B4D3B3000A3A238F73 /* OVPRuleAction.swift */; };
 		CA2165CA2E339A08400B270097AB0B65 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = F642EF64EACDE328BC17767845ADE826 /* Result.swift */; };
 		CBB4A8D62B03B80933CCFE5CCEFB2A96 /* USRExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36C5B9CFF73F7FF570924AD671A7BA4 /* USRExecutor.swift */; };
 		CCBFDC5357058A232AB0F7E156723E31 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE347F8AC58370ADB5CBC129A3008375 /* Request.swift */; };
+		CD0193864E41CAE4E432C22BF4E0C049 /* PlayerConfigManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1AC7B408AB3317C4B2A178EBD1DA66 /* PlayerConfigManager.swift */; };
+		CDA43142EE089984E90683DC66DE0E61 /* PlayerConfigObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940EA3F4AD0CBD70C91C62623DF9B2FF /* PlayerConfigObject.swift */; };
 		CECA66DC37CA88064BAFA5023E6E962C /* AssetHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FC678FCBB6B02EEE75FBD912466491C /* AssetHandler.swift */; };
-		CED4F178DD993A4B975CA8827A65D08F /* KalturaPhoenixPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FBCDF0E21900B6B1623E21672BA476 /* KalturaPhoenixPlayer.swift */; };
 		D11436308C528F38879AAE5A9ACE7751 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C71DC37F47884B1E03948BC8008EE8D3 /* SwiftyJSON.framework */; };
 		D769282A8ABF05ABEED814726777BA0C /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C71DC37F47884B1E03948BC8008EE8D3 /* SwiftyJSON.framework */; };
-		D7894E1566895B813F88E02089610FCC /* KalturaPhoenixAnonymousSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DD29157D066C38303621FB9AD50270 /* KalturaPhoenixAnonymousSession.swift */; };
 		D8C57B708C430A6FF5EAE84EA211CF1C /* PlayKitOVP-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 50A8863E95DFED1A47FAA997C420D057 /* PlayKitOVP-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DAEC89B751978FF0C8A9A48D9675E117 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05904178AF4D014D391C3D59618D1C5 /* Result.swift */; };
 		DB01D0601049980CD60E593FC65D388D /* RequestExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C805482727489137E6B71E71E2C8E97 /* RequestExtension.swift */; };
@@ -194,15 +196,14 @@
 		E3CE398CA300341B52E273A1AB45E36D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F0296F1A0BC1050C22FAEFA897EE42 /* Foundation.framework */; };
 		E42D5F852E319F50B8B862F31DF8C1C7 /* KalturaNetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44B340EC0CA80BF56D8A558E3D78D1E4 /* KalturaNetKit.framework */; };
 		E8251B196E195CD9429A802BE73772CC /* PlayKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FDADE2647EA5B571330B2E08095D06 /* PlayKitManager.swift */; };
+		E90592D9ED5A9C32FE78FF82A3B451E8 /* KalturaPhoenixAnonymousSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DD29157D066C38303621FB9AD50270 /* KalturaPhoenixAnonymousSession.swift */; };
 		EB9F3BBDD1EBE7B041AB42F242A19124 /* PlayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 693843DC1ECC48EA4A3026F0B88FFBB8 /* PlayKit.framework */; };
 		ECDD2E2888CE616A5F447964ACE82C5F /* KavaPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339E6354735B03C3DA08574FF931998A /* KavaPlugin.swift */; };
-		ED1A27F46BEC9008FAD6F58D99A9F8AE /* KalturaOvpPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFCEEF932975B5C9B4237B08D930D101 /* KalturaOvpPlayer.swift */; };
 		ED708787E9833C5E8C20803B774E90FA /* PlayKitKava-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = A8BDDEB3DBE5AB6A83C57D8025F2F993 /* PlayKitKava-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EDA148195858FE3DAE518889AA4F36F3 /* PlayKitUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A92D41B9340A75B19E41C95B4AB5CEE5 /* PlayKitUtils.framework */; };
 		EE6631CE33F87936ECDBD333FF9AD53F /* BookmarkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C74570BC76171841DE6E0BAA19DC4655 /* BookmarkService.swift */; };
-		F17E7A8926EE42B0E457FC97B5846136 /* UIConfService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F74445DFA35090090765D3139F32A9C7 /* UIConfService.swift */; };
-		F212EB2B3FD8D9CCFE6BB4B9FE22126E /* KalturaPlaybackRequestAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CA8C45BCAE44D3D5F6B7F264CB9D1F5 /* KalturaPlaybackRequestAdapter.swift */; };
 		F2E3162882495BA569894ADC6B04EA77 /* PlayKitUtils-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FA959E27FADBA7D12D83B4D1946A4C9 /* PlayKitUtils-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F32839538BFCEB7BEAB4EFC3A94E6BE2 /* KalturaOvpPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFCEEF932975B5C9B4237B08D930D101 /* KalturaOvpPlayer.swift */; };
 		F3D0C5D8059FD8A48D84D3027FF8221C /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C71DC37F47884B1E03948BC8008EE8D3 /* SwiftyJSON.framework */; };
 		F46F69D24F3F64D64E8DD1F4703A65FB /* PlayerDecoratorBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E191CD41798AD0DD89C29A11F4835D6 /* PlayerDecoratorBase.swift */; };
 		F48AEB94C7E6AF581134B3EE22A60EA2 /* AssetLoaderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859FD07341EF726E4E29874A603DAC51 /* AssetLoaderDelegate.swift */; };
@@ -210,7 +211,6 @@
 		F61A40FF51F9FD502B4A29624D17CC9B /* PKMediaEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E1F6554054D914604D4FA54CAD643AE /* PKMediaEntry.swift */; };
 		F67688D487501D04B772124353C9E4FB /* PlayManifestRequestAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D33DE8EF4EE14CF060CFF91D415561 /* PlayManifestRequestAdapter.swift */; };
 		F6EE3C52D908926A466BB6772A302A74 /* KalturaPlayer-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = EFB2BE6E71F04087C6B15A12E71EA9F1 /* KalturaPlayer-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F741719580F3C7AECF60CCDA1A3A38C9 /* ControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA73459DA890D1E44AF5F7D605ED7A0D /* ControlsView.swift */; };
 		FB74C6A41EE120CDA49EE953FC0592F3 /* Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB796A5F93E9A8736EC5EB3B13B2E03 /* Formatters.swift */; };
 		FCA4013B09772EF22A1D4DAC0663C87C /* SwiftyXMLParser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 593928C7B4B4FC9761DFEE7DD8BE5673 /* SwiftyXMLParser.framework */; };
 		FCF7D68594AAEE865EB51CB59598C1D5 /* AppStateSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C3929152C2D6FB57ED20D520AD6433 /* AppStateSubject.swift */; };
@@ -506,7 +506,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0036C4108EEFEA80B1CCEB203C74A7F0 /* PlayKitOTT.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = PlayKitOTT.modulemap; sourceTree = "<group>"; };
+		0036C4108EEFEA80B1CCEB203C74A7F0 /* PlayKitOTT.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = PlayKitOTT.modulemap; sourceTree = "<group>"; };
 		00CB15781DEE3A5CD273C5CD4A07EB29 /* Element.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Element.swift; path = SwiftyXMLParser/Element.swift; sourceTree = "<group>"; };
 		01676B703189D8637ECF96DFBC2722E6 /* OVPSource.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OVPSource.swift; sourceTree = "<group>"; };
 		021A8EB5D07DCF5FC2833C79B9FBA418 /* KavaPluginConfig.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = KavaPluginConfig.swift; path = Sources/KavaPluginConfig.swift; sourceTree = "<group>"; };
@@ -514,9 +514,9 @@
 		077F436D06EFE66C78BE7969FEBE6299 /* SwiftyXMLParser.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SwiftyXMLParser.xcconfig; sourceTree = "<group>"; };
 		07B2204630F89320E5036097337E1566 /* SynchronizedProperty.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SynchronizedProperty.swift; path = Sources/SynchronizedProperty.swift; sourceTree = "<group>"; };
 		0844D2D4B068EEAD93C53F1F0CA4B00B /* PKController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PKController.swift; sourceTree = "<group>"; };
-		0954DBE0448623AA044D03379F2E6C51 /* KalturaNetKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KalturaNetKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		098148A4AD1C682F5A9DAEA7A8333449 /* Log.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = Log.modulemap; sourceTree = "<group>"; };
-		0A453265AA7CF0CCA69E3A174E6C6924 /* PlayKitOTT.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PlayKitOTT.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0954DBE0448623AA044D03379F2E6C51 /* KalturaNetKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = KalturaNetKit.framework; path = KalturaNetKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		098148A4AD1C682F5A9DAEA7A8333449 /* Log.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = Log.modulemap; sourceTree = "<group>"; };
+		0A453265AA7CF0CCA69E3A174E6C6924 /* PlayKitOTT.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = PlayKitOTT.framework; path = PlayKitOTT.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AB796A5F93E9A8736EC5EB3B13B2E03 /* Formatters.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Formatters.swift; path = Source/Extensions/Formatters.swift; sourceTree = "<group>"; };
 		0B2C68B7E561AD5D25FB1E285E112FE6 /* XML.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = XML.swift; path = SwiftyXMLParser/XML.swift; sourceTree = "<group>"; };
 		0C74B62B9B6DE171997CDECDEF35A15D /* PlayKit-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "PlayKit-prefix.pch"; sourceTree = "<group>"; };
@@ -526,7 +526,6 @@
 		122806BCD8CCA71A57A7229C7DE38EBD /* VRData.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = VRData.swift; sourceTree = "<group>"; };
 		124922C8B0D864711809A4EC54F2D446 /* PKRequestParams.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PKRequestParams.swift; path = Classes/PKRequestParams.swift; sourceTree = "<group>"; };
 		1290880271B37CEE3F0F374BB3374FFA /* Platform.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Platform.swift; path = Classes/Platform.swift; sourceTree = "<group>"; };
-		1302C45904AC4ACB3F7E03F1664FED08 /* PlayerConfigError.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PlayerConfigError.swift; sourceTree = "<group>"; };
 		13C05968853AAF83B55A2C8B127606D4 /* RequestConfiguration.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RequestConfiguration.swift; sourceTree = "<group>"; };
 		13C9CF4E8623666640111E4AE0397931 /* SwiftyJSON-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SwiftyJSON-prefix.pch"; sourceTree = "<group>"; };
 		13F25F4E544D7DDE78ECCAD9B402D8F6 /* PlayKitOVP-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "PlayKitOVP-dummy.m"; sourceTree = "<group>"; };
@@ -536,15 +535,16 @@
 		16E8347F26F704B422EE82055EA9CE1E /* AppStateProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppStateProvider.swift; sourceTree = "<group>"; };
 		17C32C8E33E83A83D3DC954FA7FCF02A /* OTTBackendErrorEvent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OTTBackendErrorEvent.swift; sourceTree = "<group>"; };
 		18D67E9FF52067939FCCFB8BFD5566CE /* PlayKitKava-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "PlayKitKava-dummy.m"; sourceTree = "<group>"; };
+		1A1AC7B408AB3317C4B2A178EBD1DA66 /* PlayerConfigManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PlayerConfigManager.swift; sourceTree = "<group>"; };
 		1B526360FC6D7B97E66DD0769FBE3455 /* OVPError.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OVPError.swift; sourceTree = "<group>"; };
-		1BC9A109CCFF6F80148DD35F2EA52F9F /* KalturaPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KalturaPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1BC9A109CCFF6F80148DD35F2EA52F9F /* KalturaPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = KalturaPlayer.framework; path = KalturaPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1C09761F1CD8C177E5741C2A3A53DC01 /* OVPFlavorAsset.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OVPFlavorAsset.swift; sourceTree = "<group>"; };
 		1E191CD41798AD0DD89C29A11F4835D6 /* PlayerDecoratorBase.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PlayerDecoratorBase.swift; sourceTree = "<group>"; };
 		20AC165387ADEE3AECB23C1682E6ED33 /* OTTObjectMapper.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OTTObjectMapper.swift; sourceTree = "<group>"; };
-		20F1632F5A5CC9243AC76897DFD06774 /* SwiftyJSON.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = SwiftyJSON.modulemap; sourceTree = "<group>"; };
+		20F1632F5A5CC9243AC76897DFD06774 /* SwiftyJSON.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = SwiftyJSON.modulemap; sourceTree = "<group>"; };
 		20F85432DCCA3E3B65E701CF224E1EC9 /* PlayKit.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = PlayKit.xcconfig; sourceTree = "<group>"; };
 		211ADDA44666F588836B95386241EDA7 /* OVPStartWidgetSessionResponse.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OVPStartWidgetSessionResponse.swift; sourceTree = "<group>"; };
-		22CBCD084AE2B3343438EAA1A4789D2B /* KalturaPlayer.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = KalturaPlayer.modulemap; sourceTree = "<group>"; };
+		22CBCD084AE2B3343438EAA1A4789D2B /* KalturaPlayer.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = KalturaPlayer.modulemap; sourceTree = "<group>"; };
 		267F42EB23A47F4215BFDE43D5A4C799 /* OVPResponseParser.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OVPResponseParser.swift; sourceTree = "<group>"; };
 		282C504B81ED61A5167D0D43863468A3 /* OVPEntry.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OVPEntry.swift; sourceTree = "<group>"; };
 		29D33DE8EF4EE14CF060CFF91D415561 /* PlayManifestRequestAdapter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PlayManifestRequestAdapter.swift; path = Sources/PlayManifestRequestAdapter.swift; sourceTree = "<group>"; };
@@ -554,8 +554,7 @@
 		2FA959E27FADBA7D12D83B4D1946A4C9 /* PlayKitUtils-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "PlayKitUtils-umbrella.h"; sourceTree = "<group>"; };
 		31825AF20BA22F12C612C92812B5BCBA /* MediaOptions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MediaOptions.swift; path = Sources/Core/MediaOptions.swift; sourceTree = "<group>"; };
 		31A6B2D9960CB585A748CA515A3CCB1E /* PlayKitKava.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PlayKitKava.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		320F2FDAAE4C931525C1AD4CA3190F56 /* PlayKitKava.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PlayKitKava.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		329E02F14DCC9D8BCCED4ACA80EF1F4D /* UIConfResponseParser.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = UIConfResponseParser.swift; sourceTree = "<group>"; };
+		320F2FDAAE4C931525C1AD4CA3190F56 /* PlayKitKava.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = PlayKitKava.framework; path = PlayKitKava.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3323BAF33B192C78440B493F6407D129 /* KalturaNetKit.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = KalturaNetKit.xcconfig; sourceTree = "<group>"; };
 		339E6354735B03C3DA08574FF931998A /* KavaPlugin.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = KavaPlugin.swift; path = Sources/KavaPlugin.swift; sourceTree = "<group>"; };
 		3456701D49DFD4CE0C49E859179F7D2A /* Logger.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Logger.swift; path = Source/Logger.swift; sourceTree = "<group>"; };
@@ -579,9 +578,10 @@
 		44EEE3BB39D9A45B7B4E03392A195231 /* PlayKitOTT-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "PlayKitOTT-umbrella.h"; sourceTree = "<group>"; };
 		495B87FB7DBFDE4761048766C4C50AA5 /* OVPLiveStreamEntry.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OVPLiveStreamEntry.swift; sourceTree = "<group>"; };
 		49697E0F45F89428BA72FEE44AC5EB29 /* OVPPlaybackContext.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OVPPlaybackContext.swift; sourceTree = "<group>"; };
-		49C8B5DE20D0037345D3D4C6D2FF49FD /* Pods-KalturaPlayerExample.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-KalturaPlayerExample.modulemap"; sourceTree = "<group>"; };
+		49C8B5DE20D0037345D3D4C6D2FF49FD /* Pods-KalturaPlayerExample.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-KalturaPlayerExample.modulemap"; sourceTree = "<group>"; };
 		4B8DBC1C02BBE5894E760D132B86792C /* Accessor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Accessor.swift; path = SwiftyXMLParser/Accessor.swift; sourceTree = "<group>"; };
 		4F05C3DBDA49F016B42618692C0D209B /* OVPSessionService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OVPSessionService.swift; sourceTree = "<group>"; };
+		5061E0A8C134738E0DDC00C3DC464D53 /* PlayerConfigError.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PlayerConfigError.swift; sourceTree = "<group>"; };
 		50A8863E95DFED1A47FAA997C420D057 /* PlayKitOVP-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "PlayKitOVP-umbrella.h"; sourceTree = "<group>"; };
 		5141626C466B61915F94687F72472798 /* Log.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Log.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		52272F5642B3914FA5388B94E86DD7B0 /* Pods-KalturaPlayerExample-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-KalturaPlayerExample-dummy.m"; sourceTree = "<group>"; };
@@ -593,13 +593,13 @@
 		59709B10D1DDA9C515ABB7ABC84730AA /* KavaPlugin+AnalyticsPluginProtocol.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "KavaPlugin+AnalyticsPluginProtocol.swift"; path = "Sources/KavaPlugin+AnalyticsPluginProtocol.swift"; sourceTree = "<group>"; };
 		59834E9B65A661C51F41A4893B084D6B /* AVPlayerEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AVPlayerEngine.swift; sourceTree = "<group>"; };
 		5C133EB80103829722C118B4C1086031 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		5C22717CD9BBEA60F8A880CD22C1551D /* SwiftyJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftyJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		5DB97B78474976AD95573C632E255534 /* PlayKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PlayKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5C22717CD9BBEA60F8A880CD22C1551D /* SwiftyJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = SwiftyJSON.framework; path = SwiftyJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5DB97B78474976AD95573C632E255534 /* PlayKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = PlayKit.framework; path = PlayKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E922AA06F7AB9CB873C08C3CDF1E77D /* ControlsView.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; name = ControlsView.xib; path = Sources/UI/ControlsView.xib; sourceTree = "<group>"; };
 		5EC502C8B2F6F4E564B1A529FC90814C /* PKStateMachine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PKStateMachine.swift; path = Classes/PKStateMachine.swift; sourceTree = "<group>"; };
 		5ECB1DEE6E4A66E4AEB2B1FD41C54917 /* OTTRefreshedSession.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OTTRefreshedSession.swift; sourceTree = "<group>"; };
 		6298DCD86022ABBD2E559185B7B235FC /* Theme.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Theme.swift; path = Source/Theme.swift; sourceTree = "<group>"; };
-		670BD59A2B1996A8A51C06A7C3535BFB /* SwiftyXMLParser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftyXMLParser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		670BD59A2B1996A8A51C06A7C3535BFB /* SwiftyXMLParser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = SwiftyXMLParser.framework; path = SwiftyXMLParser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		67A6E023C0B5D56F69AA692E289BB9C9 /* Pods-KalturaPlayerExample-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-KalturaPlayerExample-acknowledgements.markdown"; sourceTree = "<group>"; };
 		6862A430E2C817B135B4C12FE0720B72 /* AdEvent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AdEvent.swift; sourceTree = "<group>"; };
 		68D5412CEB363E4615FBDC65DEB81476 /* PlayKitOTT-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "PlayKitOTT-dummy.m"; sourceTree = "<group>"; };
@@ -608,12 +608,11 @@
 		6F17D1B5135BC262A1B6BFA52C154A50 /* FormatsHelper.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FormatsHelper.swift; sourceTree = "<group>"; };
 		6F2F4F7766230B06082D737C1E5055A7 /* PKPlayerSettings.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PKPlayerSettings.swift; sourceTree = "<group>"; };
 		701FBF6609BAFD3520149DE4DB77A6EC /* KavaHelper.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = KavaHelper.swift; path = Sources/KavaHelper.swift; sourceTree = "<group>"; };
-		71F030954704F18A52A7CC9D63056793 /* PlayerConfigObject.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PlayerConfigObject.swift; sourceTree = "<group>"; };
 		726FFC3A315E5C653FDCB79BDEA80195 /* OVPMediaProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OVPMediaProvider.swift; sourceTree = "<group>"; };
-		72D96B9BB5E2B528E6929A693C4063E4 /* Pods_KalturaPlayerExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KalturaPlayerExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		72D96B9BB5E2B528E6929A693C4063E4 /* Pods_KalturaPlayerExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_KalturaPlayerExample.framework; path = "Pods-KalturaPlayerExample.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
 		754DBBB741170B61B30FB9C6E20B7EB0 /* PlayKit-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "PlayKit-dummy.m"; sourceTree = "<group>"; };
 		75DC262A13DA54DD40B2DF50797DD3B1 /* PhoenixAnalyticsPlugin.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PhoenixAnalyticsPlugin.swift; sourceTree = "<group>"; };
-		76503CB4B62E0274B3CBFAB0A0E3D48B /* Log.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Log.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		76503CB4B62E0274B3CBFAB0A0E3D48B /* Log.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Log.framework; path = Log.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		76630CF654098DFABEC6755A2F457894 /* Parser.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Parser.swift; path = SwiftyXMLParser/Parser.swift; sourceTree = "<group>"; };
 		770A4365783CC70D095CEC385C27C492 /* DefaultAssetHandler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DefaultAssetHandler.swift; sourceTree = "<group>"; };
 		77590111EABC3FCE68470155A4E5351C /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -636,15 +635,16 @@
 		869652871CA937A5063D760D3556D161 /* SwiftyJSON-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SwiftyJSON-dummy.m"; sourceTree = "<group>"; };
 		86BB2E195379A86361BE2DFF0DE215AB /* PlayKitUtils-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "PlayKitUtils-prefix.pch"; sourceTree = "<group>"; };
 		872B54E759E196AD856E2DC5B8D3D215 /* PlayerView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
-		876E66572E36A265D63AE23011EB498F /* PlayerConfigBaseObject.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PlayerConfigBaseObject.swift; sourceTree = "<group>"; };
 		87966CC9D4E401F3A73BFF36DBFB8431 /* WidevineClassicHelper.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WidevineClassicHelper.swift; sourceTree = "<group>"; };
 		886DF8B5E10C237B3D68691C4E489BC1 /* KalturaOVPAnonymousSession.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = KalturaOVPAnonymousSession.swift; path = Sources/OVP/KalturaOVPAnonymousSession.swift; sourceTree = "<group>"; };
 		892C997AABE3398A598947F284E4766B /* KalturaPlayer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = KalturaPlayer.swift; path = Sources/Core/KalturaPlayer.swift; sourceTree = "<group>"; };
 		8A7BD1AB5A91034D7A849AEF8FC9EEAF /* OTTPlaybackContext.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OTTPlaybackContext.swift; sourceTree = "<group>"; };
+		8CAAB778DB55BEA853CF8504A6F5004F /* PlayerConfigBaseObject.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PlayerConfigBaseObject.swift; sourceTree = "<group>"; };
 		8F2260DF26882EDB625888E3CF4B2F07 /* Pods-KalturaPlayerExample-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-KalturaPlayerExample-frameworks.sh"; sourceTree = "<group>"; };
 		920493C8CBB1B59EA6F541B57A96477C /* Pods-KalturaPlayerExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-KalturaPlayerExample.debug.xcconfig"; sourceTree = "<group>"; };
-		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		940A9F325733E839B37A973839A9EC02 /* PKVRController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PKVRController.swift; sourceTree = "<group>"; };
+		940EA3F4AD0CBD70C91C62623DF9B2FF /* PlayerConfigObject.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PlayerConfigObject.swift; sourceTree = "<group>"; };
 		9430EDA94F3675A19A08599AB5306573 /* AVPlayerEngine+AssetLoading.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "AVPlayerEngine+AssetLoading.swift"; sourceTree = "<group>"; };
 		96222A8EBA92F60598C2275D9B69521A /* BasicPlayer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BasicPlayer.swift; sourceTree = "<group>"; };
 		970A9B7699B072E7904D4A4CC8A5EF3F /* KalturaBaseObject.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = KalturaBaseObject.swift; sourceTree = "<group>"; };
@@ -656,10 +656,10 @@
 		9CE5A1DF3775FA66322A8C2C5DD6107D /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9DF70BE3637BA78D01BDA447DCE6E442 /* SwiftyXMLParser-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SwiftyXMLParser-prefix.pch"; sourceTree = "<group>"; };
 		9E1F6554054D914604D4FA54CAD643AE /* PKMediaEntry.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PKMediaEntry.swift; sourceTree = "<group>"; };
-		A28CBB7FEBA09AF07EE2E63BDA1E4294 /* PlayKitOVP.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = PlayKitOVP.modulemap; sourceTree = "<group>"; };
+		A28CBB7FEBA09AF07EE2E63BDA1E4294 /* PlayKitOVP.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = PlayKitOVP.modulemap; sourceTree = "<group>"; };
 		A3C3929152C2D6FB57ED20D520AD6433 /* AppStateSubject.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppStateSubject.swift; sourceTree = "<group>"; };
 		A4D41041AD5112607F3172E91A26C9B3 /* LocalAssetsManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LocalAssetsManager.swift; sourceTree = "<group>"; };
-		A58D20237CC3F5CFEB3F12EF958D2D55 /* PlayKitUtils.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PlayKitUtils.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A58D20237CC3F5CFEB3F12EF958D2D55 /* PlayKitUtils.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = PlayKitUtils.framework; path = PlayKitUtils.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5B74F61B2D49A4E45DCD5A2E81D7E83 /* OVPDRM.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OVPDRM.swift; sourceTree = "<group>"; };
 		A745429ACE548D3D759EE9FBFB0632C9 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A8BDDEB3DBE5AB6A83C57D8025F2F993 /* PlayKitKava-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "PlayKitKava-umbrella.h"; sourceTree = "<group>"; };
@@ -676,9 +676,9 @@
 		B5661EB56543E5FF7F0B61C1D0A2230C /* SourceSelector.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SourceSelector.swift; sourceTree = "<group>"; };
 		B5D05865490230C80287A9D7FA3AE72C /* Pods-KalturaPlayerExample-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-KalturaPlayerExample-acknowledgements.plist"; sourceTree = "<group>"; };
 		B93929166F78977A8FC830C3B71AE76A /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B9464C33ADC17B64DFA3E635C399BEB4 /* PlayKitUtils.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = PlayKitUtils.modulemap; sourceTree = "<group>"; };
+		B9464C33ADC17B64DFA3E635C399BEB4 /* PlayKitUtils.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = PlayKitUtils.modulemap; sourceTree = "<group>"; };
 		C0E164ADEEB40740C46CE8D6C77EB72B /* PKError.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PKError.swift; path = Classes/PKError.swift; sourceTree = "<group>"; };
-		C19070E056348019BF3D7511295D3398 /* PlayKitKava.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = PlayKitKava.modulemap; sourceTree = "<group>"; };
+		C19070E056348019BF3D7511295D3398 /* PlayKitKava.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = PlayKitKava.modulemap; sourceTree = "<group>"; };
 		C40CF762CD040234C8962BE6B243C348 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C4346B7C183EA53C05F81264A9FDB3BA /* OTTAccessControlMessage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OTTAccessControlMessage.swift; sourceTree = "<group>"; };
 		C4717E631ECAAEC2160FD2CAC179D608 /* MessageBus.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MessageBus.swift; path = Classes/MessageBus.swift; sourceTree = "<group>"; };
@@ -710,7 +710,7 @@
 		DA233C74C438CEECD854E7340F108BF4 /* ResponseSerializer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ResponseSerializer.swift; sourceTree = "<group>"; };
 		DB8BE400A1ACA9221562E378F51C78CD /* OTTPlaybackSource.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OTTPlaybackSource.swift; sourceTree = "<group>"; };
 		DBE842DAAFC78F6ED399B68F329E30CB /* UIManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = UIManager.swift; path = Sources/UI/UIManager.swift; sourceTree = "<group>"; };
-		DC49604068235033395F20E08AEC8278 /* KalturaPlayer.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KalturaPlayer.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		DC49604068235033395F20E08AEC8278 /* KalturaPlayer.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = KalturaPlayer.bundle; path = KalturaPlayer.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCE156E3C5E50A6E0E9B06A9FED8C6EA /* KalturaMultiRequestBuilder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = KalturaMultiRequestBuilder.swift; sourceTree = "<group>"; };
 		DDE8320D7EA45EFD98FF9EF0E2C87581 /* DefaultPlayerWrapper.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DefaultPlayerWrapper.swift; sourceTree = "<group>"; };
 		DF1B84BF1E75660DDFA6F2F59B9C3312 /* PlayKitKava-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "PlayKitKava-prefix.pch"; sourceTree = "<group>"; };
@@ -723,31 +723,31 @@
 		E631768FC7B1A0B4D3B3000A3A238F73 /* OVPRuleAction.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OVPRuleAction.swift; sourceTree = "<group>"; };
 		E6778BF7E048115AABDB4CA45058602D /* Benchmarker.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Benchmarker.swift; path = Source/Benchmarker.swift; sourceTree = "<group>"; };
 		E6D9D13E450A8D703443A40175C1DC69 /* Error.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Error.swift; path = SwiftyXMLParser/Error.swift; sourceTree = "<group>"; };
-		E89B5D039773BA797EB32396FB7C1D28 /* SwiftyXMLParser.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = SwiftyXMLParser.modulemap; sourceTree = "<group>"; };
+		E89B5D039773BA797EB32396FB7C1D28 /* SwiftyXMLParser.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = SwiftyXMLParser.modulemap; sourceTree = "<group>"; };
 		E92BA4B353AD5490C705428CC73215CF /* PlayKitOVP-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "PlayKitOVP-prefix.pch"; sourceTree = "<group>"; };
 		EA73459DA890D1E44AF5F7D605ED7A0D /* ControlsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ControlsView.swift; path = Sources/UI/ControlsView.swift; sourceTree = "<group>"; };
-		EBDDF73DD0C19F08892C574988FA6425 /* PlayKitOVP.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PlayKitOVP.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		EBDDF73DD0C19F08892C574988FA6425 /* PlayKitOVP.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = PlayKitOVP.framework; path = PlayKitOVP.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC24BB25EB5B86276846D7270C1D5CA2 /* PhoenixMediaProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PhoenixMediaProvider.swift; sourceTree = "<group>"; };
 		EC582CC78A5C2C8ABD4C4D11C278F738 /* PKAdInfo.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PKAdInfo.swift; sourceTree = "<group>"; };
+		EDC06726C5F5206BEBE1FD164B16B91D /* UIConfService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = UIConfService.swift; sourceTree = "<group>"; };
 		EEF93E857E88ECE417C54331B0EA8BE4 /* AnalyticsConfig.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AnalyticsConfig.swift; path = Plugins/AnalyticsCommon/AnalyticsConfig.swift; sourceTree = "<group>"; };
 		EF9709938EE2ECB242FA83E32ED38DF4 /* OVPBaseEntryService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OVPBaseEntryService.swift; sourceTree = "<group>"; };
 		EFB2BE6E71F04087C6B15A12E71EA9F1 /* KalturaPlayer-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "KalturaPlayer-umbrella.h"; sourceTree = "<group>"; };
 		F05904178AF4D014D391C3D59618D1C5 /* Result.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Result.swift; path = Sources/Result.swift; sourceTree = "<group>"; };
-		F202A7C3AA03F34552DA5D02C235473B /* PlayKit.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = PlayKit.modulemap; sourceTree = "<group>"; };
+		F202A7C3AA03F34552DA5D02C235473B /* PlayKit.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = PlayKit.modulemap; sourceTree = "<group>"; };
 		F5CD561CFECBC1AEC5817303A749BB04 /* Themes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Themes.swift; path = Source/Extensions/Themes.swift; sourceTree = "<group>"; };
 		F642EF64EACDE328BC17767845ADE826 /* Result.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
-		F647CB3195154177B6E531BA920D996F /* PlayerConfigManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PlayerConfigManager.swift; sourceTree = "<group>"; };
 		F723CA62F4114FDB7C8AD86351B2958E /* PlayKitOTT.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = PlayKitOTT.xcconfig; sourceTree = "<group>"; };
-		F74445DFA35090090765D3139F32A9C7 /* UIConfService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = UIConfService.swift; sourceTree = "<group>"; };
 		F7816CA6C8AB078C7B735ED739282EDD /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F84FE99120C80E26B7FB864038163AA7 /* AVPlayerWrapper.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AVPlayerWrapper.swift; sourceTree = "<group>"; };
 		F8AB8C637AC9FCD043DE6F07DA816B1A /* AssetService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AssetService.swift; sourceTree = "<group>"; };
 		FAAB2CCE5E904380D8760AEBAF59B9A5 /* Log-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Log-dummy.m"; sourceTree = "<group>"; };
-		FAC8A5B39075B26CAB8C75A8F4C1C686 /* KalturaNetKit.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = KalturaNetKit.modulemap; sourceTree = "<group>"; };
+		FAC8A5B39075B26CAB8C75A8F4C1C686 /* KalturaNetKit.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = KalturaNetKit.modulemap; sourceTree = "<group>"; };
 		FBB02EC40A93222F6BE372A8FC6AB76A /* PlayerEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PlayerEngine.swift; sourceTree = "<group>"; };
 		FCFF2F9BE3A1298EE3F7EFC30B6AB76F /* PlayerController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PlayerController.swift; sourceTree = "<group>"; };
 		FDF1CA7CF188539598D47F3FE9291EFF /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FE5BCC9A70365AE753227777A8A24C38 /* KalturaNetKit-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "KalturaNetKit-umbrella.h"; sourceTree = "<group>"; };
+		FF94E0FD3339569CE9E33C2A78129370 /* UIConfResponseParser.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = UIConfResponseParser.swift; sourceTree = "<group>"; };
 		FFCEEF932975B5C9B4237B08D930D101 /* KalturaOvpPlayer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = KalturaOvpPlayer.swift; path = Sources/OVP/KalturaOvpPlayer.swift; sourceTree = "<group>"; };
 		FFE93DDA962877ED28E7BC968AB6092F /* Player.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -929,6 +929,7 @@
 			children = (
 				1E191CD41798AD0DD89C29A11F4835D6 /* PlayerDecoratorBase.swift */,
 			);
+			name = Decorators;
 			path = Decorators;
 			sourceTree = "<group>";
 		};
@@ -985,6 +986,7 @@
 				122806BCD8CCA71A57A7229C7DE38EBD /* VRData.swift */,
 				D296AC364D90E6A1A51979234E77F081 /* VRPlayerEngine.swift */,
 			);
+			name = VR;
 			path = VR;
 			sourceTree = "<group>";
 		};
@@ -1073,7 +1075,7 @@
 				3CA8C45BCAE44D3D5F6B7F264CB9D1F5 /* KalturaPlaybackRequestAdapter.swift */,
 				892C997AABE3398A598947F284E4766B /* KalturaPlayer.swift */,
 				31825AF20BA22F12C612C92812B5BCBA /* MediaOptions.swift */,
-				AA86CF3302E5D09A1D4445A48F87A9D5 /* PlayerConfig */,
+				58E9E6910775CDCFAFF92AA1EEAADB61 /* PlayerConfig */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -1141,6 +1143,20 @@
 			path = ../..;
 			sourceTree = "<group>";
 		};
+		58E9E6910775CDCFAFF92AA1EEAADB61 /* PlayerConfig */ = {
+			isa = PBXGroup;
+			children = (
+				8CAAB778DB55BEA853CF8504A6F5004F /* PlayerConfigBaseObject.swift */,
+				5061E0A8C134738E0DDC00C3DC464D53 /* PlayerConfigError.swift */,
+				1A1AC7B408AB3317C4B2A178EBD1DA66 /* PlayerConfigManager.swift */,
+				940EA3F4AD0CBD70C91C62623DF9B2FF /* PlayerConfigObject.swift */,
+				FF94E0FD3339569CE9E33C2A78129370 /* UIConfResponseParser.swift */,
+				EDC06726C5F5206BEBE1FD164B16B91D /* UIConfService.swift */,
+			);
+			name = PlayerConfig;
+			path = Sources/Core/PlayerConfig;
+			sourceTree = "<group>";
+		};
 		5C1174F3F614E3A974A75E80651E32BA /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
@@ -1176,6 +1192,7 @@
 				3D9D710D619C73FE8C157ED53610F7E0 /* Utilities.swift */,
 				0B8B2310FB32A52527944664BB1105E2 /* Support Files */,
 			);
+			name = Log;
 			path = Log;
 			sourceTree = "<group>";
 		};
@@ -1192,6 +1209,7 @@
 			children = (
 				D36C5B9CFF73F7FF570924AD671A7BA4 /* USRExecutor.swift */,
 			);
+			name = implementors;
 			path = implementors;
 			sourceTree = "<group>";
 		};
@@ -1200,6 +1218,7 @@
 			children = (
 				7FC678FCBB6B02EEE75FBD912466491C /* AssetHandler.swift */,
 			);
+			name = Builders;
 			path = Builders;
 			sourceTree = "<group>";
 		};
@@ -1208,6 +1227,7 @@
 			children = (
 				770A4365783CC70D095CEC385C27C492 /* DefaultAssetHandler.swift */,
 			);
+			name = Handlers;
 			path = Handlers;
 			sourceTree = "<group>";
 		};
@@ -1359,6 +1379,7 @@
 				3C244475FB75006D0C8E09DACA35516B /* Track.swift */,
 				7A2172C5009E793EDF9F450648075A9D /* TracksManager.swift */,
 			);
+			name = Tracks;
 			path = Tracks;
 			sourceTree = "<group>";
 		};
@@ -1368,6 +1389,7 @@
 				B263D362D512AF1063D5E10040ABB921 /* SwiftyJSON.swift */,
 				496617C9B814BBB4FBF67F992668005D /* Support Files */,
 			);
+			name = SwiftyJSON;
 			path = SwiftyJSON;
 			sourceTree = "<group>";
 		};
@@ -1439,20 +1461,6 @@
 			path = Classes/Managers;
 			sourceTree = "<group>";
 		};
-		AA86CF3302E5D09A1D4445A48F87A9D5 /* PlayerConfig */ = {
-			isa = PBXGroup;
-			children = (
-				876E66572E36A265D63AE23011EB498F /* PlayerConfigBaseObject.swift */,
-				1302C45904AC4ACB3F7E03F1664FED08 /* PlayerConfigError.swift */,
-				F647CB3195154177B6E531BA920D996F /* PlayerConfigManager.swift */,
-				71F030954704F18A52A7CC9D63056793 /* PlayerConfigObject.swift */,
-				329E02F14DCC9D8BCCED4ACA80EF1F4D /* UIConfResponseParser.swift */,
-				F74445DFA35090090765D3139F32A9C7 /* UIConfService.swift */,
-			);
-			name = PlayerConfig;
-			path = Sources/Core/PlayerConfig;
-			sourceTree = "<group>";
-		};
 		AB91F707D2A9A74AF80FB2563956B058 /* PlayKit */ = {
 			isa = PBXGroup;
 			children = (
@@ -1500,6 +1508,7 @@
 				F84FE99120C80E26B7FB864038163AA7 /* AVPlayerWrapper.swift */,
 				DDE8320D7EA45EFD98FF9EF0E2C87581 /* DefaultPlayerWrapper.swift */,
 			);
+			name = PlayerWrapper;
 			path = PlayerWrapper;
 			sourceTree = "<group>";
 		};
@@ -1558,6 +1567,7 @@
 				37A1032797B5FE30FA64191A7FEFA529 /* PKMediaSource.swift */,
 				B5661EB56543E5FF7F0B61C1D0A2230C /* SourceSelector.swift */,
 			);
+			name = Media;
 			path = Media;
 			sourceTree = "<group>";
 		};
@@ -1619,6 +1629,7 @@
 				07B2204630F89320E5036097337E1566 /* SynchronizedProperty.swift */,
 				C04C4631BC0B34A2AC87551BD1ECBF2C /* Support Files */,
 			);
+			name = PlayKitUtils;
 			path = PlayKitUtils;
 			sourceTree = "<group>";
 		};
@@ -1629,6 +1640,7 @@
 				EC582CC78A5C2C8ABD4C4D11C278F738 /* PKAdInfo.swift */,
 				40BD1ED0204CB33D7D626CAB418128D8 /* PKPlaybackInfo.swift */,
 			);
+			name = EventsPayloads;
 			path = EventsPayloads;
 			sourceTree = "<group>";
 		};
@@ -1638,6 +1650,7 @@
 				16E8347F26F704B422EE82055EA9CE1E /* AppStateProvider.swift */,
 				A3C3929152C2D6FB57ED20D520AD6433 /* AppStateSubject.swift */,
 			);
+			name = AppState;
 			path = AppState;
 			sourceTree = "<group>";
 		};
@@ -1648,6 +1661,7 @@
 				9430EDA94F3675A19A08599AB5306573 /* AVPlayerEngine+AssetLoading.swift */,
 				D6FCC16404DDE1C83576F74CBFFF8A40 /* AVPlayerEngine+Observation.swift */,
 			);
+			name = AVPlayerEngine;
 			path = AVPlayerEngine;
 			sourceTree = "<group>";
 		};
@@ -1658,6 +1672,7 @@
 				FFE93DDA962877ED28E7BC968AB6092F /* Player.swift */,
 				FBB02EC40A93222F6BE372A8FC6AB76A /* PlayerEngine.swift */,
 			);
+			name = Protocols;
 			path = Protocols;
 			sourceTree = "<group>";
 		};
@@ -1709,6 +1724,7 @@
 				0B2C68B7E561AD5D25FB1E285E112FE6 /* XML.swift */,
 				F0E2B7C4561B9EC16E10155BBF701A48 /* Support Files */,
 			);
+			name = SwiftyXMLParser;
 			path = SwiftyXMLParser;
 			sourceTree = "<group>";
 		};
@@ -2004,7 +2020,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 68F1DFF3425C0EC54E71E28DDCBC9957 /* Build configuration list for PBXNativeTarget "KalturaPlayer" */;
 			buildPhases = (
-				5209D05CD8DD7FEFB083A71A3F942866 /* Sources */,
+				7230E5BF95A7BD26FB2B966A727BBB2B /* Sources */,
 				617AD0D0925975502E9872E9BACFC3ED /* Frameworks */,
 				579B17172240D13B54C9F0501C3B3D75 /* Resources */,
 				A976920DA8CFCC56C2F65D2814020444 /* Headers */,
@@ -2165,29 +2181,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		5209D05CD8DD7FEFB083A71A3F942866 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				F741719580F3C7AECF60CCDA1A3A38C9 /* ControlsView.swift in Sources */,
-				4686C078853335B3BDEC68997492A246 /* KalturaOVPAnonymousSession.swift in Sources */,
-				ED1A27F46BEC9008FAD6F58D99A9F8AE /* KalturaOvpPlayer.swift in Sources */,
-				D7894E1566895B813F88E02089610FCC /* KalturaPhoenixAnonymousSession.swift in Sources */,
-				CED4F178DD993A4B975CA8827A65D08F /* KalturaPhoenixPlayer.swift in Sources */,
-				F212EB2B3FD8D9CCFE6BB4B9FE22126E /* KalturaPlaybackRequestAdapter.swift in Sources */,
-				218EB12C9758EA1FF84530F27455F1C1 /* KalturaPlayer-dummy.m in Sources */,
-				78634A0757D03DC93F31699BD92A92B1 /* KalturaPlayer.swift in Sources */,
-				20F3FC1D682208FC29CD0280EF0D99CE /* MediaOptions.swift in Sources */,
-				B35F57B7DA71C7AEEF4DCE9372A8312C /* PlayerConfigBaseObject.swift in Sources */,
-				C0EE2793DDAEB2518DA1045BA3F4BC6E /* PlayerConfigError.swift in Sources */,
-				457AF2ACD0FF970F727F7C54262A17FD /* PlayerConfigManager.swift in Sources */,
-				8C73CB38E26D3A92695541725DAFAEAF /* PlayerConfigObject.swift in Sources */,
-				AF006D3EF35709EEE3CDB17DE96499F1 /* UIConfResponseParser.swift in Sources */,
-				F17E7A8926EE42B0E457FC97B5846136 /* UIConfService.swift in Sources */,
-				6BA72003714BC926FE228EEF7C8C4246 /* UIManager.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		61B120E7B364E833C56F95804DCDAD29 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2213,6 +2206,29 @@
 				44A6C381DBE02FC24D364D6A8482BF53 /* Theme.swift in Sources */,
 				555FDAD64633285B2BB26EA303872EB2 /* Themes.swift in Sources */,
 				B6C20A80F67E0ACA512B0C611738CE90 /* Utilities.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7230E5BF95A7BD26FB2B966A727BBB2B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9A8ACB8A9EDAC1C6621DFAD54B8C930B /* ControlsView.swift in Sources */,
+				C771832D9C22964AD5FD87630699F015 /* KalturaOVPAnonymousSession.swift in Sources */,
+				F32839538BFCEB7BEAB4EFC3A94E6BE2 /* KalturaOvpPlayer.swift in Sources */,
+				E90592D9ED5A9C32FE78FF82A3B451E8 /* KalturaPhoenixAnonymousSession.swift in Sources */,
+				AD248F6332F8B1A509B7C205FFEACCF0 /* KalturaPhoenixPlayer.swift in Sources */,
+				C78EC11B569E209BEE83785A7D7E06F6 /* KalturaPlaybackRequestAdapter.swift in Sources */,
+				980DED18C9FD1BC9655836D6B4C0CDA2 /* KalturaPlayer-dummy.m in Sources */,
+				306D8AD6159AAB45490FED0D1F2CDD73 /* KalturaPlayer.swift in Sources */,
+				048C46035BB3DD70B39EB927CAF02205 /* MediaOptions.swift in Sources */,
+				72387C751B953506CC829D06B49D988B /* PlayerConfigBaseObject.swift in Sources */,
+				3FDB94CB30DCEB593246337D2BDBA3E2 /* PlayerConfigError.swift in Sources */,
+				CD0193864E41CAE4E432C22BF4E0C049 /* PlayerConfigManager.swift in Sources */,
+				CDA43142EE089984E90683DC66DE0E61 /* PlayerConfigObject.swift in Sources */,
+				2853EDA9AEB1F368D2662F1B7BDCE603 /* UIConfResponseParser.swift in Sources */,
+				B288D9372F8DED92B4BA6518192AA3AD /* UIConfService.swift in Sources */,
+				3ECA9F29AB55165819397EEA99FF22D1 /* UIManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
