@@ -15,7 +15,7 @@ public class PlayerConfigError : PlayerConfigBaseObject {
     
     var code: String?
     var message: String?
-    var args:[String: Any]?
+    var args: [String: Any]?
     
     var codeKey = "code"
     var messageKey = "message"
@@ -28,5 +28,11 @@ public class PlayerConfigError : PlayerConfigBaseObject {
         if let args = jsonObject[argsKey].object as? [String:Any] {
            self.args = args
         }
+    }
+    
+    init(message: String?, code: String?, args: [String: Any]?) {
+        self.message = message
+        self.code = code
+        self.args = args
     }
 }

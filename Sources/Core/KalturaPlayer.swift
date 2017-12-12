@@ -27,7 +27,7 @@ public class KalturaPlayer<T: MediaOptions> {
     var uiManager: KalturaPlayerUIManager?
     
     internal init(options: KalturaPlayerOptions?) throws {
-        guard let options = options else { throw NSError.init() }
+        guard let options = options else { throw NSError(domain: "KalturaPlayerOptions cannot be nil", code: 0, userInfo: nil) }
         
         self.partnerId = options.partnerId
         

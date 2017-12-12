@@ -10,7 +10,7 @@ import SwiftyJSON
 
 public class UIConfResponseParser: NSObject {
     public static func parse(data: Any?) -> PlayerConfigBaseObject? {
-        if let data = data, let objectType = classByJsonObject(json: data) {
+        if let data = data, let objectType = classByJsonObject(data) {
             return objectType.init(json: data)
         } else {
             return nil
@@ -19,14 +19,14 @@ public class UIConfResponseParser: NSObject {
     
     static let classNameKey = "objectType"
     
-    static func classByJsonObject(json: Any?) -> PlayerConfigBaseObject.Type? {
+    static func classByJsonObject(_ jsonObject: Any?) -> PlayerConfigBaseObject.Type? {
         
-        guard let js = json else {
+        guard let jsObj = jsonObject else {
             return nil
         }
         
-        let jsonObject = JSON(js)
-        let className = jsonObject[classNameKey].string
+        let json = JSON(jsObj)
+        let className = json[classNameKey].string
         if let name = className{
             switch name {
             case "KalturaUiConf":
