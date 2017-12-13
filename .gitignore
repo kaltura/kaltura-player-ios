@@ -47,6 +47,7 @@ playground.xcworkspace
 #
 # Pods/
 Example/Pods
+Example/Podfile.lock
 
 # Carthage
 #
