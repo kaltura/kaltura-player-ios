@@ -28,6 +28,7 @@ public class KalturaPlayer<T: MediaOptions> {
     var serverUrl: String = ""
     
     var uiManager: KalturaPlayerUIManager?
+    var uiConf: PlayerConfigObject?
     
     internal init(options: KalturaPlayerOptions?) throws {
         guard let options = options else { throw NSError(domain: "KalturaPlayerOptions cannot be nil", code: 0, userInfo: nil) }
@@ -39,6 +40,7 @@ public class KalturaPlayer<T: MediaOptions> {
         self.preload = options.preload || options.autoPlay
         self.preferredFormat = options.preferredFormat
         self.uiManager = options.uiManager
+        self.uiConf = options.uiConf
         
         if let url = options.serverUrl {
             self.serverUrl = url + (url.hasSuffix("/") ? "" : "/")

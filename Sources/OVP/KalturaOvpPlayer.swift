@@ -54,10 +54,12 @@ public class KalturaOvpPlayer: KalturaPlayer<OVPMediaOptions> {
             }
             self?.mediaLoadCompleted(entry: entry, error: error, callback: callback)
         }
+        
+        updatePluginConfig(pluginName: KalturaStatsPlugin.pluginName, config: getKalturaStatsConfig())
     }
     
     override func getKalturaPluginConfigs() -> [String : Any]  {
-        return [KavaPlugin.pluginName : getKavaAnalyticsConfig()]
+        return [KavaPlugin.pluginName : getKavaAnalyticsConfig(), KalturaStatsPlugin.pluginName : getKalturaStatsConfig()]
     }
     
     override func getDefaultServerUrl() -> String {
@@ -67,15 +69,21 @@ public class KalturaOvpPlayer: KalturaPlayer<OVPMediaOptions> {
     override func registerPlugins() {
         if !KalturaOvpPlayer.pluginsRegistered {
             PlayKitManager.shared.registerPlugin(KavaPlugin.self)
+            PlayKitManager.shared.registerPlugin(KalturaStatsPlugin.self)
             KalturaOvpPlayer.pluginsRegistered = true
         }
     }
     
     override func updateKS(_ ks: String) {
         player.updatePluginConfig(pluginName: KavaPlugin.pluginName, config: getKavaAnalyticsConfig())
+        player.updatePluginConfig(pluginName: KalturaStatsPlugin.pluginName, config: getKalturaStatsConfig())
     }
     
     func getKavaAnalyticsConfig() -> KavaPluginConfig {
         return KavaPluginConfig(partnerId: partnerId, ks: ks, playbackContext: nil, referrer: referrer, customVar1: nil, customVar2: nil, customVar3: nil)
+    }
+    
+    func getKalturaStatsConfig() -> KalturaStatsPluginConfig {
+        return KalturaStatsPluginConfig(uiconfId: uiConf?.id ?? -1, partnerId: partnerId, entryId: provider?.entryId ?? "")
     }
 }

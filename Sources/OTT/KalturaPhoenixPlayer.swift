@@ -62,10 +62,12 @@ public class KalturaPhoenixPlayer: KalturaPlayer<PhoenixMediaOptions> {
             }
             self?.mediaLoadCompleted(entry: entry, error: error, callback: callback)
         })
+        
+        updatePluginConfig(pluginName: KalturaStatsPlugin.pluginName, config: getKalturaStatsConfig())
     }
     
     override func getKalturaPluginConfigs() -> [String : Any]  {
-        return [KavaPlugin.pluginName : getKavaAnalyticsConfig(), PhoenixAnalyticsPlugin.pluginName : getPhoenixAnalyticsConfig()]
+        return [KavaPlugin.pluginName : getKavaAnalyticsConfig(), PhoenixAnalyticsPlugin.pluginName : getPhoenixAnalyticsConfig(), KalturaStatsPlugin.pluginName : getKalturaStatsConfig()]
     }
     
     override func getDefaultServerUrl() -> String {
@@ -74,12 +76,14 @@ public class KalturaPhoenixPlayer: KalturaPlayer<PhoenixMediaOptions> {
     
     override func updateKS(_ ks: String) {
         player.updatePluginConfig(pluginName: KavaPlugin.pluginName, config: getKavaAnalyticsConfig())
+        player.updatePluginConfig(pluginName: KalturaStatsPlugin.pluginName, config: getKalturaStatsConfig())
         player.updatePluginConfig(pluginName: PhoenixAnalyticsPlugin.pluginName, config: getPhoenixAnalyticsConfig())
     }
     
     override func registerPlugins() {
         if !KalturaPhoenixPlayer.pluginsRegistered {
             PlayKitManager.shared.registerPlugin(KavaPlugin.self)
+            PlayKitManager.shared.registerPlugin(KalturaStatsPlugin.self)
             PlayKitManager.shared.registerPlugin(PhoenixAnalyticsPlugin.self)
             KalturaPhoenixPlayer.pluginsRegistered = true
         }
@@ -87,6 +91,10 @@ public class KalturaPhoenixPlayer: KalturaPlayer<PhoenixMediaOptions> {
     
     func getKavaAnalyticsConfig() -> KavaPluginConfig {
         return KavaPluginConfig(partnerId: partnerId, ks: nil, playbackContext: nil, referrer: referrer, customVar1: nil, customVar2: nil, customVar3: nil)
+    }
+    
+    func getKalturaStatsConfig() -> KalturaStatsPluginConfig {
+        return KalturaStatsPluginConfig(uiconfId: uiConf?.id ?? -1, partnerId: partnerId, entryId: mediaProvider?.assetId ?? "")
     }
     
     func getPhoenixAnalyticsConfig() -> PhoenixAnalyticsPluginConfig {

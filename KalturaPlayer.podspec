@@ -13,6 +13,7 @@ s.subspec 'Core' do |sp|
     sp.source_files = 'Sources/Core/**/*'
     sp.dependency 'PlayKit/Core'
     sp.dependency 'PlayKitKava'
+    sp.dependency 'PlayKit/KalturaStatsPlugin'
 end
 
 s.subspec 'OVP' do |sp|
