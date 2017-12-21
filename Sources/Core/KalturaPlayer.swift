@@ -11,6 +11,7 @@
 import Foundation
 import PlayKit
 import KalturaNetKit
+import SwiftyJSON
 
 public class KalturaPlayer<T: MediaOptions> {
     
@@ -51,7 +52,7 @@ public class KalturaPlayer<T: MediaOptions> {
         self.referrer = buildReferrer(appReferrer: options.referrer)
         
         registerPlugins()
-        try loadPlayer(pluginConfig: options.pluginConfig)
+        try loadPlayer(pluginConfig: merge(uiConfPluginConfig: uiConf?.pluginConfig, optionsPluginConfig: options.pluginConfig))
     }
     
     public func setMedia(_ mediaEntry: PKMediaEntry) {
@@ -95,6 +96,27 @@ public class KalturaPlayer<T: MediaOptions> {
             return UIApplication.shared.canOpenURL(url)
         }
         return false
+    }
+    
+    func merge(uiConfPluginConfig: PluginConfig?, optionsPluginConfig: PluginConfig?) -> PluginConfig? {
+        if uiConfPluginConfig == nil {
+            return optionsPluginConfig
+        }
+        if optionsPluginConfig == nil {
+            return uiConfPluginConfig
+        }
+        for item in optionsPluginConfig!.config {
+            if let params = uiConfPluginConfig?.config[item.key] {
+                if let json = params as? JSON,
+                    let type = PlayKitManager.shared.pluginClass(by: item.key) as? PKPluginParse.Type,
+                    let pkPluginConfig = type.parse(json: json) as? PKPluginConfig {
+                    uiConfPluginConfig?.config[item.key] = pkPluginConfig.merge(config: item.value)
+                }
+            } else {
+                uiConfPluginConfig?.config[item.key] = item.value
+            }
+        }
+        return uiConfPluginConfig
     }
     
     func loadPlayer(pluginConfig: PluginConfig?) throws {

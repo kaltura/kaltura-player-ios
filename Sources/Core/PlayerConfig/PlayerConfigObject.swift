@@ -10,21 +10,30 @@
 
 import Foundation
 import SwiftyJSON
+import PlayKit
 
 public class PlayerConfigObject : PlayerConfigBaseObject {
     var id: Int
+    public var pluginConfig: PluginConfig?
     
-    let idKey = "id"
-    
+    static let idKey = "id"
+    static let pluginsKey = "plugins"
+
     required public init?(json: Any) {
-        
         let jsonObject = JSON(json)
         
-        guard let id = jsonObject[idKey].int else {
-            return nil
-        }
+        guard let id = jsonObject[PlayerConfigObject.idKey].int else { return nil }
         
         self.id = id
+        
+        if let plugins = jsonObject[PlayerConfigObject.pluginsKey].array {
+            var config = [String : JSON]()
+            for json in plugins {
+                if let dictionary = json.dictionary, let pluginName = dictionary["pluginName"]?.string {
+                    config[pluginName] = dictionary["params"]
+                }
+            }
+            pluginConfig = PluginConfig(config: config)
+        }
     }
 }
-

@@ -17,6 +17,8 @@ target 'KalturaPlayerExample' do
     pod 'PlayKitOVP', :path => '../../playkit-ios-ovp'
     pod 'PlayKit', :path => '../../playkit-ios'
     pod 'KalturaNetKit', :path => '../../netkit-ios'
+    pod 'PlayKit_IMA', :path => '../../playkit-ios-ima'
+    pod 'PlayKitYoubora', :path => '../../playkit-ios-youbora'
     
     if defined? KALTURA_PLAYER_LOCAL 
         pod 'KalturaPlayer/OVP', :path => KALTURA_PLAYER_LOCAL

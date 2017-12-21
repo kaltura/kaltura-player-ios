@@ -27,7 +27,7 @@ class OTTViewController: UIViewController {
         
         var playerOptions = KalturaPlayerOptions(partnerId: ottPartnerId)
         playerOptions.serverUrl = ottServerUrl
-        playerOptions.autoPlay = true
+        //playerOptions.autoPlay = true
         playerOptions.uiManager = DefaultKalturaUIMananger()
         
         self.player = KalturaPhoenixPlayer.create(with: playerOptions)

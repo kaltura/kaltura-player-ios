@@ -10,6 +10,8 @@ import UIKit
 import KalturaPlayer
 import PlayKit
 import PlayKitOVP
+import PlayKit_IMA
+import PlayKitYoubora
 
 let ovpBaseUrl = "http://cdnapisec.kaltura.com"
 let ovpPartnerId = 2215841
@@ -25,12 +27,25 @@ class OVPViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        PlayKitManager.shared.registerPlugin(IMAPlugin.self)
+        PlayKitManager.shared.registerPlugin(YouboraPlugin.self)
+        
         PlayerConfigManager.shared.retrieve(by: uiconfId, baseUrl: ovpBaseUrl, partnerId: ovpPartnerId, ks: nil) { (uiConf, error) in
             var playerOptions = KalturaPlayerOptions(partnerId: ovpPartnerId)
             playerOptions.serverUrl = ovpBaseUrl
             playerOptions.preload = true
             playerOptions.uiManager = DefaultKalturaUIMananger()
             playerOptions.uiConf = uiConf
+
+            var config = [String : Any]()
+            config[YouboraPlugin.pluginName] = AnalyticsConfig(params: ["p1" : 1])
+            
+            let imaConfig = IMAConfig()
+            imaConfig.webOpenerPresentingController = self
+            imaConfig.companionView = UIView()
+            config[IMAPlugin.pluginName] = imaConfig
+
+            playerOptions.pluginConfig = PluginConfig(config: config)
             
             self.player = KalturaOvpPlayer.create(with: playerOptions)
             
