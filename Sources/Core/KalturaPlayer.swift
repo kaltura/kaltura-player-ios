@@ -107,10 +107,8 @@ public class KalturaPlayer<T: MediaOptions> {
         }
         for item in optionsPluginConfig!.config {
             if let params = uiConfPluginConfig?.config[item.key] {
-                if let json = params as? JSON,
-                    let type = PlayKitManager.shared.pluginClass(by: item.key) as? PKPluginParse.Type,
-                    let pkPluginConfig = type.parse(json: json) as? PKPluginConfig {
-                    uiConfPluginConfig?.config[item.key] = pkPluginConfig.merge(config: item.value)
+                if let type = PlayKitManager.shared.pluginClass(by: item.key) as? PKPluginMerge.Type {
+                    uiConfPluginConfig?.config[item.key] = type.merge(uiConf: params, appConf: item.value)
                 }
             } else {
                 uiConfPluginConfig?.config[item.key] = item.value
