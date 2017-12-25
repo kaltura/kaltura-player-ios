@@ -13,7 +13,7 @@ import PlayKit
 import KalturaNetKit
 import SwiftyJSON
 
-public class KalturaPlayer<T: MediaOptions> {
+public class KalturaPlayer<T: MediaOptions> : TokenReplacer, PlayerDelegate {
     
     var partnerId: Int
     var ks: String?
@@ -23,6 +23,7 @@ public class KalturaPlayer<T: MediaOptions> {
     var preload: Bool = false
     var startPosition: Double = 0.0
     var mediaEntry: PKMediaEntry?
+    var lookupTable: [String : String]?
     
     var preferredFormat: PKMediaSource.MediaFormat = .unknown
     var referrer: String = ""
@@ -130,6 +131,8 @@ public class KalturaPlayer<T: MediaOptions> {
         }
         
         self.player = try PlayKitManager.shared.loadPlayer(pluginConfig: _pluginConfig)
+        self.player.setTokenReplacer(self)
+        self.player.delegate = self
         
         KalturaPlaybackRequestAdapter.install(in: player, withReferrer: referrer)
     }
@@ -139,6 +142,7 @@ public class KalturaPlayer<T: MediaOptions> {
             removeUnpreferredFormatsIfNeeded(entry: entry!)
         }
         mediaEntry = entry
+        lookupTable = entry?.metadata
 
         DispatchQueue.main.async { [weak self] in
             callback?(entry, error)
@@ -161,6 +165,20 @@ public class KalturaPlayer<T: MediaOptions> {
                 entry.sources = preferredSources
             }
         }
+    }
+    
+    public func replace(expression: String) -> String {
+        var result = expression
+        if let table = lookupTable {
+            for (key, value) in table {
+                result = result.replacingOccurrences(of: "{{\(key)}}", with: value)
+            }
+        }
+        return result
+    }
+    
+    public func playerShouldPlayAd(_ player: Player) -> Bool {
+        return true
     }
     
     // Player controls
