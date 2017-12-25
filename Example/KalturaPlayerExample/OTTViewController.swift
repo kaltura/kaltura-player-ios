@@ -25,16 +25,19 @@ class OTTViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        var playerOptions = KalturaPlayerOptions(partnerId: ottPartnerId)
-        playerOptions.serverUrl = ottServerUrl
-        //playerOptions.autoPlay = true
-        playerOptions.uiManager = DefaultKalturaUIMananger()
-        
-        self.player = KalturaPhoenixPlayer.create(with: playerOptions)
-        
-        let mediaOptions = PhoenixMediaOptions(assetId: ottAssetId, fileIds: [ottFileId])
-        self.player?.loadMedia(mediaOptions: mediaOptions)
-        self.player?.view = self.playerContainer
+        PlayerConfigManager.shared.retrieve(by: uiconfId, baseUrl: ovpBaseUrl, partnerId: ovpPartnerId) { (uiConf, error) in
+            var playerOptions = KalturaPlayerOptions(partnerId: ottPartnerId)
+            playerOptions.serverUrl = ottServerUrl
+            playerOptions.autoPlay = true
+            playerOptions.uiManager = DefaultKalturaUIMananger()
+            playerOptions.uiConf = uiConf
+            
+            self.player = KalturaPhoenixPlayer.create(with: playerOptions)
+            
+            let mediaOptions = PhoenixMediaOptions(assetId: ottAssetId, fileIds: [ottFileId])
+            self.player?.loadMedia(mediaOptions: mediaOptions)
+            self.player?.view = self.playerContainer
+        }
     }
 }
 
