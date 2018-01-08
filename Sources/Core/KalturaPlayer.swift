@@ -130,8 +130,7 @@ public class KalturaPlayer<T: MediaOptions> : TokenReplacer, PlayerDelegate {
             }
         }
         
-        self.player = try PlayKitManager.shared.loadPlayer(pluginConfig: _pluginConfig)
-        self.player.setTokenReplacer(self)
+        self.player = try PlayKitManager.shared.loadPlayer(pluginConfig: _pluginConfig, tokenReplacer: self)
         self.player.delegate = self
         
         KalturaPlaybackRequestAdapter.install(in: player, withReferrer: referrer)
