@@ -16,6 +16,7 @@ target 'KalturaPlayerExample' do
     pod 'PlayKitOTT', :path => '../../playkit-ios-ott'
     pod 'PlayKitOVP', :path => '../../playkit-ios-ovp'
     pod 'PlayKit', :path => '../../playkit-ios'
+    pod 'PlayKit/KalturaLiveStatsPlugin', :path => '../../playkit-ios'
     pod 'KalturaNetKit', :path => '../../netkit-ios'
     pod 'PlayKit_IMA', :path => '../../playkit-ios-ima'
     pod 'PlayKitYoubora', :path => '../../playkit-ios-youbora'
