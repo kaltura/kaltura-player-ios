@@ -11,13 +11,20 @@
 import Foundation
 import PlayKit
 
-public class DefaultKalturaUIMananger: KalturaPlayerUIManager {
+public class DefaultKalturaUIMananger: KalturaPlayerUIManager, ControlsViewDelegate {
+    
+    weak var delegate: KalturaPlayerUIManagerDelegate?
+    
     public init() {
         
     }
     
-    public func addControlsView(to player: Player) {
+    public func addControlsView(to player: Player, delegate: KalturaPlayerUIManagerDelegate) {
+        self.delegate = delegate
+        
         let controlsView = ControlsView(player: player)
+        controlsView.delegate = self
+        
         if let view = player.view {
             view.addSubview(controlsView)
             controlsView.translatesAutoresizingMaskIntoConstraints = false
@@ -27,4 +34,9 @@ public class DefaultKalturaUIMananger: KalturaPlayerUIManager {
             view.addConstraint(NSLayoutConstraint(item: controlsView, attribute: NSLayoutAttribute.right, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.right, multiplier: 1, constant: 0))
         }
     }
+
+    func controlsViewDidRequestPlayWithoutMediaEntry(_ controlsView: ControlsView) {
+        delegate?.kalturaPlayerUIManagerDidRequestPlayWithoutMediaEntry(self)
+    }
+    
 }

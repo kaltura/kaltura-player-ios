@@ -11,10 +11,15 @@
 import UIKit
 import PlayKit
 
+protocol ControlsViewDelegate: class {
+    func controlsViewDidRequestPlayWithoutMediaEntry(_ controlsView: ControlsView)
+}
+
 class ControlsView: UIView {
 
     var view: UIView!
     weak var player: Player?
+    weak var delegate: ControlsViewDelegate?
     var timer: Timer?
     
     var bundle: Bundle? {
@@ -65,7 +70,11 @@ class ControlsView: UIView {
     
     @IBAction func didTapPlayPause(sender: UIButton) {
         if o_playPauseButton.tag == 0 {
-            player?.play()
+            if let _ = player?.mediaEntry {
+                player?.play()
+            } else {
+                delegate?.controlsViewDidRequestPlayWithoutMediaEntry(self)
+            }
         } else {
             player?.pause()
         }

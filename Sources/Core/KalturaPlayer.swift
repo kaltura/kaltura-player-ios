@@ -13,8 +13,8 @@ import PlayKit
 import KalturaNetKit
 import SwiftyJSON
 
-public class KalturaPlayer<T: MediaOptions> : TokenReplacer, PlayerDelegate {
-    
+public class KalturaPlayer<T: MediaOptions> : TokenReplacer, PlayerDelegate, KalturaPlayerUIManagerDelegate {
+   
     var partnerId: Int
     var ks: String?
     
@@ -199,7 +199,7 @@ public class KalturaPlayer<T: MediaOptions> : TokenReplacer, PlayerDelegate {
         }
         set {
             player.view = newValue
-            uiManager?.addControlsView(to: player)
+            uiManager?.addControlsView(to: player, delegate: self)
         }
     }
     
@@ -321,6 +321,13 @@ public class KalturaPlayer<T: MediaOptions> : TokenReplacer, PlayerDelegate {
     func updateKS(_ ks: String) {
         fatalError("must be implemented in subclass")
     }
+    
+    // KalturaPlayerUIManagerDelegate
+    public func kalturaPlayerUIManagerDidRequestPlayWithoutMediaEntry(_ kalturaPlayerUIManager: KalturaPlayerUIManager) {
+        prepare()
+        play()
+    }
+    
 }
 
 public struct KalturaPlayerOptions {
@@ -341,6 +348,9 @@ public struct KalturaPlayerOptions {
 }
 
 public protocol KalturaPlayerUIManager {
-    func addControlsView(to player: Player)
+    func addControlsView(to player: Player, delegate: KalturaPlayerUIManagerDelegate)
 }
 
+public protocol KalturaPlayerUIManagerDelegate: class {
+    func kalturaPlayerUIManagerDidRequestPlayWithoutMediaEntry(_ kalturaPlayerUIManager: KalturaPlayerUIManager)
+}
