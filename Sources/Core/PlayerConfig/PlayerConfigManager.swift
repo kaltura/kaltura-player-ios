@@ -18,7 +18,6 @@ public class PlayerConfigManager {
     
     public static let shared = PlayerConfigManager()
     
-    private var data: [Int : PlayerConfigObject] = [:]
     private var timeIntervalForUpdating: Double = 24 * 3600
     private var timeIntervalForExpiry: Double = 3 * 24 * 3600
 
@@ -43,20 +42,15 @@ public class PlayerConfigManager {
     public func retrieve(by id: Int, baseUrl: String, partnerId: Int? = nil, ks: String? = nil, completion: @escaping (PlayerConfigObject?, PlayerConfigError?) -> Void) {
         var uiConfFound = false
         
-        if let uiconf = data[id] {
-            uiConfFound = true
-            completion(uiconf, nil)
-        } else if let tuple = readFromDisk(configId: id) {
+        if let tuple = readFromDisk(configId: id) {
             if let uiconf = UIConfResponseParser.parse(data: tuple.0) as? PlayerConfigObject {
                 uiConfFound = true
-                data[id] = uiconf
                 completion(uiconf, nil)
                 
                 if tuple.1 { //update if needed
                     loadFromRemote(by: id, baseUrl: baseUrl, partnerId: partnerId, ks: ks) { (data, error) in
-                        if let data = data, let uiconf = UIConfResponseParser.parse(data: data) as? PlayerConfigObject {
+                        if let data = data {
                             self.saveToDisk(configId: id, configJsonObject: data)
-                            self.data[id] = uiconf
                         }
                     }
                 }
@@ -70,7 +64,6 @@ public class PlayerConfigManager {
                         completion(nil, error)
                     } else if let uiconf = result as? PlayerConfigObject {
                         self.saveToDisk(configId: id, configJsonObject: data)
-                        self.data[id] = uiconf
                         completion(uiconf, nil)
                     }
                 } else {

@@ -19,7 +19,6 @@ let ottFileId = "804398"
 class OTTViewController: UIViewController {
 
     var player: KalturaPhoenixPlayer?
-    var playheadTimer: Timer?
     @IBOutlet weak var playerContainer: PlayerView!
     
     override func viewDidLoad() {
