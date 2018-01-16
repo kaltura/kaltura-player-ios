@@ -15,12 +15,48 @@ protocol ControlsViewDelegate: class {
     func controlsViewDidRequestPlayWithoutMediaEntry(_ controlsView: ControlsView)
 }
 
+enum PlayerOption {
+    case audioTracks
+    case captions
+    case chromecast
+    
+    var title: String {
+        switch self {
+        case .audioTracks:
+            return "Audio Tracks"
+        case .captions:
+            return "Captions"
+        case .chromecast:
+            return "Chromecast"
+        }
+    }
+    
+    var image: String {
+        switch self {
+        case .audioTracks:
+            return "audioTrack"
+        case .captions:
+            return "cc"
+        case .chromecast:
+            return "chromecastIcon"
+        }
+    }
+}
+
 class ControlsView: UIView {
 
     var view: UIView!
     weak var player: Player?
     weak var delegate: ControlsViewDelegate?
     var timer: Timer?
+    var tracks: PKTracks?
+    var options: [PlayerOption] = [.captions, .audioTracks, .chromecast]
+    var selectedOption: PlayerOption? {
+        didSet {
+            o_tableView.reloadSections([0], with: selectedOption == nil ? .right : .left)
+            o_backOptionsButton.isHidden = selectedOption == nil
+        }
+    }
     
     var bundle: Bundle? {
         if let bundleUrl = Bundle(for: type(of: self)).url(forResource: "KalturaPlayer", withExtension: "bundle") {
@@ -28,6 +64,26 @@ class ControlsView: UIView {
         }
         return nil
     }
+    
+    @IBOutlet weak var o_backOptionsButton: UIButton!
+    @IBOutlet weak var o_moreOptionsContainer: UIView!
+    @IBOutlet weak var o_tableView: UITableView! {
+        didSet {
+            o_tableView.register(OptionsTableViewCell.self, forCellReuseIdentifier: "optionCells")
+        }
+    }
+    
+    @IBOutlet weak var o_currentTimeLabelWidth: NSLayoutConstraint!
+    @IBOutlet weak var o_durationLabelWidth: NSLayoutConstraint!
+    @IBOutlet weak var o_currentTimeLabel: UILabel!
+    @IBOutlet weak var o_durationLabel: UILabel!
+    @IBOutlet weak var o_playPauseButton: UIButton!
+    @IBOutlet weak var o_slider: UISlider! {
+        didSet {
+            o_slider.setThumbImage(UIImage.init(named: "circle", in: bundle, compatibleWith: nil), for: .normal)
+        }
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         loadXib()
@@ -57,17 +113,6 @@ class ControlsView: UIView {
         }
     }
     
-    @IBOutlet weak var o_currentTimeLabelWidth: NSLayoutConstraint!
-    @IBOutlet weak var o_durationLabelWidth: NSLayoutConstraint!
-    @IBOutlet weak var o_currentTimeLabel: UILabel!
-    @IBOutlet weak var o_durationLabel: UILabel!
-    @IBOutlet var o_playPauseButton: UIButton!
-    @IBOutlet weak var o_slider: UISlider! {
-        didSet {
-            o_slider.setThumbImage(UIImage.init(named: "circle", in: bundle, compatibleWith: nil), for: .normal)
-        }
-    }
-    
     @IBAction func didTapPlayPause(sender: UIButton) {
         if o_playPauseButton.tag == 0 {
             if let _ = player?.mediaEntry {
@@ -79,9 +124,27 @@ class ControlsView: UIView {
             player?.pause()
         }
     }
+    
+    @IBAction func didTapMore(_ sender: UIButton) {
+        o_moreOptionsContainer.isHidden = false
+    }
+    
+    @IBAction func didTapExitMoreOptions(_ sender: UIButton) {
+       closeMoreOptions()
+    }
+    
+    @objc func closeMoreOptions() {
+        o_moreOptionsContainer.isHidden = true
+        selectedOption = nil
+    }
+    
     @IBAction func didStartSliding(_ sender: UISlider) {
         timer?.invalidate()
         timer = nil
+    }
+    
+    @IBAction func didTapBackOptions(_ sender: UIButton) {
+        selectedOption = nil
     }
     
     @IBAction func didStopSliding(_ sender: UISlider) {
@@ -95,7 +158,8 @@ class ControlsView: UIView {
     }
     
     func registerToEvents() {
-        player?.addObserver(self, events: [PlayerEvent.loadedMetadata, PlayerEvent.playing, PlayerEvent.pause, PlayerEvent.seeked, PlayerEvent.ended], block: { [weak self] (event) in
+        let events = [PlayerEvent.loadedMetadata, PlayerEvent.playing, PlayerEvent.pause, PlayerEvent.seeked, PlayerEvent.ended, PlayerEvent.tracksAvailable]
+        player?.addObserver(self, events: events, block: { [weak self] (event) in
             if type(of: event) == PlayerEvent.loadedMetadata {
                 self?.playbackUpdate()
             } else if type(of: event) == PlayerEvent.playing {
@@ -117,6 +181,8 @@ class ControlsView: UIView {
                 self?.o_playPauseButton.tag = 0
                 self?.stopSliderTimer()
                 self?.player?.currentTime = 0
+            } else if type(of: event) == PlayerEvent.tracksAvailable {
+                self?.tracks = event.tracks
             }
         })
     }
