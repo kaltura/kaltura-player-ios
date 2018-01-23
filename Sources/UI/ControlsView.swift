@@ -18,7 +18,6 @@ protocol ControlsViewDelegate: class {
 enum PlayerOption {
     case audioTracks
     case captions
-    case chromecast
     
     var title: String {
         switch self {
@@ -26,8 +25,6 @@ enum PlayerOption {
             return "Audio Tracks"
         case .captions:
             return "Captions"
-        case .chromecast:
-            return "Chromecast"
         }
     }
     
@@ -37,8 +34,6 @@ enum PlayerOption {
             return "audioTrack"
         case .captions:
             return "cc"
-        case .chromecast:
-            return "chromecastIcon"
         }
     }
 }
@@ -50,7 +45,7 @@ class ControlsView: UIView {
     weak var delegate: ControlsViewDelegate?
     var timer: Timer?
     var tracks: PKTracks?
-    var options: [PlayerOption] = [.captions, .audioTracks, .chromecast]
+    var options: [PlayerOption] = [.captions, .audioTracks]
     var selectedOption: PlayerOption? {
         didSet {
             o_tableView.reloadSections([0], with: selectedOption == nil ? .right : .left)

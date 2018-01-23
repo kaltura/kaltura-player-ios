@@ -46,12 +46,7 @@ extension ControlsView: UITableViewDelegate, UITableViewDataSource {
                 Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(closeMoreOptions), userInfo: nil, repeats: false)
             }
         } else {
-            let option = options[indexPath.row]
-            if option == .audioTracks || option == .captions {
-                selectedOption = option
-            } else if option == .chromecast {
-                //TODO: connect chromecast
-            }
+            selectedOption = options[indexPath.row]
         }
     }
     
