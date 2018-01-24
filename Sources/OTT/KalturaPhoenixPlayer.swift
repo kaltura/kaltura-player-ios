@@ -15,14 +15,16 @@ import PlayKitKava
 
 public class PhoenixMediaOptions: MediaOptions {
     var assetId: String
-    var fileIds: [String]
+    var fileIds: [String]?
+    var formats: [String]?
     
     var assetType: AssetType = .media
     var playbackContextType: PlaybackContextType = .playback
     var networkProtocol: String = "https"
     
-    public init(assetId: String, fileIds: [String]) {
+    public init(assetId: String, formats: [String]?, fileIds: [String]?) {
         self.assetId = assetId
+        self.formats = formats
         self.fileIds = fileIds
     }
 }
@@ -53,6 +55,7 @@ public class KalturaPhoenixPlayer: KalturaPlayer<PhoenixMediaOptions> {
             .set(type: mediaOptions.assetType)
             .set(assetId: mediaOptions.assetId)
             .set(fileIds: mediaOptions.fileIds)
+            .set(formats: mediaOptions.formats)
             .set(networkProtocol: mediaOptions.networkProtocol)
             .set(playbackContextType: mediaOptions.playbackContextType)
         
