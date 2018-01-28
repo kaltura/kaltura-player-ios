@@ -54,6 +54,10 @@ public class KalturaPlayer<T: MediaOptions> : TokenReplacer, PlayerDelegate, Kal
         
         registerPlugins()
         try loadPlayer(pluginConfig: merge(uiConfPluginConfig: uiConf?.pluginConfig, optionsPluginConfig: options.pluginConfig))
+        
+        if let trackSelectionSettings = options.trackSelectionSettings {
+            self.player.settings.trackSelection = trackSelectionSettings
+        }
     }
     
     public func setMedia(_ mediaEntry: PKMediaEntry) {
@@ -202,7 +206,7 @@ public class KalturaPlayer<T: MediaOptions> : TokenReplacer, PlayerDelegate, Kal
             uiManager?.addControlsView(to: player, delegate: self)
         }
     }
-    
+        
     @objc public var currentTime: TimeInterval {
         get {
             return player.currentTime
@@ -341,6 +345,7 @@ public struct KalturaPlayerOptions {
     public var ks: String?
     public var uiConf: PlayerConfigObject?
     public var pluginConfig: PluginConfig?
+    public var trackSelectionSettings: PKTrackSelectionSettings?
     
     public init(partnerId: Int) {
         self.partnerId = partnerId
