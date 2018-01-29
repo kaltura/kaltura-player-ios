@@ -22,6 +22,8 @@ public class OVPMediaOptions: MediaOptions {
 }
 
 public class KalturaOvpPlayer: KalturaPlayer<OVPMediaOptions> {
+    public static let versionString: String = Bundle(for: KalturaOvpPlayer.self).object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+    
     let DEFAULT_SERVER_URL = "https://cdnapisec.kaltura.com"
     
     static var pluginsRegistered: Bool = false

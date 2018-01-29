@@ -30,7 +30,8 @@ public class PhoenixMediaOptions: MediaOptions {
 }
 
 public class KalturaPhoenixPlayer: KalturaPlayer<PhoenixMediaOptions> {
-   
+    public static let versionString: String = Bundle(for: KalturaPhoenixPlayer.self).object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+
     static var pluginsRegistered: Bool = false
     
     var mediaProvider: PhoenixMediaProvider?
