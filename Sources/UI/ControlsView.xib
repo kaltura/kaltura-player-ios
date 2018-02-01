@@ -100,6 +100,7 @@
                         </label>
                         <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="uwT-dR-vrf">
                             <rect key="frame" x="95.5" y="5" width="183.5" height="31"/>
+                            <accessibility key="accessibilityConfiguration" identifier="playerSlider"/>
                             <connections>
                                 <action selector="didStartSliding:" destination="-1" eventType="touchDown" id="2fp-SA-nrd"/>
                                 <action selector="didStopSliding:" destination="-1" eventType="touchUpOutside" id="V5z-cf-KOV"/>
