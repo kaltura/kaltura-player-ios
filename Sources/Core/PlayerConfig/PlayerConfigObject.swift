@@ -17,6 +17,8 @@ public class PlayerConfigObject : PlayerConfigBaseObject {
     public var pluginConfig: PluginConfig?
     
     static let idKey = "id"
+    static let configKey = "config"
+    static let playerKey = "player"
     static let pluginsKey = "plugins"
 
     required public init?(json: Any) {
@@ -25,15 +27,15 @@ public class PlayerConfigObject : PlayerConfigBaseObject {
         guard let id = jsonObject[PlayerConfigObject.idKey].int else { return nil }
         
         self.id = id
-        
-        if let plugins = jsonObject[PlayerConfigObject.pluginsKey].array {
-            var config = [String : JSON]()
-            for json in plugins {
-                if let dictionary = json.dictionary, let pluginName = dictionary["pluginName"]?.string {
-                    config[pluginName] = dictionary["params"]
+        if let confStr = jsonObject[PlayerConfigObject.configKey].string {
+            if let data = confStr.data(using: .utf8) {
+                let fixedJsonObject = JSON.init(data: data)
+                if let player = fixedJsonObject[PlayerConfigObject.playerKey].dictionary {
+                    if let plugins = player[PlayerConfigObject.pluginsKey]?.dictionary {
+                        pluginConfig = PluginConfig(config: plugins)
+                    }
                 }
             }
-            pluginConfig = PluginConfig(config: config)
         }
     }
 }
