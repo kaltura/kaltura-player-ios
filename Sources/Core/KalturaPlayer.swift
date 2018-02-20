@@ -38,8 +38,20 @@ public class KalturaPlayer<T: MediaOptions> : TokenReplacer, PlayerDelegate, Kal
         self.partnerId = options.partnerId
         
         self.ks = options.ks
-        self.autoPlay = options.autoPlay
-        self.preload = options.preload || options.autoPlay
+        
+        if let autoPlay = options.autoPlay {
+            self.autoPlay = autoPlay
+        } else if let autoPlay = options.uiConf?.autoPlay {
+            self.autoPlay = autoPlay
+        }
+        
+        if let preload = options.preload {
+            self.preload = preload
+        } else if let preload = options.uiConf?.preload {
+            self.preload = preload
+        }
+
+        self.preload = preload || autoPlay
         self.preferredFormat = options.preferredFormat
         self.uiManager = options.uiManager
         self.uiConf = options.uiConf
@@ -55,8 +67,8 @@ public class KalturaPlayer<T: MediaOptions> : TokenReplacer, PlayerDelegate, Kal
         registerPlugins()
         try loadPlayer(pluginConfig: merge(uiConfPluginConfig: uiConf?.pluginConfig, optionsPluginConfig: options.pluginConfig))
         
-        if let trackSelectionSettings = options.trackSelectionSettings {
-            self.player.settings.trackSelection = trackSelectionSettings
+        if let settings = merge(uiConfTrackSelection: uiConf?.trackSelection, optionsTrackSelection: options.trackSelectionSettings) {
+            self.player.settings.trackSelection = settings
         }
     }
     
@@ -120,6 +132,32 @@ public class KalturaPlayer<T: MediaOptions> : TokenReplacer, PlayerDelegate, Kal
             }
         }
         return uiConfPluginConfig
+    }
+    
+    func merge(uiConfTrackSelection: PKTrackSelectionSettings?, optionsTrackSelection: PKTrackSelectionSettings?) -> PKTrackSelectionSettings? {
+        if uiConfTrackSelection == nil {
+            return optionsTrackSelection
+        }
+        if optionsTrackSelection == nil {
+            return uiConfTrackSelection
+        }
+        
+        let result = uiConfTrackSelection!
+        
+        if let audioSelectionLanguage = optionsTrackSelection!.audioSelectionLanguage {
+            result.audioSelectionLanguage = audioSelectionLanguage
+        }
+        if let textSelectionLanguage = optionsTrackSelection!.textSelectionLanguage {
+            result.textSelectionLanguage = textSelectionLanguage
+        }
+        if optionsTrackSelection!.audioSelectionMode != .off {
+            result.audioSelectionMode = optionsTrackSelection!.audioSelectionMode
+        }
+        if optionsTrackSelection!.textSelectionMode != .off {
+            result.textSelectionMode = optionsTrackSelection!.textSelectionMode
+        }
+
+        return result
     }
     
     func loadPlayer(pluginConfig: PluginConfig?) throws {
@@ -335,8 +373,8 @@ public class KalturaPlayer<T: MediaOptions> : TokenReplacer, PlayerDelegate, Kal
 }
 
 public struct KalturaPlayerOptions {
-    public var autoPlay: Bool = false
-    public var preload: Bool = false
+    public var autoPlay: Bool?
+    public var preload: Bool?
     public var preferredFormat: PKMediaSource.MediaFormat = .unknown
     public var serverUrl: String?
     public var referrer: String?
