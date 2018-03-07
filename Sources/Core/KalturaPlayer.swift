@@ -161,16 +161,8 @@ public class KalturaPlayer<T: MediaOptions> : TokenReplacer, PlayerDelegate, Kal
     }
     
     func loadPlayer(pluginConfig: PluginConfig?) throws {
-        let kalturaConfigs = getKalturaPluginConfigs()
-        
-        var _pluginConfig = pluginConfig
-        if _pluginConfig == nil {
-            _pluginConfig = PluginConfig(config: kalturaConfigs)
-        } else {
-            for (key, value) in kalturaConfigs {
-                _pluginConfig?.config[key] = value
-            }
-        }
+        let kalturaConfigs = PluginConfig(config: getKalturaPluginConfigs())
+        let _pluginConfig = merge(uiConfPluginConfig: kalturaConfigs, optionsPluginConfig: pluginConfig)
         
         self.player = try PlayKitManager.shared.loadPlayer(pluginConfig: _pluginConfig, tokenReplacer: self)
         self.player.delegate = self

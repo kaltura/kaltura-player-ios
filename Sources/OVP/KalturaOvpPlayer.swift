@@ -58,6 +58,7 @@ public class KalturaOvpPlayer: KalturaPlayer<OVPMediaOptions> {
         }
         
         updatePluginConfig(pluginName: KalturaStatsPlugin.pluginName, config: getKalturaStatsConfig())
+        updatePluginConfig(pluginName: KavaPlugin.pluginName, config: getKavaAnalyticsConfig())
     }
     
     override func getKalturaPluginConfigs() -> [String : Any]  {
@@ -82,7 +83,7 @@ public class KalturaOvpPlayer: KalturaPlayer<OVPMediaOptions> {
     }
     
     func getKavaAnalyticsConfig() -> KavaPluginConfig {
-        return KavaPluginConfig(partnerId: partnerId, ks: ks, playbackContext: nil, referrer: referrer, customVar1: nil, customVar2: nil, customVar3: nil)
+        return KavaPluginConfig(partnerId: partnerId, ks: ks, playbackContext: nil, referrer: referrer, applicationVersion: nil, playlistId: nil, customVar1: nil, customVar2: nil, customVar3: nil)
     }
     
     func getKalturaStatsConfig() -> KalturaStatsPluginConfig {
