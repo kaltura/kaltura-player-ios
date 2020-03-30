@@ -8,23 +8,23 @@
 import Foundation
 import PlayKit
 
-class KalturaBasicPlayer: KalturaPlayer {
-    
+public class KalturaBasicPlayer: KalturaPlayer, IKalturaPlayer {
+
     var basicPlayerOptions: BasicPlayerOptions
     
-    init(basicPlayerOptions: BasicPlayerOptions) {
+    public init(basicPlayerOptions: BasicPlayerOptions) {
         self.basicPlayerOptions = basicPlayerOptions
         super.init(pluginConfig: basicPlayerOptions.pluginConfigs)
     }
     
-    func prepare() {
+    public func prepare() {
         let source = PKMediaSource(basicPlayerOptions.id, contentUrl: basicPlayerOptions.contentUrl, drmData: basicPlayerOptions.drmData, mediaFormat: basicPlayerOptions.mediaFormat)
         // setup media entry
         let mediaEntry = PKMediaEntry(basicPlayerOptions.id, sources: [source], duration: -1)
-        
+
         // create media config
         let mediaConfig = MediaConfig(mediaEntry: mediaEntry)
-        
-        super.prepare(mediaConfig: mediaConfig)
+
+        super.prepareMediaConfig(mediaConfig)
     }
 }

@@ -8,7 +8,7 @@
 import Foundation
 import PlayKit
 
-class PlayerOptions: NSObject {
+public class PlayerOptions: NSObject {
     
     var pluginConfigs: PluginConfig?
 }
