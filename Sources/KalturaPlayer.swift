@@ -18,16 +18,17 @@ public class KalturaPlayer: NSObject {
     let DEFAULT_KAVA_PARTNER_ID: Int = 2504201
     let DEFAULT_KAVA_ENTRY_ID: String = "1_3bwzbc9o"
     
-    internal init(pluginConfig: PluginConfig?) {
+    internal init(pluginConfig: PluginConfig) {
         super.init()
         
         addDefaultPlugins(to: pluginConfig)
         player = PlayKitManager.shared.loadPlayer(pluginConfig: pluginConfig)
     }
     
-    private func addDefaultPlugins(to pluginConfig: PluginConfig?) {
-        if pluginConfig?.config[KavaPlugin.pluginName] == nil {
-            pluginConfig?.config[KavaPlugin.pluginName] = KavaPluginConfig(partnerId: DEFAULT_KAVA_PARTNER_ID, entryId: DEFAULT_KAVA_ENTRY_ID)
+    private func addDefaultPlugins(to pluginConfig: PluginConfig) {
+        if pluginConfig.config[KavaPlugin.pluginName] == nil {
+            PlayKitManager.shared.registerPlugin(KavaPlugin.self)
+            pluginConfig.config[KavaPlugin.pluginName] = KavaPluginConfig(partnerId: DEFAULT_KAVA_PARTNER_ID, entryId: DEFAULT_KAVA_ENTRY_ID)
         }
     }
     

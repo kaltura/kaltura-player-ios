@@ -14,7 +14,7 @@ public class KalturaBasicPlayer: KalturaPlayer, IKalturaPlayer {
     
     public init(basicPlayerOptions: BasicPlayerOptions) {
         self.basicPlayerOptions = basicPlayerOptions
-        super.init(pluginConfig: basicPlayerOptions.pluginConfigs)
+        super.init(pluginConfig: self.basicPlayerOptions.pluginConfigs)
     }
     
     public func prepare() {

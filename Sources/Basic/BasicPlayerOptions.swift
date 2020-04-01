@@ -12,11 +12,12 @@ public class BasicPlayerOptions: PlayerOptions {
     
     var id: String
     var contentUrl: URL
-    var drmData: [DRMParams]?
-    var mediaFormat: PKMediaSource.MediaFormat = .unknown
+    public var drmData: [DRMParams]?
+    public var mediaFormat: PKMediaSource.MediaFormat = .unknown
     
     public init(id: String, contentUrl: URL) {
         self.id = id
         self.contentUrl = contentUrl
+        super.init()
     }
 }

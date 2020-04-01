@@ -10,5 +10,9 @@ import PlayKit
 
 public class PlayerOptions: NSObject {
     
-    var pluginConfigs: PluginConfig?
+    public var pluginConfigs: PluginConfig = PluginConfig(config: [:])
+    
+    public override init() {
+        super.init()
+    }
 }
