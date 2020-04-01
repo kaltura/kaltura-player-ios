@@ -240,7 +240,7 @@ public class KalturaPlayer: NSObject {
     }
     
     /// Starts buffering the entry.
-    @objc func startBuffering() {
+    public func startBuffering() {
         player.startBuffering()
     }
 }
