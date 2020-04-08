@@ -10,7 +10,11 @@ import PlayKit
 
 public class PlayerOptions: NSObject {
     
-    public var pluginConfigs: PluginConfig = PluginConfig(config: [:])
+    public var preload: Bool = true
+    public var autoPlay: Bool = true
+    public var startTime: TimeInterval = 0
+    
+    public var pluginConfig: PluginConfig = PluginConfig(config: [:])
     
     public override init() {
         super.init()
