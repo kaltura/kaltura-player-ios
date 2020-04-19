@@ -57,10 +57,11 @@ public class KalturaBasicPlayer: KalturaPlayer {
         USRExecutor.shared.send(request: request.build())
     }
     
-    public func setupMediaEntry(from id: String, contentUrl: URL, drmData: [DRMParams]? = nil, mediaFormat: PKMediaSource.MediaFormat = .unknown) {
+    public func setupMediaEntry(from id: String, contentUrl: URL, drmData: [DRMParams]? = nil, mediaFormat: PKMediaSource.MediaFormat = .unknown, mediaType: MediaType = .unknown) {
         let source = PKMediaSource(id, contentUrl: contentUrl, drmData: drmData, mediaFormat: mediaFormat)
         // setup media entry
         let mediaEntry = PKMediaEntry(id, sources: [source], duration: -1)
+        mediaEntry.mediaType = mediaType
 
         self.mediaEntry = mediaEntry
     }

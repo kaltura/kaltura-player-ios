@@ -12,7 +12,7 @@ public class PlayerOptions: NSObject {
     
     public var preload: Bool = true
     public var autoPlay: Bool = true
-    public var startTime: TimeInterval = 0
+    public var startTime: TimeInterval?
     
     public var pluginConfig: PluginConfig = PluginConfig(config: [:])
     
