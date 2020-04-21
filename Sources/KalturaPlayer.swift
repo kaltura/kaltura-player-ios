@@ -29,13 +29,6 @@ public class KalturaPlayer: NSObject {
         self.playerOptions = playerOptions
         pkPlayer = PlayKitManager.shared.loadPlayer(pluginConfig: self.playerOptions.pluginConfig)
         super.init()
-        
-        pkPlayer.addObserver(self, events: [PlayerEvent.canPlay]) { [weak self] (event) in
-            guard let self = self else { return }
-            if playerOptions.autoPlay {
-                self.play()
-            }
-        }
     }
     
     // MARK: - Public Methods
@@ -56,6 +49,10 @@ public class KalturaPlayer: NSObject {
         }
 
         pkPlayer.prepare(mediaConfig)
+        
+        if playerOptions.autoPlay {
+            self.play()
+        }
     }
     
     // MARK: - Player
