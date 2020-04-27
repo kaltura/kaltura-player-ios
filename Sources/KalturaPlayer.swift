@@ -31,6 +31,14 @@ public class KalturaPlayer: NSObject {
         super.init()
     }
     
+    internal func updatePlayerOptions(_ playerOptions: PlayerOptions) {
+        self.playerOptions = playerOptions
+        
+        self.playerOptions.pluginConfig.config.forEach { (name, config) in
+            pkPlayer.updatePluginConfig(pluginName: name, config: config)
+        }
+    }
+    
     // MARK: - Public Methods
     
     public func prepare() {

@@ -19,6 +19,8 @@ public class KalturaBasicPlayer: KalturaPlayer {
         sendKavaImpression()
     }
     
+    // MARK: - Private Methods
+    
     private func sendKavaImpression() {
         guard let request: KalturaRequestBuilder = KalturaRequestBuilder(url: DEFAULT_KAVA_BASE_URL, service: nil, action: nil) else { return }
         
@@ -57,6 +59,8 @@ public class KalturaBasicPlayer: KalturaPlayer {
         USRExecutor.shared.send(request: request.build())
     }
     
+    // MARK: - Public Methods
+    
     public func setupMediaEntry(from id: String, contentUrl: URL, drmData: [DRMParams]? = nil, mediaFormat: PKMediaSource.MediaFormat = .unknown, mediaType: MediaType = .unknown) {
         let source = PKMediaSource(id, contentUrl: contentUrl, drmData: drmData, mediaFormat: mediaFormat)
         // setup media entry
@@ -64,5 +68,10 @@ public class KalturaBasicPlayer: KalturaPlayer {
         mediaEntry.mediaType = mediaType
 
         self.mediaEntry = mediaEntry
+    }
+    
+    public func updatePlayerOptions(_ playerOptions: BasicPlayerOptions) {
+        self.basicPlayerOptions = playerOptions
+        super.updatePlayerOptions(playerOptions)
     }
 }
