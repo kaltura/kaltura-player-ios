@@ -13,6 +13,22 @@ public class KalturaBasicPlayer: KalturaPlayer {
 
     private var basicPlayerOptions: BasicPlayerOptions
     
+    /**
+        A Kaltura Player for external media.
+     
+        Create the player options, `BasicPlayerOptions`, and pass it to the `KalturaBasicPlayer`.
+        Check the `BasicPlayerOptions` for more info regarding the available options and defaults.
+        Create a `KalturaPlayerView` in the code or in the xib and pass it to the `KalturaBasicPlayer`.
+        
+        **Example:**
+     
+            let basicPlayerOptions = BasicPlayerOptions()
+            let kalturaBasicPlayer = KalturaBasicPlayer(basicPlayerOptions: basicPlayerOptions)
+            kalturaBasicPlayer.kalturaPlayerView = kalturaPlayerView
+     
+        * Parameters:
+            * basicPlayerOptions: The player's initialize options.
+     */
     public init(basicPlayerOptions: BasicPlayerOptions) {
         self.basicPlayerOptions = basicPlayerOptions
         super.init(playerOptions: self.basicPlayerOptions)
@@ -61,6 +77,16 @@ public class KalturaBasicPlayer: KalturaPlayer {
     
     // MARK: - Public Methods
     
+    /**
+        Set up the player's MediaEntry.
+     
+        * Parameters:
+            * id: An identifier for the media entry.
+            * contentUrl: The content url.
+            * drmData: The DRM data if exists.
+            * mediaFormat: The media's format.
+            * mediaType: The media type.
+     */
     public func setupMediaEntry(from id: String, contentUrl: URL, drmData: [DRMParams]? = nil, mediaFormat: PKMediaSource.MediaFormat = .unknown, mediaType: MediaType = .unknown) {
         let source = PKMediaSource(id, contentUrl: contentUrl, drmData: drmData, mediaFormat: mediaFormat)
         // setup media entry
@@ -70,6 +96,12 @@ public class KalturaBasicPlayer: KalturaPlayer {
         self.mediaEntry = mediaEntry
     }
     
+    /**
+        Update the player's initialized options.
+     
+        * Parameters:
+            * playerOptions: A new player options.
+     */
     public func updatePlayerOptions(_ playerOptions: BasicPlayerOptions) {
         self.basicPlayerOptions = playerOptions
         super.updatePlayerOptions(playerOptions)

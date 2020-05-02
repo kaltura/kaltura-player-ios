@@ -12,6 +12,7 @@ public class KalturaPlayer: NSObject {
     private var pkPlayer: Player!
     private var shouldPrepare: Bool = true
     
+    /// The player's view which the media will be displayed within.
     public var kalturaPlayerView: KalturaPlayerView? {
         didSet {
             guard let kalturaPlayerView = self.kalturaPlayerView else {
@@ -41,6 +42,12 @@ public class KalturaPlayer: NSObject {
     
     // MARK: - Public Methods
     
+    /**
+        Call in order to prepare the media on the player.
+     
+        * Note:
+            When the PlayerOptions preload is set too true, this function will be called automatically.
+     */
     public func prepare() {
         guard let mediaEntry = self.mediaEntry else {
             PKLog.debug("MediaEntry is empty.")
@@ -65,7 +72,11 @@ public class KalturaPlayer: NSObject {
     
     // MARK: - Player
     
-    /// The player's associated media entry.
+    /**
+        The player's associated media entry.
+
+        Upon setting to a new value, if the PlayerOption autoPlay or preload is set too true, prepare on the player will be automatically called.
+     */
     public var mediaEntry: PKMediaEntry? {
         didSet {
             if mediaEntry == nil { return }
@@ -91,34 +102,66 @@ public class KalturaPlayer: NSObject {
         }
     }
     
-    /// The player's session id. the `sessionId` is initialized when the player loads.
+    /// The player's session id. The `sessionId` is initialized when the player loads.
     public var sessionId: String {
         get {
             return pkPlayer.sessionId
         }
     }
     
-    /// Add Observation to relevant event.
+    /**
+        Add an observation to a relevant event.
+
+        * Parameters:
+            * observer: The object that will be the observer.
+            * event: Which `KPEvent` to observe.
+            * block: The callback function that will be called.
+     */
     public func addObserver(_ observer: AnyObject, event: KPEvent.Type, block: @escaping (PKEvent) -> Void) {
         pkPlayer.addObserver(observer, event: event, block: block)
     }
     
-    /// Add Observation to relevant events.
+    /**
+       Add an observation to relevant events.
+
+       * Parameters:
+           * observer: The object that will be the observer.
+           * events: A list of `KPEvent`'s too observe.
+           * block: The callback function that will be called.
+    */
     public func addObserver(_ observer: AnyObject, events: [KPEvent.Type], block: @escaping (PKEvent) -> Void) {
         pkPlayer.addObserver(observer, events: events, block: block)
     }
     
-    /// Remove Observer for single event.
+    /**
+       Remove the observer for an event.
+
+       * Parameters:
+           * observer: The object that the observation will be removed from.
+           * event: Which `KPEvent` to remove the observation from.
+    */
     public func removeObserver(_ observer: AnyObject, event: KPEvent.Type) {
         pkPlayer.removeObserver(observer, event: event)
     }
     
-    /// Remove Observer for several events.
+    /**
+       Remove the observer from the events.
+
+       * Parameters:
+           * observer: The object that the observation will be removed from.
+           * events: A list of `KPEvent`'s to remove the observation from.
+    */
     public func removeObserver(_ observer: AnyObject, events: [KPEvent.Type]) {
         pkPlayer.removeObserver(observer, events: events)
     }
     
-    /// Update Plugin Config.
+    /**
+       Update a Plugin Config.
+
+       * Parameters:
+           * pluginName: The Plugin name.
+           * config: The Plugin configuration object.
+    */
     public func updatePluginConfig(pluginName: String, config: Any) {
         pkPlayer.updatePluginConfig(pluginName: pluginName, config: config)
     }
@@ -128,17 +171,23 @@ public class KalturaPlayer: NSObject {
         pkPlayer.updateTextTrackStyling()
     }
     
-    /// Indicates if current media is Live.
-    ///
-    /// - Returns: returns true if it's live.
+    /**
+        Indicates if current media is Live.
+     
+        * Returns: `true` if it's live, `false` otherwise.
+     */
     public func isLive() -> Bool {
         return pkPlayer.isLive()
     }
     
-    /// Getter for playkit controllers.
-    ///
-    /// - Parameter type: Required class type.
-    /// - Returns: Relevant controller if exist.
+    /**
+        Getter for a playkit controller.
+     
+        * Parameters:
+            * type: The required `PKController` class type.
+     
+        * Returns: The relevant controller if exist, `nil` otherwise.
+     */
     public func getController(type: PKController.Type) -> PKController? {
         return pkPlayer.getController(type: type)
     }
@@ -197,8 +246,11 @@ public class KalturaPlayer: NSObject {
         }
     }
     
-    /// Indicates the desired rate of playback, 0.0 means "paused", 1.0 indicates a desire to play at the natural rate of the current item.
-    /// Note: Do not use the rate to indicate whether to play or pause! Use the isPlaying property.
+    /**
+        Indicates the desired rate of playback, 0.0 means "paused", 1.0 indicates a desire to play at the natural rate of the current item.
+            
+        * Important: Do not use the rate to indicate whether to play or pause! Use the isPlaying property.
+     */
     public var rate: Float {
         get {
             return pkPlayer.rate
@@ -265,7 +317,11 @@ public class KalturaPlayer: NSObject {
         pkPlayer.destroy()
     }
     
-    /// Starts buffering the entry.
+    /**
+        Starts buffering the entry.
+     
+        Call this function if the player's `settings.network.autoBuffer` is set too false. Otherwise it is done automatically.
+     */
     public func startBuffering() {
         pkPlayer.startBuffering()
     }

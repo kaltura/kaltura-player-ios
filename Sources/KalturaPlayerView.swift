@@ -17,6 +17,20 @@ public class KalturaPlayerView: UIView {
         }
     }
     
+    /**
+        This is the video mode on the view, a.k.a videoGravity.
+     
+         *Available Values*
+         * **scaleAspectFill;**
+            videoGravity = .resizeAspectFill
+         * **scaleAspectFit;**
+           videoGravity = .resizeAspect
+         * **scaleToFill;**
+            videoGravity = .resize
+         
+        **Default**
+         scaleAspectFit
+     */
     public override var contentMode: UIView.ContentMode {
         didSet {
             playerView?.contentMode = self.contentMode
