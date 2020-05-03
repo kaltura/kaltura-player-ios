@@ -87,7 +87,7 @@ public class KalturaBasicPlayer: KalturaPlayer {
             * mediaFormat: The media's format.
             * mediaType: The media type.
      */
-    public func setupMediaEntry(from id: String, contentUrl: URL, drmData: [DRMParams]? = nil, mediaFormat: PKMediaSource.MediaFormat = .unknown, mediaType: MediaType = .unknown) {
+    public func setupMediaEntry(id: String, contentUrl: URL, drmData: [DRMParams]? = nil, mediaFormat: PKMediaSource.MediaFormat = .unknown, mediaType: MediaType = .unknown) {
         let source = PKMediaSource(id, contentUrl: contentUrl, drmData: drmData, mediaFormat: mediaFormat)
         // setup media entry
         let mediaEntry = PKMediaEntry(id, sources: [source], duration: -1)
