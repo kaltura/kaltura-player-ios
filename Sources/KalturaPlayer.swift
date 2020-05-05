@@ -13,9 +13,9 @@ public class KalturaPlayer: NSObject {
     private var shouldPrepare: Bool = true
     
     /// The player's view which the media will be displayed within.
-    public var kalturaPlayerView: KalturaPlayerView? {
+    public var view: KalturaPlayerView? {
         didSet {
-            guard let kalturaPlayerView = self.kalturaPlayerView else {
+            guard let kalturaPlayerView = view else {
                 return
             }
             kalturaPlayerView.playerView = PlayerView.createPlayerView(forPlayer: pkPlayer)
@@ -80,7 +80,6 @@ public class KalturaPlayer: NSObject {
     public var mediaEntry: PKMediaEntry? {
         didSet {
             if mediaEntry == nil { return }
-            if oldValue === mediaEntry { return }
             shouldPrepare = true
             if playerOptions.autoPlay || playerOptions.preload {
                 prepare()
