@@ -23,15 +23,15 @@ public class KalturaBasicPlayer: KalturaPlayer {
         **Example:**
      
             let basicPlayerOptions = BasicPlayerOptions()
-            let kalturaBasicPlayer = KalturaBasicPlayer(basicPlayerOptions: basicPlayerOptions)
-            kalturaBasicPlayer.kalturaPlayerView = kalturaPlayerView
+            let kalturaBasicPlayer = KalturaBasicPlayer(options: basicPlayerOptions)
+            kalturaBasicPlayer.view = kalturaPlayerView
      
         * Parameters:
             * basicPlayerOptions: The player's initialize options.
      */
-    public init(basicPlayerOptions: BasicPlayerOptions) {
-        self.basicPlayerOptions = basicPlayerOptions
-        super.init(playerOptions: self.basicPlayerOptions)
+    public init(options: BasicPlayerOptions) {
+        basicPlayerOptions = options
+        super.init(playerOptions: basicPlayerOptions)
         sendKavaImpression()
     }
     
@@ -78,6 +78,18 @@ public class KalturaBasicPlayer: KalturaPlayer {
     // MARK: - Public Methods
     
     /**
+       Set the player's MediaEntry.
+    
+       * Parameters:
+           * media: The media entry.
+           * options: Additional media options. See `MediaOptions`.
+    */
+    public func setMedia(_ media: PKMediaEntry, options: MediaOptions? = nil) {
+        mediaOptions = options
+        mediaEntry = media
+    }
+    
+    /**
         Set up the player's MediaEntry.
      
         * Parameters:
@@ -86,13 +98,15 @@ public class KalturaBasicPlayer: KalturaPlayer {
             * drmData: The DRM data if exists.
             * mediaFormat: The media's format.
             * mediaType: The media type.
+            * mediaOptions: Additional media options. See `MediaOptions`.
      */
-    public func setupMediaEntry(id: String, contentUrl: URL, drmData: [DRMParams]? = nil, mediaFormat: PKMediaSource.MediaFormat = .unknown, mediaType: MediaType = .unknown) {
+    public func setupMediaEntry(id: String, contentUrl: URL, drmData: [DRMParams]? = nil, mediaFormat: PKMediaSource.MediaFormat = .unknown, mediaType: MediaType = .unknown, mediaOptions: MediaOptions? = nil) {
         let source = PKMediaSource(id, contentUrl: contentUrl, drmData: drmData, mediaFormat: mediaFormat)
         // setup media entry
         let mediaEntry = PKMediaEntry(id, sources: [source], duration: -1)
         mediaEntry.mediaType = mediaType
-
+        
+        self.mediaOptions = mediaOptions
         self.mediaEntry = mediaEntry
     }
     

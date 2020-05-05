@@ -9,6 +9,8 @@ public typealias KPTrack = Track
 public class KalturaPlayer: NSObject {
     
     private var playerOptions: PlayerOptions
+    internal var mediaOptions: MediaOptions?
+    
     private var pkPlayer: Player!
     private var shouldPrepare: Bool = true
     
@@ -55,9 +57,9 @@ public class KalturaPlayer: NSObject {
         }
         if !shouldPrepare { return }
         shouldPrepare = false
-        // create media config
+        // Create media config
         let mediaConfig: MediaConfig
-        if let startTime = playerOptions.startTime {
+        if let startTime = mediaOptions?.startTime {
             mediaConfig = MediaConfig(mediaEntry: mediaEntry, startTime: startTime)
         } else {
             mediaConfig = MediaConfig(mediaEntry: mediaEntry)
@@ -77,7 +79,7 @@ public class KalturaPlayer: NSObject {
 
         Upon setting to a new value, if the PlayerOption autoPlay or preload is set too true, prepare on the player will be automatically called.
      */
-    public var mediaEntry: PKMediaEntry? {
+    internal var mediaEntry: PKMediaEntry? {
         didSet {
             if mediaEntry == nil { return }
             shouldPrepare = true

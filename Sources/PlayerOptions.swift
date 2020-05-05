@@ -29,9 +29,6 @@ public class PlayerOptions: NSObject {
      */
     public var autoPlay: Bool = true
     
-    /// Sets the MediaConfig with a startTime if set with a value.
-    public var startTime: TimeInterval?
-    
     /**
         Sets up the player with the Plugins provided.
      
