@@ -20,6 +20,14 @@ Pod::Spec.new do |s|
       sp.dependency 'PlayKit', '~> 3.16'
       
     end
+
+    s.subspec 'OTT' do |sp|
+      sp.source_files = 'Sources/OTT/*'
+      
+      sp.dependency 'KalturaPlayer/Core'
+      sp.dependency 'PlayKitProviders'
+      
+    end
     
     s.default_subspec = 'Core'
 end
