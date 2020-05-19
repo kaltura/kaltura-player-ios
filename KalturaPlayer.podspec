@@ -12,7 +12,8 @@ Pod::Spec.new do |s|
     s.source           = { :git => 'https://github.com/kaltura/kaltura-player-ios.git', :tag => 'v' + s.version.to_s }
     s.swift_version    = '5.0'
 
-    s.ios.deployment_target = '9.0'
+    s.ios.deployment_target = '10.0'
+    s.tvos.deployment_target = '10.0'
 
     s.subspec 'Core' do |sp|
       sp.source_files = 'Sources/*', 'Sources/Basic/*'
@@ -23,9 +24,11 @@ Pod::Spec.new do |s|
 
     s.subspec 'OTT' do |sp|
       sp.source_files = 'Sources/OTT/*'
+      sp.resources = 'Sources/OTT/*.xcdatamodeld'
       
       sp.dependency 'KalturaPlayer/Core'
-      sp.dependency 'PlayKitProviders'
+      sp.dependency 'PlayKitProviders', '~> 1.6'
+      sp.dependency 'PlayKitKava', '~> 1.5'
       
     end
     
