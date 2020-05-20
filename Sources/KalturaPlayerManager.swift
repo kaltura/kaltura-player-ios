@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct DMSConfigData {
+struct DMSConfigData {
     var analyticsUrl: String
     var ovpPartnerId: Int64
     var ovpServiceUrl: String
@@ -69,7 +69,7 @@ public class KalturaPlayerManager: NSObject {
         }
     }
     
-    func fetchCachedDMSConfigData() -> DMSConfigData? {
+    internal func fetchCachedDMSConfigData() -> DMSConfigData? {
         #if DEBUG
         fatalError("Function fetchCachedDMSConfigData not implemented in sub class")
         #else
@@ -77,7 +77,7 @@ public class KalturaPlayerManager: NSObject {
         #endif
     }
     
-    func requestDMSConfigData(callback: @escaping (DMSConfigData?, Error?) -> Void) {
+    internal func requestDMSConfigData(callback: @escaping (DMSConfigData?, Error?) -> Void) {
         #if DEBUG
         fatalError("Function requestDMSConfigData not implemented in sub class")
         #else

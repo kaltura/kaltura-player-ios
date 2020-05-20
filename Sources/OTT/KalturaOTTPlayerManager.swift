@@ -9,6 +9,7 @@ import Foundation
 import KalturaNetKit
 import PlayKit
 import PlayKitKava
+import PlayKitProviders
 
 public class KalturaOTTPlayerManager: KalturaPlayerManager {
     
@@ -30,9 +31,12 @@ public class KalturaOTTPlayerManager: KalturaPlayerManager {
         KalturaOTTPlayerManager.shared.fetchDMSConfiguration()
         
         PlayKitManager.shared.registerPlugin(KavaPlugin.self)
+        PlayKitManager.shared.registerPlugin(PhoenixAnalyticsPlugin.self)
     }
     
-    override func fetchCachedDMSConfigData() -> DMSConfigData? {
+    // MARK: - Private Methods
+    
+    override internal func fetchCachedDMSConfigData() -> DMSConfigData? {
         let cachedOTTDMSConfig = KPOTTDMSConfigModel.shared.fetchPartnerConfig(partnerId)
         
         guard let cachedConfig = cachedOTTDMSConfig else { return nil }
@@ -44,7 +48,7 @@ public class KalturaOTTPlayerManager: KalturaPlayerManager {
                              createdDate: cachedConfig.createdDate)
     }
     
-    override func requestDMSConfigData(callback: @escaping (DMSConfigData?, Error?) -> Void) {
+    override internal func requestDMSConfigData(callback: @escaping (DMSConfigData?, Error?) -> Void) {
         
         // Fix the serverURL provided if needed, for the request.
         var url = serverURL

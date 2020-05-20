@@ -20,6 +20,7 @@ public class KalturaOTTPlayer: KalturaPlayer {
     }
     
     private var sessionProvider: SimpleSessionProvider
+    private let PhoenixAnalyticsTimerInterval = 30.0
     
     /**
        A Kaltura Player for OTT Clients.
@@ -45,6 +46,14 @@ public class KalturaOTTPlayer: KalturaPlayer {
         if let ovpPartnerId = KalturaOTTPlayerManager.shared.cachedDMSConfigData?.ovpPartnerId {
             options.pluginConfig.config[KavaPlugin.pluginName] = KavaPluginConfig(partnerId: Int(ovpPartnerId))
         }
+        
+        // Have to set the PhoenixAnalyticsPlugin even if the player KS is empty, cause an update is performed upon loadMedia without validating if the plugin was set. The request will not be sent upon an empty KS.
+        let phoenixAnalyticsPluginConfig = PhoenixAnalyticsPluginConfig(baseUrl: KalturaOTTPlayerManager.shared.serverURL,
+                                                                        timerInterval: PhoenixAnalyticsTimerInterval,
+                                                                        ks: options.ks ?? "",
+                                                                        partnerId: Int(KalturaOTTPlayerManager.shared.partnerId))
+        
+        options.pluginConfig.config[PhoenixAnalyticsPlugin.pluginName] = phoenixAnalyticsPluginConfig
         
         super.init(playerOptions: ottPlayerOptions)
     }
@@ -100,6 +109,21 @@ public class KalturaOTTPlayer: KalturaPlayer {
         self.updatePluginConfig(pluginName: KavaPlugin.pluginName, config: kavaPluginConfig)
     }
     
+    func updatePhoenixAnalyticsPlugin() {
+        var ks = ""
+        if let mediaKS = ottMediaOptions?.ks {
+            ks = mediaKS
+        } else if let playerKS = ottPlayerOptions.ks {
+            ks = playerKS
+        }
+        
+        let phoenixAnalyticsPluginConfig = PhoenixAnalyticsPluginConfig(baseUrl: KalturaOTTPlayerManager.shared.serverURL,
+                                                                  timerInterval: PhoenixAnalyticsTimerInterval,
+                                                                  ks: ks,
+                                                                  partnerId: Int(KalturaOTTPlayerManager.shared.partnerId))
+        
+        self.updatePluginConfig(pluginName: PhoenixAnalyticsPlugin.pluginName, config: phoenixAnalyticsPluginConfig)
+    }
     
     // MARK: - Public Methods
     
@@ -161,6 +185,7 @@ public class KalturaOTTPlayer: KalturaPlayer {
             
             let ovpEntryId = mediaEntry.metadata?["entryId"] ?? options.assetId ?? ""
             self.updateKavaPlugin(ovpPartnerId: ovpPartnerId, ovpEntryId: ovpEntryId, mediaOptions: options)
+            self.updatePhoenixAnalyticsPlugin()
             
             self.mediaEntry = mediaEntry
             callback(nil)
