@@ -22,6 +22,9 @@ public class KalturaPlayerManager: NSObject {
     private let SOFT_EXPIRATION_SEC = 72 * 60 * 60 // Use the cashed data for 3 days.
     private let HARD_EXPIRATION_SEC = 148 * 60 * 60 // Between 72 and 148 hours use the cached data and request a new one from the server.
     
+    private var retryCount = 0
+    private let maxRetries = 3
+    
     internal private(set) var cachedDMSConfigData: DMSConfigData?
     
     internal override init() {
@@ -29,7 +32,7 @@ public class KalturaPlayerManager: NSObject {
     }
     
     internal func fetchDMSConfiguration() {
-        
+        retryCount = 0
         let cachedData = fetchCachedDMSConfigData()
         
         guard let cachedConfigData = cachedData else {
@@ -64,7 +67,10 @@ public class KalturaPlayerManager: NSObject {
             if let configData = dmsConfigData {
                 self.cachedDMSConfigData = configData
             } else {
-                // TODO: retry 3 times
+                if self.retryCount < self.maxRetries {
+                    self.retryCount += 1
+                    self.requestDMSConfigData()
+                }
             }
         }
     }

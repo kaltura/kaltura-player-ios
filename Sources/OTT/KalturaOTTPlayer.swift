@@ -13,7 +13,7 @@ import PlayKitKava
 public class KalturaOTTPlayer: KalturaPlayer {
 
     private var ottPlayerOptions: OTTPlayerOptions
-    var ottMediaOptions: OTTMediaOptions? {
+    private var ottMediaOptions: OTTMediaOptions? {
         didSet {
             mediaOptions = ottMediaOptions
         }
@@ -23,7 +23,7 @@ public class KalturaOTTPlayer: KalturaPlayer {
     private let PhoenixAnalyticsTimerInterval = 30.0
     
     /**
-       A Kaltura Player for OTT Clients.
+       A Kaltura Player for OTT Clients. Kava and Phoenix Analytics embeded.
     
        Create the player options, `OTTPlayerOptions`, and pass it to the `KalturaOTTPlayer`.
        Check the `OTTPlayerOptions` for more info regarding the available options and defaults.
@@ -133,6 +133,8 @@ public class KalturaOTTPlayer: KalturaPlayer {
         Will set the MediaEntry and automatically prepare the media in case the `PlayerOptions` autoPlay or preload is set to true, which is the default value.
         
         In case an error occurred retrieving the media from the provider, the error will return in the callback function.
+     
+        Kava and Phoenix Analytics is updated automaticlly.
         
         * Parameters:
             * options: The media options. See `OTTMediaOptions` for more details.
@@ -178,6 +180,7 @@ public class KalturaOTTPlayer: KalturaPlayer {
                 return
             }
             
+            // The DMS Configuration is needed in order to continue.
             guard let ovpPartnerId = KalturaOTTPlayerManager.shared.cachedDMSConfigData?.ovpPartnerId else {
                 callback(KalturaPlayerError.dmsConfigurationMissing)
                 return
