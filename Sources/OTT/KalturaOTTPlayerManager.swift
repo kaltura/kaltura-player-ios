@@ -37,7 +37,7 @@ public class KalturaOTTPlayerManager: KalturaPlayerManager {
         KalturaOTTPlayerManager.shared.partnerId = partnerId
         KalturaOTTPlayerManager.shared.serverURL = serverURL
         
-        KalturaOTTPlayerManager.shared.fetchDMSConfiguration()
+        KalturaOTTPlayerManager.shared.fetchConfiguration()
         
         PlayKitManager.shared.registerPlugin(KavaPlugin.self)
         PlayKitManager.shared.registerPlugin(PhoenixAnalyticsPlugin.self)
@@ -45,19 +45,19 @@ public class KalturaOTTPlayerManager: KalturaPlayerManager {
     
     // MARK: - Private Methods
     
-    override internal func fetchCachedDMSConfigData() -> DMSConfigData? {
+    override internal func fetchCachedConfigData() -> ConfigData? {
         let cachedOTTDMSConfig = KPOTTDMSConfigModel.shared.fetchPartnerConfig(partnerId)
         
         guard let cachedConfig = cachedOTTDMSConfig else { return nil }
         
-        return DMSConfigData(analyticsUrl: cachedConfig.analyticsUrl,
-                             ovpPartnerId: cachedConfig.ovpPartnerId,
-                             ovpServiceUrl: cachedConfig.ovpServiceUrl,
-                             uiConfId: cachedConfig.uiConfId,
-                             createdDate: cachedConfig.createdDate)
+        return ConfigData(analyticsUrl: cachedConfig.analyticsUrl,
+                          ovpPartnerId: cachedConfig.ovpPartnerId,
+                          ovpServiceUrl: cachedConfig.ovpServiceUrl,
+                          uiConfId: cachedConfig.uiConfId,
+                          createdDate: cachedConfig.createdDate)
     }
     
-    override internal func requestDMSConfigData(callback: @escaping (DMSConfigData?, Error?) -> Void) {
+    override internal func requestConfigData(callback: @escaping (ConfigData?, Error?) -> Void) {
         
         // Fix the serverURL provided if needed, for the request.
         var url = serverURL
@@ -71,7 +71,7 @@ public class KalturaOTTPlayerManager: KalturaPlayerManager {
             url += "/api_v3/"
         }
         
-        guard let request: KalturaRequestBuilder = KalturaRequestBuilder(url: url, service: "Configurations", action: "serveByDevice") else { return }
+        guard let request = KalturaRequestBuilder(url: url, service: "Configurations", action: "serveByDevice") else { return }
         
         request.set(method: .get)
         
@@ -118,12 +118,12 @@ public class KalturaOTTPlayerManager: KalturaPlayerManager {
                                                             ovpServiceUrl: ovpServiceUrl,
                                                             uiConfId: uiConfId)
                 
-                let dmsConfigData = DMSConfigData(analyticsUrl: analyticsUrl,
-                                                  ovpPartnerId: ovpPartnerId,
-                                                  ovpServiceUrl: ovpServiceUrl,
-                                                  uiConfId: uiConfId,
-                                                  createdDate: Date())
-                callback(dmsConfigData, nil)
+                let configData = ConfigData(analyticsUrl: analyticsUrl,
+                                            ovpPartnerId: ovpPartnerId,
+                                            ovpServiceUrl: ovpServiceUrl,
+                                            uiConfId: uiConfId,
+                                            createdDate: Date())
+                callback(configData, nil)
                 
             } catch let error as NSError {
                 PKLog.error("Couldn't parse data into DMSConfiguration error: \(error)")

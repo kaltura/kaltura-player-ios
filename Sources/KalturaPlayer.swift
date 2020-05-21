@@ -7,7 +7,7 @@ public typealias KPEvent = PlayerEvent
 public typealias KPTrack = Track
 
 public enum KalturaPlayerError: PKError {
-    case dmsConfigurationMissing
+    case configurationMissing
     case mediaProviderError(code:String, message:String)
     case invalidPKMediaEntry
     
@@ -17,7 +17,7 @@ public enum KalturaPlayerError: PKError {
     
     public var code: Int {
         switch self {
-        case .dmsConfigurationMissing: return 8001
+        case .configurationMissing: return 8001
         case .mediaProviderError: return 8002
         case .invalidPKMediaEntry: return 8003
         }
@@ -25,7 +25,7 @@ public enum KalturaPlayerError: PKError {
     
     public var errorDescription: String {
         switch self {
-        case .dmsConfigurationMissing: return "The DMS Configuration has not been retrieved yet."
+        case .configurationMissing: return "The Configuration has not been retrieved yet."
         case .mediaProviderError(let code, let message): return "Media Provider Error, code: \(code), \n message: \(message)"
         case .invalidPKMediaEntry: return "Load media on the provider returned with an empty PKMediaEntry."
         }

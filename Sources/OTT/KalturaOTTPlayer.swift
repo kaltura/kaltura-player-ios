@@ -41,9 +41,11 @@ public class KalturaOTTPlayer: KalturaPlayer {
     public init(options: OTTPlayerOptions) {
         ottPlayerOptions = options
         
-        sessionProvider = SimpleSessionProvider(serverURL: KalturaOTTPlayerManager.shared.serverURL, partnerId: KalturaOTTPlayerManager.shared.partnerId, ks: ottPlayerOptions.ks)
+        sessionProvider = SimpleSessionProvider(serverURL: KalturaOTTPlayerManager.shared.serverURL,
+                                                partnerId: KalturaOTTPlayerManager.shared.partnerId,
+                                                ks: ottPlayerOptions.ks)
         
-        if let ovpPartnerId = KalturaOTTPlayerManager.shared.cachedDMSConfigData?.ovpPartnerId {
+        if let ovpPartnerId = KalturaOTTPlayerManager.shared.cachedConfigData?.ovpPartnerId {
             options.pluginConfig.config[KavaPlugin.pluginName] = KavaPluginConfig(partnerId: Int(ovpPartnerId))
         }
         
@@ -89,7 +91,7 @@ public class KalturaOTTPlayer: KalturaPlayer {
                                                 customVar2: nil,
                                                 customVar3: nil)
         
-        if var analyticsUrl = KalturaOTTPlayerManager.shared.cachedDMSConfigData?.analyticsUrl {
+        if var analyticsUrl = KalturaOTTPlayerManager.shared.cachedConfigData?.analyticsUrl {
             // TODO: Add a function to the Utils
             if analyticsUrl.hasSuffix("/api_v3/index.php") {
                 // Do nothing, the url is correct
@@ -181,8 +183,8 @@ public class KalturaOTTPlayer: KalturaPlayer {
             }
             
             // The DMS Configuration is needed in order to continue.
-            guard let ovpPartnerId = KalturaOTTPlayerManager.shared.cachedDMSConfigData?.ovpPartnerId else {
-                callback(KalturaPlayerError.dmsConfigurationMissing)
+            guard let ovpPartnerId = KalturaOTTPlayerManager.shared.cachedConfigData?.ovpPartnerId else {
+                callback(KalturaPlayerError.configurationMissing)
                 return
             }
             

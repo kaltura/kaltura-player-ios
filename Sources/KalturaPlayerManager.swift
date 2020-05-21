@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct DMSConfigData {
+struct ConfigData {
     var analyticsUrl: String
     var ovpPartnerId: Int64
     var ovpServiceUrl: String
@@ -25,18 +25,18 @@ public class KalturaPlayerManager: NSObject {
     private var retryCount = 0
     private let maxRetries = 3
     
-    internal private(set) var cachedDMSConfigData: DMSConfigData?
+    internal private(set) var cachedConfigData: ConfigData?
     
     internal override init() {
         super.init()
     }
     
-    internal func fetchDMSConfiguration() {
+    internal func fetchConfiguration() {
         retryCount = 0
-        let cachedData = fetchCachedDMSConfigData()
+        let cachedData = fetchCachedConfigData()
         
         guard let cachedConfigData = cachedData else {
-            requestDMSConfigData()
+            requestConfigData()
             return
         }
         
@@ -44,48 +44,48 @@ public class KalturaPlayerManager: NSObject {
         let secondsPassed = Int(elapsedTime)
         
         if secondsPassed < SOFT_EXPIRATION_SEC {
-            cachedDMSConfigData = cachedConfigData
+            self.cachedConfigData = cachedConfigData
         } else if secondsPassed < HARD_EXPIRATION_SEC {
-            cachedDMSConfigData = cachedConfigData
-            requestDMSConfigData()
+            self.cachedConfigData = cachedConfigData
+            requestConfigData()
         } else {
             // Request and if there is no response use cached data
-            requestDMSConfigData { [weak self] (dmsConfigData, error) in
+            requestConfigData { [weak self] (configData, error) in
                 guard let self = self else { return }
-                if let configData = dmsConfigData {
-                    self.cachedDMSConfigData = configData
+                if let configData = configData {
+                    self.cachedConfigData = configData
                 } else {
-                    self.cachedDMSConfigData = cachedConfigData
+                    self.cachedConfigData = cachedConfigData
                 }
             }
         }
     }
     
-    private func requestDMSConfigData() {
-        requestDMSConfigData { [weak self] (dmsConfigData, error) in
+    private func requestConfigData() {
+        requestConfigData { [weak self] (configData, error) in
             guard let self = self else { return }
-            if let configData = dmsConfigData {
-                self.cachedDMSConfigData = configData
+            if let configData = configData {
+                self.cachedConfigData = configData
             } else {
                 if self.retryCount < self.maxRetries {
                     self.retryCount += 1
-                    self.requestDMSConfigData()
+                    self.requestConfigData()
                 }
             }
         }
     }
     
-    internal func fetchCachedDMSConfigData() -> DMSConfigData? {
+    internal func fetchCachedConfigData() -> ConfigData? {
         #if DEBUG
-        fatalError("Function fetchCachedDMSConfigData not implemented in sub class")
+        fatalError("Function fetchCachedConfigData not implemented in sub class")
         #else
         return nil
         #endif
     }
     
-    internal func requestDMSConfigData(callback: @escaping (DMSConfigData?, Error?) -> Void) {
+    internal func requestConfigData(callback: @escaping (ConfigData?, Error?) -> Void) {
         #if DEBUG
-        fatalError("Function requestDMSConfigData not implemented in sub class")
+        fatalError("Function requestConfigData not implemented in sub class")
         #else
         return nil
         #endif
