@@ -38,9 +38,6 @@ public class KalturaOTTPlayerManager: KalturaPlayerManager {
         KalturaOTTPlayerManager.shared.serverURL = serverURL
         
         KalturaOTTPlayerManager.shared.fetchConfiguration()
-        
-        PlayKitManager.shared.registerPlugin(KavaPlugin.self)
-        PlayKitManager.shared.registerPlugin(PhoenixAnalyticsPlugin.self)
     }
     
     // MARK: - Private Methods

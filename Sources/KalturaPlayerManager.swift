@@ -19,6 +19,14 @@ public class KalturaPlayerManager: NSObject {
     
     let domain = "com.kaltura.player"
     
+    internal override init() {
+        super.init()
+        
+        registerKnownPlugins()
+    }
+    
+    // MARK: - Configuration Data
+    
     private let SOFT_EXPIRATION_SEC = 72 * 60 * 60 // Use the cashed data for 3 days.
     private let HARD_EXPIRATION_SEC = 148 * 60 * 60 // Between 72 and 148 hours use the cached data and request a new one from the server.
     
@@ -26,10 +34,6 @@ public class KalturaPlayerManager: NSObject {
     private let maxRetries = 3
     
     internal private(set) var cachedConfigData: ConfigData?
-    
-    internal override init() {
-        super.init()
-    }
     
     internal func fetchConfiguration() {
         retryCount = 0
@@ -89,5 +93,11 @@ public class KalturaPlayerManager: NSObject {
         #else
         return nil
         #endif
+    }
+    
+    // MARK: - Known Plugins
+    
+    private func registerKnownPlugins() {
+        KnownPlugins.registerAllPlugins()
     }
 }
