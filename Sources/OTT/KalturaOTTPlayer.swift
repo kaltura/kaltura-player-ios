@@ -9,6 +9,7 @@ import Foundation
 import PlayKit
 import PlayKitProviders
 import PlayKitKava
+//import PlayKitUtils
 
 public class KalturaOTTPlayer: KalturaPlayer {
 
@@ -45,9 +46,9 @@ public class KalturaOTTPlayer: KalturaPlayer {
                                                 partnerId: KalturaOTTPlayerManager.shared.partnerId,
                                                 ks: ottPlayerOptions.ks)
         
-        if let ovpPartnerId = KalturaOTTPlayerManager.shared.cachedConfigData?.ovpPartnerId {
-            options.pluginConfig.config[KavaPlugin.pluginName] = KavaPluginConfig(partnerId: Int(ovpPartnerId))
-        }
+        // In case the DMS Configuration won't be available yet, setting the KavaPluginConfig with a placeholder cause an update is performed upon loadMedia without validating if the plugin was set.
+        let partnerId = KalturaOTTPlayerManager.shared.cachedConfigData?.ovpPartnerId ?? KalturaOTTPlayerManager.shared.partnerId
+        options.pluginConfig.config[KavaPlugin.pluginName] = KavaPluginConfig(partnerId: Int(partnerId))
         
         // Have to set the PhoenixAnalyticsPlugin even if the player KS is empty, cause an update is performed upon loadMedia without validating if the plugin was set. The request will not be sent upon an empty KS.
         let phoenixAnalyticsPluginConfig = PhoenixAnalyticsPluginConfig(baseUrl: KalturaOTTPlayerManager.shared.serverURL,
