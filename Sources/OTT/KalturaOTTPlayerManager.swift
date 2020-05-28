@@ -27,7 +27,9 @@ public class KalturaOTTPlayerManager: KalturaPlayerManager {
     /**
         Set up the Kaltura OTT Player with the Partner ID and the Server URL.
 
-        The setup will request the DMS Configuration required for the player, register the `KavaPlugin` and the `PhoenixAnalyticsPlugin`.
+        The setup will request the DMS Configuration required for the player, register the `KavaPlugin` and the `PhoenixAnalyticsPlugin`. In addition will register any Kaltura's plugin which will be added in the pod file.
+        
+        Curently supporting PlayKit_IMA pod.
 
         * Parameters:
             * partnerId: The OTT Partner ID.

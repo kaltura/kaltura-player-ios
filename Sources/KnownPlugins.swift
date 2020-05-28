@@ -23,9 +23,9 @@ class KnownPlugins {
             case .PhoenixAnalytics:
                 return "PlayKitProviders.PhoenixAnalyticsPlugin"
             case .IMA:
-                return "PlayKitIMA.IMAPlugin"
+                return "PlayKit_IMA.IMAPlugin"
             case .IMADAI:
-                return "PlayKitIMA.IMADAIPlugin"
+                return "PlayKit_IMA.IMADAIPlugin"
             }
         }
         
