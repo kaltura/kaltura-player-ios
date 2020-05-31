@@ -44,7 +44,7 @@ public enum KalturaPlayerError: PKError {
 
 public class KalturaPlayer: NSObject {
     
-    private var playerOptions: PlayerOptions
+    internal var playerOptions: PlayerOptions
     internal var mediaOptions: MediaOptions?
     
     private var pkPlayer: Player!
@@ -70,15 +70,21 @@ public class KalturaPlayer: NSObject {
         super.init()
     }
     
-    internal func updatePlayerOptions(_ playerOptions: PlayerOptions) {
+    // MARK: - Public Methods
+    
+    /**
+        Update the player's initialized options.
+     
+        * Parameters:
+            * playerOptions: A new player options.
+     */
+    public func updatePlayerOptions(_ playerOptions: PlayerOptions) {
         self.playerOptions = playerOptions
         
         self.playerOptions.pluginConfig.config.forEach { (name, config) in
             pkPlayer.updatePluginConfig(pluginName: name, config: config)
         }
     }
-    
-    // MARK: - Public Methods
     
     /**
         Call in order to prepare the media on the player.
