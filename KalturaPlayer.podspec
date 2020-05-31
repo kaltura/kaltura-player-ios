@@ -23,7 +23,7 @@ Pod::Spec.new do |s|
     end
 
     s.subspec 'OTT' do |sp|
-      sp.source_files = 'Sources/OTT/*'
+      sp.source_files = 'Sources/OTT/*', 'Sources/Common'
       sp.resources = 'Sources/OTT/*.xcdatamodeld'
       
       sp.dependency 'KalturaPlayer/Core'

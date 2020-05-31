@@ -83,47 +83,12 @@ public class KalturaOTTPlayer: KalturaPlayer {
         
         let ks = mediaOptions.ks?.isEmpty == false ? mediaOptions.ks : playerOptions.ks
         
-        // TODO: Add a function to the Utils
-        var referrer = playerOptions.referrer ?? ""
-        if referrer.isEmpty == true {
-            referrer = "app://"
-            if let appId = Bundle.main.bundleIdentifier {
-                referrer += appId
-            } else {
-                PKLog.warning("The app's bundle identifier is not set")
-                referrer += "bundleIdentifier_is_empty"
-            }
-        }
-            
-        let clientAppVersion: String = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "BundleVersionMissing"
-        let kavaPluginConfig = KavaPluginConfig(partnerId: Int(ovpPartnerId),
-                                                entryId: ovpEntryId,
-                                                ks: ks,
-                                                userId: nil, // TODO: userId is missing to be sent to kava
-                                                playbackContext: mediaOptions.playbackContextType.description,
-                                                referrer: referrer,
-                                                applicationVersion: clientAppVersion,
-                                                playlistId: nil, // We currently don't have in iOS.
-                                                customVar1: nil, // TODO: customVar's are missing to be sent to kava
-                                                customVar2: nil,
-                                                customVar3: nil)
-        
-        if var analyticsUrl = KalturaOTTPlayerManager.shared.cachedConfigData?.analyticsUrl {
-            // TODO: Add a function to the Utils
-            if analyticsUrl.hasSuffix("/api_v3/index.php") {
-                // Do nothing, the url is correct
-            } else if analyticsUrl.hasSuffix("/api_v3/") {
-                analyticsUrl += "index.php"
-            } else if analyticsUrl.hasSuffix("/api_v3") {
-                analyticsUrl += "/index.php"
-            } else if analyticsUrl.hasSuffix("/") {
-                analyticsUrl += "api_v3/index.php"
-            } else {
-                analyticsUrl += "/api_v3/index.php"
-            }
-            
-            kavaPluginConfig.baseUrl = analyticsUrl
-        }
+        let kavaPluginConfig = KavaHelper.getPluginConfig(ovpPartnerId: ovpPartnerId,
+                                                          ovpEntryId: ovpEntryId,
+                                                          ks: ks,
+                                                          referrer: playerOptions.referrer,
+                                                          playbackContext: mediaOptions.playbackContextType.description,
+                                                          analyticsUrl: KalturaOTTPlayerManager.shared.cachedConfigData?.analyticsUrl)
         
         self.updatePluginConfig(pluginName: KavaPlugin.pluginName, config: kavaPluginConfig)
     }
@@ -137,9 +102,9 @@ public class KalturaOTTPlayer: KalturaPlayer {
         }
         
         let phoenixAnalyticsPluginConfig = PhoenixAnalyticsPluginConfig(baseUrl: KalturaOTTPlayerManager.shared.serverURL,
-                                                                  timerInterval: PhoenixAnalyticsTimerInterval,
-                                                                  ks: ks,
-                                                                  partnerId: Int(KalturaOTTPlayerManager.shared.partnerId))
+                                                                        timerInterval: PhoenixAnalyticsTimerInterval,
+                                                                        ks: ks,
+                                                                        partnerId: Int(KalturaOTTPlayerManager.shared.partnerId))
         
         self.updatePluginConfig(pluginName: PhoenixAnalyticsPlugin.pluginName, config: phoenixAnalyticsPluginConfig)
     }
