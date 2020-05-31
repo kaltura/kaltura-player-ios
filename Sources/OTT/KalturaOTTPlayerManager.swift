@@ -11,9 +11,9 @@ import PlayKit
 import PlayKitKava
 import PlayKitProviders
 
-public class KalturaOTTPlayerManager: KalturaPlayerManager {
+class KalturaOTTPlayerManager: KalturaPlayerManager {
     
-    public static let shared = KalturaOTTPlayerManager()
+    internal static let shared = KalturaOTTPlayerManager()
     
     var partnerId: Int64
     var serverURL: String
@@ -22,25 +22,6 @@ public class KalturaOTTPlayerManager: KalturaPlayerManager {
         partnerId = 0
         serverURL = ""
         super.init()
-    }
-    
-    /**
-        Set up the Kaltura OTT Player with the Partner ID and the Server URL.
-
-        The setup will request the DMS Configuration required for the player, register the `KavaPlugin` and the `PhoenixAnalyticsPlugin`.
-
-        * Parameters:
-            * partnerId: The OTT Partner ID.
-            * serverURL: The OTT Server URL.
-    */
-    public static func setup(partnerId: Int64, serverURL: String) {
-        KalturaOTTPlayerManager.shared.partnerId = partnerId
-        KalturaOTTPlayerManager.shared.serverURL = serverURL
-        
-        KalturaOTTPlayerManager.shared.fetchConfiguration()
-        
-        PlayKitManager.shared.registerPlugin(KavaPlugin.self)
-        PlayKitManager.shared.registerPlugin(PhoenixAnalyticsPlugin.self)
     }
     
     // MARK: - Private Methods

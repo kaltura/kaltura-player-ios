@@ -23,6 +23,25 @@ public class KalturaOTTPlayer: KalturaPlayer {
     private let PhoenixAnalyticsTimerInterval = 30.0
     
     /**
+        Set up the Kaltura OTT Player with the Partner ID and the Server URL.
+
+        The setup will request the DMS Configuration required for the player, register the `KavaPlugin` and the `PhoenixAnalyticsPlugin`.
+
+        * Parameters:
+            * partnerId: The OTT Partner ID.
+            * serverURL: The OTT Server URL.
+    */
+    public static func setup(partnerId: Int64, serverURL: String) {
+        KalturaOTTPlayerManager.shared.partnerId = partnerId
+        KalturaOTTPlayerManager.shared.serverURL = serverURL
+        
+        KalturaOTTPlayerManager.shared.fetchConfiguration()
+        
+        PlayKitManager.shared.registerPlugin(KavaPlugin.self)
+        PlayKitManager.shared.registerPlugin(PhoenixAnalyticsPlugin.self)
+    }
+    
+    /**
        A Kaltura Player for OTT Clients. Kava and Phoenix Analytics embeded.
     
        Create the player options, `OTTPlayerOptions`, and pass it to the `KalturaOTTPlayer`.

@@ -15,7 +15,7 @@ struct ConfigData {
     var createdDate: Date
 }
 
-public class KalturaPlayerManager: NSObject {
+class KalturaPlayerManager: NSObject {
     
     let domain = "com.kaltura.player"
     
