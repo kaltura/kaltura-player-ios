@@ -15,7 +15,7 @@ struct ConfigData {
     var createdDate: Date
 }
 
-public class KalturaPlayerManager: NSObject {
+class KalturaPlayerManager: NSObject {
     
     let domain = "com.kaltura.player"
     
@@ -26,8 +26,8 @@ public class KalturaPlayerManager: NSObject {
     }
     
     // MARK: - Configuration Data
-    
-    private let SOFT_EXPIRATION_SEC = 72 * 60 * 60 // Use the cashed data for 3 days.
+
+    private let SOFT_EXPIRATION_SEC = 72 * 60 * 60 // Use the cached data for 3 days.
     private let HARD_EXPIRATION_SEC = 148 * 60 * 60 // Between 72 and 148 hours use the cached data and request a new one from the server.
     
     private var retryCount = 0

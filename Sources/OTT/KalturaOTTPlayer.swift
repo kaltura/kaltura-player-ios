@@ -13,7 +13,6 @@ import PlayKitKava
 
 public class KalturaOTTPlayer: KalturaPlayer {
 
-    private var ottPlayerOptions: OTTPlayerOptions
     private var ottMediaOptions: OTTMediaOptions? {
         didSet {
             mediaOptions = ottMediaOptions
@@ -22,6 +21,25 @@ public class KalturaOTTPlayer: KalturaPlayer {
     
     private var sessionProvider: SimpleSessionProvider
     private let PhoenixAnalyticsTimerInterval = 30.0
+    
+    /**
+        Set up the Kaltura OTT Player with the Partner ID and the Server URL.
+
+        The setup will request the DMS Configuration required for the player, register the `KavaPlugin` and the `PhoenixAnalyticsPlugin`.
+
+        * Parameters:
+            * partnerId: The OTT Partner ID.
+            * serverURL: The OTT Server URL.
+    */
+    public static func setup(partnerId: Int64, serverURL: String) {
+        KalturaOTTPlayerManager.shared.partnerId = partnerId
+        KalturaOTTPlayerManager.shared.serverURL = serverURL
+        
+        KalturaOTTPlayerManager.shared.fetchConfiguration()
+        
+        PlayKitManager.shared.registerPlugin(KavaPlugin.self)
+        PlayKitManager.shared.registerPlugin(PhoenixAnalyticsPlugin.self)
+    }
     
     /**
        A Kaltura Player for OTT Clients. Kava and Phoenix Analytics embeded.
@@ -39,12 +57,10 @@ public class KalturaOTTPlayer: KalturaPlayer {
        * Parameters:
            * options: The player's initialize options.
     */
-    public init(options: OTTPlayerOptions) {
-        ottPlayerOptions = options
-        
+    public init(options: PlayerOptions) {
         sessionProvider = SimpleSessionProvider(serverURL: KalturaOTTPlayerManager.shared.serverURL,
                                                 partnerId: KalturaOTTPlayerManager.shared.partnerId,
-                                                ks: ottPlayerOptions.ks)
+                                                ks: options.ks)
         
         // In case the DMS Configuration won't be available yet, setting the KavaPluginConfig with a placeholder cause an update is performed upon loadMedia without validating if the plugin was set.
         let partnerId = KalturaOTTPlayerManager.shared.cachedConfigData?.ovpPartnerId ?? KalturaOTTPlayerManager.shared.partnerId
@@ -58,56 +74,21 @@ public class KalturaOTTPlayer: KalturaPlayer {
         
         options.pluginConfig.config[PhoenixAnalyticsPlugin.pluginName] = phoenixAnalyticsPluginConfig
         
-        super.init(playerOptions: ottPlayerOptions)
+        super.init(playerOptions: options)
     }
     
     // MARK: - Private Methods
     
     func updateKavaPlugin(ovpPartnerId: Int64, ovpEntryId: String, mediaOptions: OTTMediaOptions) {
         
-        let ks = mediaOptions.ks?.isEmpty == false ? mediaOptions.ks : ottPlayerOptions.ks
+        let ks = mediaOptions.ks?.isEmpty == false ? mediaOptions.ks : playerOptions.ks
         
-        // TODO: Add a function to the Utils
-        var referrer = ottPlayerOptions.referrer ?? ""
-        if referrer.isEmpty == true {
-            referrer = "app://"
-            if let appId = Bundle.main.bundleIdentifier {
-                referrer += appId
-            } else {
-                PKLog.warning("The app's bundle identifier is not set")
-                referrer += "bundleIdentifier_is_empty"
-            }
-        }
-            
-        let clientAppVersion: String = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "BundleVersionMissing"
-        let kavaPluginConfig = KavaPluginConfig(partnerId: Int(ovpPartnerId),
-                                                entryId: ovpEntryId,
-                                                ks: ks,
-                                                userId: nil, // TODO: userId is missing to be sent to kava
-                                                playbackContext: mediaOptions.playbackContextType.description,
-                                                referrer: referrer,
-                                                applicationVersion: clientAppVersion,
-                                                playlistId: nil, // We currently don't have in iOS.
-                                                customVar1: nil, // TODO: customVar's are missing to be sent to kava
-                                                customVar2: nil,
-                                                customVar3: nil)
-        
-        if var analyticsUrl = KalturaOTTPlayerManager.shared.cachedConfigData?.analyticsUrl {
-            // TODO: Add a function to the Utils
-            if analyticsUrl.hasSuffix("/api_v3/index.php") {
-                // Do nothing, the url is correct
-            } else if analyticsUrl.hasSuffix("/api_v3/") {
-                analyticsUrl += "index.php"
-            } else if analyticsUrl.hasSuffix("/api_v3") {
-                analyticsUrl += "/index.php"
-            } else if analyticsUrl.hasSuffix("/") {
-                analyticsUrl += "api_v3/index.php"
-            } else {
-                analyticsUrl += "/api_v3/index.php"
-            }
-            
-            kavaPluginConfig.baseUrl = analyticsUrl
-        }
+        let kavaPluginConfig = KavaHelper.getPluginConfig(ovpPartnerId: ovpPartnerId,
+                                                          ovpEntryId: ovpEntryId,
+                                                          ks: ks,
+                                                          referrer: playerOptions.referrer,
+                                                          playbackContext: mediaOptions.playbackContextType.description,
+                                                          analyticsUrl: KalturaOTTPlayerManager.shared.cachedConfigData?.analyticsUrl)
         
         self.updatePluginConfig(pluginName: KavaPlugin.pluginName, config: kavaPluginConfig)
     }
@@ -116,14 +97,14 @@ public class KalturaOTTPlayer: KalturaPlayer {
         var ks = ""
         if let mediaKS = ottMediaOptions?.ks {
             ks = mediaKS
-        } else if let playerKS = ottPlayerOptions.ks {
+        } else if let playerKS = playerOptions.ks {
             ks = playerKS
         }
         
         let phoenixAnalyticsPluginConfig = PhoenixAnalyticsPluginConfig(baseUrl: KalturaOTTPlayerManager.shared.serverURL,
-                                                                  timerInterval: PhoenixAnalyticsTimerInterval,
-                                                                  ks: ks,
-                                                                  partnerId: Int(KalturaOTTPlayerManager.shared.partnerId))
+                                                                        timerInterval: PhoenixAnalyticsTimerInterval,
+                                                                        ks: ks,
+                                                                        partnerId: Int(KalturaOTTPlayerManager.shared.partnerId))
         
         self.updatePluginConfig(pluginName: PhoenixAnalyticsPlugin.pluginName, config: phoenixAnalyticsPluginConfig)
     }
@@ -149,7 +130,7 @@ public class KalturaOTTPlayer: KalturaPlayer {
         if options.ks?.isEmpty == false {
             sessionProvider.ks = options.ks
         } else {
-            sessionProvider.ks = ottPlayerOptions.ks
+            sessionProvider.ks = playerOptions.ks
         }
         
         let phoenixMediaProvider = PhoenixMediaProvider()
@@ -160,7 +141,7 @@ public class KalturaOTTPlayer: KalturaPlayer {
         phoenixMediaProvider.set(formats: options.formats)
         phoenixMediaProvider.set(fileIds: options.fileIds)
         phoenixMediaProvider.set(networkProtocol: options.networkProtocol)
-        phoenixMediaProvider.set(referrer: ottPlayerOptions.referrer)
+        phoenixMediaProvider.set(referrer: playerOptions.referrer)
         phoenixMediaProvider.set(sessionProvider: sessionProvider)
         
         phoenixMediaProvider.loadMedia { [weak self] (pkMediaEntry, error) in
@@ -196,16 +177,5 @@ public class KalturaOTTPlayer: KalturaPlayer {
             self.mediaEntry = mediaEntry
             callback(nil)
         }
-    }
-    
-    /**
-        Update the player's initialized options.
-     
-        * Parameters:
-            * playerOptions: A new player options.
-     */
-    public func updatePlayerOptions(_ playerOptions: OTTPlayerOptions) {
-        self.ottPlayerOptions = playerOptions
-        super.updatePlayerOptions(playerOptions)
     }
 }
