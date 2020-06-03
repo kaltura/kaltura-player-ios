@@ -10,8 +10,6 @@ import PlayKit
 import KalturaNetKit
 
 public class KalturaBasicPlayer: KalturaPlayer {
-
-    private var basicPlayerOptions: BasicPlayerOptions
     
     /**
         A Kaltura Player for external media.
@@ -29,9 +27,8 @@ public class KalturaBasicPlayer: KalturaPlayer {
         * Parameters:
             * basicPlayerOptions: The player's initialize options.
      */
-    public init(options: BasicPlayerOptions) {
-        basicPlayerOptions = options
-        super.init(playerOptions: basicPlayerOptions)
+    public init(options: PlayerOptions) {
+        super.init(playerOptions: options)
         sendKavaImpression()
     }
     
@@ -108,16 +105,5 @@ public class KalturaBasicPlayer: KalturaPlayer {
         
         self.mediaOptions = mediaOptions
         self.mediaEntry = mediaEntry
-    }
-    
-    /**
-        Update the player's initialized options.
-     
-        * Parameters:
-            * playerOptions: A new player options.
-     */
-    public func updatePlayerOptions(_ playerOptions: BasicPlayerOptions) {
-        self.basicPlayerOptions = playerOptions
-        super.updatePlayerOptions(playerOptions)
     }
 }

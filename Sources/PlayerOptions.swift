@@ -43,6 +43,20 @@ public class PlayerOptions: NSObject {
      */
     public var pluginConfig: PluginConfig = PluginConfig(config: [:])
     
+    // MARK: - Providers
+    
+    /**
+        Set up the player with the player KS.
+     */
+    public var ks: String?
+    
+    /**
+        Set up the player with a referrer.
+     */
+    public var referrer: String?
+    
+    // MARK: -
+    
     public override init() {
         super.init()
     }

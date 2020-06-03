@@ -6,9 +6,45 @@ import PlayKit
 public typealias KPEvent = PlayerEvent
 public typealias KPTrack = Track
 
+public enum KalturaPlayerError: PKError {
+    case configurationMissing
+    case mediaProviderError(code:String, message:String)
+    case invalidPKMediaEntry
+    
+    public static let domain = "com.kaltura.ott.player.error"
+    public static let serverErrorCodeKey = "code"
+    public static let serverErrorMessageKey = "message"
+    
+    public var code: Int {
+        switch self {
+        case .configurationMissing: return 8001
+        case .mediaProviderError: return 8002
+        case .invalidPKMediaEntry: return 8003
+        }
+    }
+    
+    public var errorDescription: String {
+        switch self {
+        case .configurationMissing: return "The Configuration has not been retrieved yet."
+        case .mediaProviderError(let code, let message): return "Media Provider Error, code: \(code), \n message: \(message)"
+        case .invalidPKMediaEntry: return "Load media on the provider returned with an empty PKMediaEntry."
+        }
+    }
+    
+    public var userInfo: [String: Any] {
+        switch self {
+        case .mediaProviderError(let code, let message):
+            return [KalturaPlayerError.serverErrorCodeKey: code,
+                    KalturaPlayerError.serverErrorMessageKey: message]
+        default:
+            return [String: Any]()
+        }
+    }
+}
+
 public class KalturaPlayer: NSObject {
     
-    private var playerOptions: PlayerOptions
+    internal var playerOptions: PlayerOptions
     internal var mediaOptions: MediaOptions?
     
     private var pkPlayer: Player!
@@ -34,15 +70,21 @@ public class KalturaPlayer: NSObject {
         super.init()
     }
     
-    internal func updatePlayerOptions(_ playerOptions: PlayerOptions) {
+    // MARK: - Public Methods
+    
+    /**
+        Update the player's initialized options.
+     
+        * Parameters:
+            * playerOptions: A new player options.
+     */
+    public func updatePlayerOptions(_ playerOptions: PlayerOptions) {
         self.playerOptions = playerOptions
         
         self.playerOptions.pluginConfig.config.forEach { (name, config) in
             pkPlayer.updatePluginConfig(pluginName: name, config: config)
         }
     }
-    
-    // MARK: - Public Methods
     
     /**
         Call in order to prepare the media on the player.
@@ -164,6 +206,7 @@ public class KalturaPlayer: NSObject {
            * config: The Plugin configuration object.
     */
     public func updatePluginConfig(pluginName: String, config: Any) {
+        playerOptions.pluginConfig.config[pluginName] = config
         pkPlayer.updatePluginConfig(pluginName: pluginName, config: config)
     }
     
