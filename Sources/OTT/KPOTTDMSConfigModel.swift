@@ -37,13 +37,9 @@ class KPOTTDMSConfigModel {
         let dmsConfigModelBundle = Bundle(for: KPOTTDMSConfigModel.self)
         guard let modelURL = dmsConfigModelBundle.url(forResource: "KPOTTDMSConfigModel", withExtension: "momd"),
             let managedObjectModel =  NSManagedObjectModel(contentsOf: modelURL) else {
-            #if DEBUG
             fatalError("KPOTTDMSConfigModel is missing from the bundle!")
-            #else
-            return
-            #endif
         }
-        
+
         let container = NSPersistentContainer(name: "KPOTTDMSConfigModel", managedObjectModel: managedObjectModel)
         
         container.loadPersistentStores { (persistentStoreDescription, error) in
@@ -124,11 +120,7 @@ class KPOTTDMSConfigModel {
         let managedObjectModel = persistanteContainer.managedObjectModel
         
         guard let entity = managedObjectModel.entitiesByName[DMSConfigEntityName] else {
-            #if DEBUG
             fatalError("Could not add Partner Config, the entity does not exist!")
-            #else
-            return
-            #endif
         }
         
         let config = NSManagedObject(entity: entity, insertInto: managedContext)

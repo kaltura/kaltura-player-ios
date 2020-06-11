@@ -3,8 +3,9 @@
 import Foundation
 import PlayKit
 
-public typealias KPEvent = PlayerEvent
+public typealias KPPlayerEvent = PlayerEvent
 public typealias KPTrack = Track
+public typealias KPAdEvent = AdEvent
 
 public enum KalturaPlayerError: PKError {
     case configurationMissing
@@ -160,7 +161,7 @@ public class KalturaPlayer: NSObject {
             * event: Which `KPEvent` to observe.
             * block: The callback function that will be called.
      */
-    public func addObserver(_ observer: AnyObject, event: KPEvent.Type, block: @escaping (PKEvent) -> Void) {
+    public func addObserver(_ observer: AnyObject, event: PKEvent.Type, block: @escaping (PKEvent) -> Void) {
         pkPlayer.addObserver(observer, event: event, block: block)
     }
     
@@ -172,7 +173,7 @@ public class KalturaPlayer: NSObject {
            * events: A list of `KPEvent`'s too observe.
            * block: The callback function that will be called.
     */
-    public func addObserver(_ observer: AnyObject, events: [KPEvent.Type], block: @escaping (PKEvent) -> Void) {
+    public func addObserver(_ observer: AnyObject, events: [PKEvent.Type], block: @escaping (PKEvent) -> Void) {
         pkPlayer.addObserver(observer, events: events, block: block)
     }
     
@@ -183,7 +184,7 @@ public class KalturaPlayer: NSObject {
            * observer: The object that the observation will be removed from.
            * event: Which `KPEvent` to remove the observation from.
     */
-    public func removeObserver(_ observer: AnyObject, event: KPEvent.Type) {
+    public func removeObserver(_ observer: AnyObject, event: PKEvent.Type) {
         pkPlayer.removeObserver(observer, event: event)
     }
     
@@ -194,7 +195,7 @@ public class KalturaPlayer: NSObject {
            * observer: The object that the observation will be removed from.
            * events: A list of `KPEvent`'s to remove the observation from.
     */
-    public func removeObserver(_ observer: AnyObject, events: [KPEvent.Type]) {
+    public func removeObserver(_ observer: AnyObject, events: [PKEvent.Type]) {
         pkPlayer.removeObserver(observer, events: events)
     }
     
