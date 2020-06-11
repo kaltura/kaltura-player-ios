@@ -87,7 +87,7 @@ class KalturaPlayerManager: NSObject {
         #if DEBUG
         fatalError("Function requestConfigData not implemented in sub class")
         #else
-        return nil
+        // Nothing
         #endif
     }
 }
