@@ -43,42 +43,6 @@ public enum KalturaPlayerError: PKError {
     }
 }
 
-public enum KalturaPlayerError: PKError {
-    case configurationMissing
-    case mediaProviderError(code:String, message:String)
-    case invalidPKMediaEntry
-    
-    public static let domain = "com.kaltura.ott.player.error"
-    public static let serverErrorCodeKey = "code"
-    public static let serverErrorMessageKey = "message"
-    
-    public var code: Int {
-        switch self {
-        case .configurationMissing: return 8001
-        case .mediaProviderError: return 8002
-        case .invalidPKMediaEntry: return 8003
-        }
-    }
-    
-    public var errorDescription: String {
-        switch self {
-        case .configurationMissing: return "The Configuration has not been retrieved yet."
-        case .mediaProviderError(let code, let message): return "Media Provider Error, code: \(code), \n message: \(message)"
-        case .invalidPKMediaEntry: return "Load media on the provider returned with an empty PKMediaEntry."
-        }
-    }
-    
-    public var userInfo: [String: Any] {
-        switch self {
-        case .mediaProviderError(let code, let message):
-            return [KalturaPlayerError.serverErrorCodeKey: code,
-                    KalturaPlayerError.serverErrorMessageKey: message]
-        default:
-            return [String: Any]()
-        }
-    }
-}
-
 public class KalturaPlayer: NSObject {
     
     internal var playerOptions: PlayerOptions
