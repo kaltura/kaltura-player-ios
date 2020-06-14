@@ -80,19 +80,11 @@ class KalturaPlayerManager: NSObject {
     }
     
     internal func fetchCachedConfigData() -> ConfigData? {
-        #if DEBUG
         fatalError("Function fetchCachedConfigData not implemented in sub class")
-        #else
-        return nil
-        #endif
     }
     
     internal func requestConfigData(callback: @escaping (ConfigData?, Error?) -> Void) {
-        #if DEBUG
         fatalError("Function requestConfigData not implemented in sub class")
-        #else
-        return nil
-        #endif
     }
     
     // MARK: - Known Plugins
