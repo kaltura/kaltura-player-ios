@@ -31,7 +31,7 @@ public class KalturaPlayerView: UIView {
         **Default**
          scaleAspectFit
      */
-    public override var contentMode: UIView.ContentMode {
+    @objc public override var contentMode: UIView.ContentMode {
         didSet {
             playerView?.contentMode = self.contentMode
         }

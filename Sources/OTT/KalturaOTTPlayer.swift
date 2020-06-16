@@ -11,7 +11,7 @@ import PlayKitProviders
 import PlayKitKava
 //import PlayKitUtils
 
-public class KalturaOTTPlayer: KalturaPlayer {
+@objc public class KalturaOTTPlayer: KalturaPlayer {
 
     private var ottMediaOptions: OTTMediaOptions? {
         didSet {
@@ -31,7 +31,7 @@ public class KalturaOTTPlayer: KalturaPlayer {
             * partnerId: The OTT Partner ID.
             * serverURL: The OTT Server URL.
     */
-    public static func setup(partnerId: Int64, serverURL: String) {
+    @objc public static func setup(partnerId: Int64, serverURL: String) {
         KalturaOTTPlayerManager.shared.partnerId = partnerId
         KalturaOTTPlayerManager.shared.serverURL = serverURL
         
@@ -57,7 +57,7 @@ public class KalturaOTTPlayer: KalturaPlayer {
        * Parameters:
            * options: The player's initialize options.
     */
-    public init(options: PlayerOptions) {
+    @objc public init(options: PlayerOptions) {
         sessionProvider = SimpleSessionProvider(serverURL: KalturaOTTPlayerManager.shared.serverURL,
                                                 partnerId: KalturaOTTPlayerManager.shared.partnerId,
                                                 ks: options.ks)
@@ -124,7 +124,7 @@ public class KalturaOTTPlayer: KalturaPlayer {
             * options: The media options. See `OTTMediaOptions` for more details.
             * callback: A callback function to observe if an error has occurred, or in case prepare needs to be called manually.
      */
-    public func loadMedia(options: OTTMediaOptions, callback: @escaping (Error?) -> Void) {
+    @objc public func loadMedia(options: OTTMediaOptions, callback: @escaping (Error?) -> Void) {
         ottMediaOptions = options
         
         if options.ks?.isEmpty == false {
