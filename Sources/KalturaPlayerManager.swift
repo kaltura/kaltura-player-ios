@@ -19,6 +19,14 @@ class KalturaPlayerManager: NSObject {
     
     let domain = "com.kaltura.player"
     
+    internal override init() {
+        super.init()
+        
+        registerKnownPlugins()
+    }
+    
+    // MARK: - Configuration Data
+
     private let SOFT_EXPIRATION_SEC = 72 * 60 * 60 // Use the cached data for 3 days.
     private let HARD_EXPIRATION_SEC = 148 * 60 * 60 // Between 72 and 148 hours use the cached data and request a new one from the server.
     
@@ -26,10 +34,6 @@ class KalturaPlayerManager: NSObject {
     private let maxRetries = 3
     
     internal private(set) var cachedConfigData: ConfigData?
-    
-    internal override init() {
-        super.init()
-    }
     
     internal func fetchConfiguration() {
         retryCount = 0
@@ -76,18 +80,16 @@ class KalturaPlayerManager: NSObject {
     }
     
     internal func fetchCachedConfigData() -> ConfigData? {
-        #if DEBUG
         fatalError("Function fetchCachedConfigData not implemented in sub class")
-        #else
-        return nil
-        #endif
     }
     
     internal func requestConfigData(callback: @escaping (ConfigData?, Error?) -> Void) {
-        #if DEBUG
         fatalError("Function requestConfigData not implemented in sub class")
-        #else
-        // Nothing
-        #endif
+    }
+    
+    // MARK: - Known Plugins
+    
+    private func registerKnownPlugins() {
+        KnownPlugins.registerAllPlugins()
     }
 }

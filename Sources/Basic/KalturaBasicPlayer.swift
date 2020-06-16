@@ -12,6 +12,18 @@ import KalturaNetKit
 public class KalturaBasicPlayer: KalturaPlayer {
     
     /**
+        Set up the Kaltura Player.
+
+        The setup will register any Kaltura's plugin which will be added in the pod file.
+        
+        Curently supporting PlayKit_IMA pod.
+     */
+    public static func setup() {
+        // This needs to be done in order for it to be initialized.
+        let _ = KalturaBasicPlayerManager.shared
+    }
+    
+    /**
         A Kaltura Player for external media.
      
         Create the player options, `BasicPlayerOptions`, and pass it to the `KalturaBasicPlayer`.
