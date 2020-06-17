@@ -43,7 +43,7 @@ public enum KalturaPlayerError: PKError {
     }
 }
 
-public class KalturaPlayer: NSObject {
+@objc public class KalturaPlayer: NSObject {
     
     internal var playerOptions: PlayerOptions
     internal var mediaOptions: MediaOptions?
@@ -52,7 +52,7 @@ public class KalturaPlayer: NSObject {
     private var shouldPrepare: Bool = true
     
     /// The player's view which the media will be displayed within.
-    public var view: KalturaPlayerView? {
+    @objc public var view: KalturaPlayerView? {
         didSet {
             guard let kalturaPlayerView = view else {
                 return
@@ -79,7 +79,7 @@ public class KalturaPlayer: NSObject {
         * Parameters:
             * playerOptions: A new player options.
      */
-    public func updatePlayerOptions(_ playerOptions: PlayerOptions) {
+    @objc public func updatePlayerOptions(_ playerOptions: PlayerOptions) {
         self.playerOptions = playerOptions
         
         self.playerOptions.pluginConfig.config.forEach { (name, config) in
@@ -93,7 +93,7 @@ public class KalturaPlayer: NSObject {
         * Note:
             When the PlayerOptions preload is set too true, this function will be called automatically.
      */
-    public func prepare() {
+    @objc public func prepare() {
         guard let mediaEntry = self.mediaEntry else {
             PKLog.debug("MediaEntry is empty.")
             return
@@ -133,21 +133,21 @@ public class KalturaPlayer: NSObject {
     }
     
     /// The player's settings.
-    public var settings: PKPlayerSettings {
+    @objc public var settings: PKPlayerSettings {
         get {
             return pkPlayer.settings
         }
     }
     
     /// The current media format.
-    public var mediaFormat: PKMediaSource.MediaFormat {
+    @objc public var mediaFormat: PKMediaSource.MediaFormat {
         get {
             return pkPlayer.mediaFormat
         }
     }
     
     /// The player's session id. The `sessionId` is initialized when the player loads.
-    public var sessionId: String {
+    @objc public var sessionId: String {
         get {
             return pkPlayer.sessionId
         }
@@ -161,7 +161,7 @@ public class KalturaPlayer: NSObject {
             * event: Which `KPEvent` to observe.
             * block: The callback function that will be called.
      */
-    public func addObserver(_ observer: AnyObject, event: PKEvent.Type, block: @escaping (PKEvent) -> Void) {
+    @objc public func addObserver(_ observer: AnyObject, event: PKEvent.Type, block: @escaping (PKEvent) -> Void) {
         pkPlayer.addObserver(observer, event: event, block: block)
     }
     
@@ -173,7 +173,7 @@ public class KalturaPlayer: NSObject {
            * events: A list of `KPEvent`'s too observe.
            * block: The callback function that will be called.
     */
-    public func addObserver(_ observer: AnyObject, events: [PKEvent.Type], block: @escaping (PKEvent) -> Void) {
+    @objc public func addObserver(_ observer: AnyObject, events: [PKEvent.Type], block: @escaping (PKEvent) -> Void) {
         pkPlayer.addObserver(observer, events: events, block: block)
     }
     
@@ -184,7 +184,7 @@ public class KalturaPlayer: NSObject {
            * observer: The object that the observation will be removed from.
            * event: Which `KPEvent` to remove the observation from.
     */
-    public func removeObserver(_ observer: AnyObject, event: PKEvent.Type) {
+    @objc public func removeObserver(_ observer: AnyObject, event: PKEvent.Type) {
         pkPlayer.removeObserver(observer, event: event)
     }
     
@@ -195,7 +195,7 @@ public class KalturaPlayer: NSObject {
            * observer: The object that the observation will be removed from.
            * events: A list of `KPEvent`'s to remove the observation from.
     */
-    public func removeObserver(_ observer: AnyObject, events: [PKEvent.Type]) {
+    @objc public func removeObserver(_ observer: AnyObject, events: [PKEvent.Type]) {
         pkPlayer.removeObserver(observer, events: events)
     }
     
@@ -206,13 +206,13 @@ public class KalturaPlayer: NSObject {
            * pluginName: The Plugin name.
            * config: The Plugin configuration object.
     */
-    public func updatePluginConfig(pluginName: String, config: Any) {
+    @objc public func updatePluginConfig(pluginName: String, config: Any) {
         playerOptions.pluginConfig.config[pluginName] = config
         pkPlayer.updatePluginConfig(pluginName: pluginName, config: config)
     }
     
     /// Updates the styling from the settings textTrackStyling object
-    public func updateTextTrackStyling() {
+    @objc public func updateTextTrackStyling() {
         pkPlayer.updateTextTrackStyling()
     }
     
@@ -221,7 +221,7 @@ public class KalturaPlayer: NSObject {
      
         * Returns: `true` if it's live, `false` otherwise.
      */
-    public func isLive() -> Bool {
+    @objc public func isLive() -> Bool {
         return pkPlayer.isLive()
     }
     
@@ -233,35 +233,35 @@ public class KalturaPlayer: NSObject {
      
         * Returns: The relevant controller if exist, `nil` otherwise.
      */
-    public func getController(type: PKController.Type) -> PKController? {
+    @objc public func getController(type: PKController.Type) -> PKController? {
         return pkPlayer.getController(type: type)
     }
     
     // MARK: - BasicPlayer
     
     /// The player's duration.
-    public var duration: TimeInterval {
+    @objc public var duration: TimeInterval {
         get {
             return pkPlayer.duration
         }
     }
     
     /// The player's currentState.
-    public var currentState: PlayerState {
+    @objc public var currentState: PlayerState {
         get {
             return pkPlayer.currentState
         }
     }
     
     /// Indicates if the player is playing.
-    public var isPlaying: Bool {
+    @objc public var isPlaying: Bool {
         get {
             return pkPlayer.isPlaying
         }
     }
     
     /// The current player's time.
-    public var currentTime: TimeInterval {
+    @objc public var currentTime: TimeInterval {
         get {
             return pkPlayer.currentTime
         }
@@ -271,21 +271,21 @@ public class KalturaPlayer: NSObject {
     }
     
     /// The current program time (PROGRAM-DATE-TIME).
-    public var currentProgramTime: Date? {
+    @objc public var currentProgramTime: Date? {
         get {
             return pkPlayer.currentProgramTime
         }
     }
     
     /// Get the player's current audio track.
-    public var currentAudioTrack: String? {
+    @objc public var currentAudioTrack: String? {
         get {
             return pkPlayer.currentAudioTrack
         }
     }
     
     /// Get the player's current text track.
-    public var currentTextTrack: String? {
+    @objc public var currentTextTrack: String? {
         get {
             return pkPlayer.currentTextTrack
         }
@@ -296,7 +296,7 @@ public class KalturaPlayer: NSObject {
             
         * Important: Do not use the rate to indicate whether to play or pause! Use the isPlaying property.
      */
-    public var rate: Float {
+    @objc public var rate: Float {
         get {
             return pkPlayer.rate
         }
@@ -306,7 +306,7 @@ public class KalturaPlayer: NSObject {
     }
     
     /// The audio playback volume for the player, ranging from 0.0 through 1.0 on a linear scale.
-    public var volume: Float {
+    @objc public var volume: Float {
         get {
             return pkPlayer.volume
         }
@@ -316,49 +316,49 @@ public class KalturaPlayer: NSObject {
     }
     
     /// Provides a collection of time ranges for which the player has the media data readily available. The ranges provided might be discontinuous.
-    public var loadedTimeRanges: [PKTimeRange]? {
+    @objc public var loadedTimeRanges: [PKTimeRange]? {
         get {
             return pkPlayer.loadedTimeRanges
         }
     }
     
     /// Send a play action for the player.
-    public func play() {
+    @objc public func play() {
         pkPlayer.play()
     }
     
     /// Send a pause action for the player.
-    public func pause() {
+    @objc public func pause() {
         pkPlayer.pause()
     }
     
     /// Send a resume action for the player.
-    public func resume() {
+    @objc public func resume() {
         pkPlayer.resume()
     }
     
     /// Send a stop action for the player.
-    public func stop() {
+    @objc public func stop() {
         pkPlayer.stop()
     }
     
     /// Send a replay action for the player.
-    public func replay() {
+    @objc public func replay() {
         pkPlayer.replay()
     }
     
     /// Send a seek action for the player.
-    public func seek(to time: TimeInterval) {
+    @objc public func seek(to time: TimeInterval) {
         pkPlayer.seek(to: time)
     }
     
     /// Select a Track
-    public func selectTrack(trackId: String) {
+    @objc public func selectTrack(trackId: String) {
         pkPlayer.selectTrack(trackId: trackId)
     }
     
     /// Release the player's resources.
-    public func destroy() {
+    @objc public func destroy() {
         pkPlayer.destroy()
     }
     
@@ -367,7 +367,7 @@ public class KalturaPlayer: NSObject {
      
         Call this function if the player's `settings.network.autoBuffer` is set too false. Otherwise it is done automatically.
      */
-    public func startBuffering() {
+    @objc public func startBuffering() {
         pkPlayer.startBuffering()
     }
 }
