@@ -15,8 +15,7 @@ public class KalturaBasicPlayer: KalturaPlayer {
         Set up the Kaltura Player.
 
         The setup will register any Kaltura's plugin which will be added in the pod file.
-        
-        Curently supporting PlayKit_IMA pod.
+        Supporting `PlayKit_IMA` and `PlayKitYoubora` pods.
      */
     public static func setup() {
         // This needs to be done in order for it to be initialized.
