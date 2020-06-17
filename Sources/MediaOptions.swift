@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class MediaOptions: NSObject {
+@objc public class MediaOptions: NSObject {
     
     /**
         Sets the media with a start time if set with a value.
@@ -16,5 +16,5 @@ public class MediaOptions: NSObject {
         * In case of vod, 0.
         * In case of live, the live edge.
      */
-    public var startTime: TimeInterval?
+    @objc public var startTime: TimeInterval = .nan
 }
