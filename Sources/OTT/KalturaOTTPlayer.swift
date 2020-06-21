@@ -26,6 +26,9 @@ import PlayKitKava
         Set up the Kaltura OTT Player with the Partner ID and the Server URL.
 
         The setup will request the DMS Configuration required for the player, register the `KavaPlugin` and the `PhoenixAnalyticsPlugin`.
+     
+        In addition the setup will register any Kaltura's plugin which will be added in the pod file.
+        Supporting `PlayKit_IMA` and `PlayKitYoubora` pods.
 
         * Parameters:
             * partnerId: The OTT Partner ID.
