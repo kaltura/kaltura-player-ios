@@ -7,6 +7,10 @@
 
 import Foundation
 
+protocol KalturaPlayerOffline {
+    static func setup()
+}
+
 struct ConfigData {
     var analyticsUrl: String
     var ovpPartnerId: Int64
@@ -23,6 +27,7 @@ class KalturaPlayerManager: NSObject {
         super.init()
         
         registerKnownPlugins()
+        setupOfflineIfExists()
     }
     
     // MARK: - Configuration Data
@@ -91,5 +96,13 @@ class KalturaPlayerManager: NSObject {
     
     private func registerKnownPlugins() {
         KnownPlugins.registerAllPlugins()
+    }
+    
+    // MARK: - Offline
+    
+    private func setupOfflineIfExists() {
+        if let offlineManagerClass = NSClassFromString("KalturaPlayer.OfflineManager") as? KalturaPlayerOffline.Type {
+            offlineManagerClass.setup()
+        }
     }
 }

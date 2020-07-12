@@ -12,7 +12,7 @@ public enum KalturaPlayerError: PKError {
     case mediaProviderError(code:String, message:String)
     case invalidPKMediaEntry
     
-    public static let domain = "com.kaltura.ott.player.error"
+    public static let domain = "com.kaltura.player.error"
     public static let serverErrorCodeKey = "code"
     public static let serverErrorMessageKey = "message"
     
