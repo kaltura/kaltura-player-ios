@@ -10,7 +10,6 @@ import DownloadToGo
 import PlayKit
 
 public typealias OfflineSelectionOptions = DTGSelectionOptions
-public typealias OfflineItemState = DTGItemState
 
 /// Delegate that will receive download events.
 public protocol OfflineManagerDelegate: class {
@@ -18,7 +17,7 @@ public protocol OfflineManagerDelegate: class {
     func item(id: String, didDownloadData totalBytesDownloaded: Int64, totalBytesEstimated: Int64?)
     
     /// Item has changed state. in case state will be failed, the error will be provided (interupted state could also provide error).
-    func item(id: String, didChangeToState newState: OfflineItemState, error: Error?)
+    func item(id: String, didChangeToState newState: AssetDownloadState, error: Error?)
 }
 
 public enum OfflineManagerError: PKError {
@@ -90,6 +89,12 @@ public enum OfflineManagerError: PKError {
         var item: DTGItem?
         do {
             item = try ContentManager.shared.itemById(itemId)
+            if item?.state == .new {
+                // In case the item is still in the new state then something happened, shouldn't be an item with this state, remove it and create a new one.
+                try ContentManager.shared.removeItem(id: itemId)
+                item = nil
+            }
+            
             if item == nil {
                 item = try ContentManager.shared.addItem(id: itemId, url: mediaSource.contentUrl!)
             }
@@ -110,6 +115,7 @@ public enum OfflineManagerError: PKError {
         DispatchQueue.global().async {
             do {
                 try ContentManager.shared.loadItemMetadata(id: itemId, options: options)
+                
                 PKLog.debug("Item Metadata Loaded")
                 callback(nil, assetInfo)
             } catch {
@@ -183,7 +189,27 @@ public enum OfflineManagerError: PKError {
         return AssetInfo(item: dtgItem)
     }
     
+    public func getLocalPlaybackEntry(assetId: String) -> PKMediaEntry? {
+        guard let playbackURL = try? ContentManager.shared.itemPlaybackUrl(id: assetId) else {
+            PKLog.debug("Can't get local url for \(assetId)")
+            return nil
+        }
+        
+        return localAssetsManager.createLocalMediaEntry(for: assetId, localURL: playbackURL)
+    }
+    
     // MARK: DRM
+    
+    public func getDRMStatus(assetId: String) -> DRMStatus? {
+        guard let url = try? ContentManager.shared.itemPlaybackUrl(id: assetId) else {
+            PKLog.debug("Can't get local url for \(assetId)")
+            return nil
+        }
+        
+        guard let fpsExpirationInfo = localAssetsManager.getLicenseExpirationInfo(location: url) else { return nil }
+        
+        return DRMStatus(fpsExpirationInfo)
+    }
     
     public func renewDrmAssetLicense(mediaEntry: PKMediaEntry) {
         do {
@@ -247,6 +273,6 @@ extension OfflineManager: ContentManagerDelegate {
     }
     
     public func item(id: String, didChangeToState newState: DTGItemState, error: Error?) {
-        offlineManagerDelegate?.item(id: id, didChangeToState: newState, error: error)
+        offlineManagerDelegate?.item(id: id, didChangeToState: AssetDownloadState.getState(dtgItemState: newState), error: error)
     }
 }

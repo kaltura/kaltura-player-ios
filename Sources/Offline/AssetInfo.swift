@@ -21,6 +21,25 @@ import DownloadToGo
         case .outOfSpace: return "Out Of Space"
         }
     }
+    
+    internal static func getState(dtgItemState: DTGItemState) -> AssetDownloadState {
+        switch dtgItemState {
+        case .new, .removed:
+            return AssetDownloadState.new
+        case .metadataLoaded:
+            return AssetDownloadState.prepared
+        case .inProgress:
+            return AssetDownloadState.started
+        case .paused, .interrupted:
+            return AssetDownloadState.paused
+        case .completed:
+            return AssetDownloadState.completed
+        case .failed:
+            return AssetDownloadState.failed
+        case .dbFailure:
+            return AssetDownloadState.outOfSpace
+        }
+    }
 }
 
 @objc public class AssetInfo: NSObject {
@@ -31,22 +50,7 @@ import DownloadToGo
     
     @objc public var state: AssetDownloadState {
         get {
-            switch (downloadItem.state) {
-            case .new, .removed:
-                return AssetDownloadState.new
-            case .metadataLoaded:
-                return AssetDownloadState.prepared
-            case .inProgress:
-                return AssetDownloadState.started
-            case .paused, .interrupted:
-                return AssetDownloadState.paused
-            case .completed:
-                return AssetDownloadState.completed
-            case .failed:
-                return AssetDownloadState.failed
-            case .dbFailure:
-                return AssetDownloadState.outOfSpace
-            }
+            return AssetDownloadState.getState(dtgItemState: downloadItem.state)
         }
     }
     
@@ -58,9 +62,23 @@ import DownloadToGo
         return downloadItem.downloadedSize
     }
     
+    @objc public var progress: Float {
+        if estimatedSize <= 0 { return 0.0 }
+        
+        if estimatedSize > downloadedSize {
+            return Float(downloadedSize) / Float(estimatedSize)
+        } else {
+            return 1.0
+        }
+    }
+    
     private var downloadItem: DTGItem
     
-    init(item: DTGItem) {
+    internal init(item: DTGItem) {
         downloadItem = item
+    }
+    
+    public override var description: String {
+        return super.description + " itemId: \(itemId) state: \(state.description) estimatedSize: \(estimatedSize) downloadedSize: \(downloadedSize)"
     }
 }
