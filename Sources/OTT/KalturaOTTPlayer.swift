@@ -136,14 +136,7 @@ import PlayKitKava
             sessionProvider.ks = playerOptions.ks
         }
         
-        let phoenixMediaProvider = PhoenixMediaProvider()
-        phoenixMediaProvider.set(assetId: options.assetId)
-        phoenixMediaProvider.set(type: options.assetType)
-        phoenixMediaProvider.set(refType: options.assetReferenceType)
-        phoenixMediaProvider.set(playbackContextType: options.playbackContextType)
-        phoenixMediaProvider.set(formats: options.formats)
-        phoenixMediaProvider.set(fileIds: options.fileIds)
-        phoenixMediaProvider.set(networkProtocol: options.networkProtocol)
+        let phoenixMediaProvider = options.mediaProvider()
         phoenixMediaProvider.set(referrer: playerOptions.referrer)
         phoenixMediaProvider.set(sessionProvider: sessionProvider)
         

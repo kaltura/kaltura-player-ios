@@ -88,6 +88,18 @@ public enum KalturaPlayerError: PKError {
     }
     
     /**
+       Set the player's MediaEntry.
+    
+       * Parameters:
+           * media: The media entry.
+           * options: Additional media options. See `MediaOptions`.
+    */
+    @objc public func setMedia(_ media: PKMediaEntry, options: MediaOptions? = nil) {
+        mediaOptions = options
+        mediaEntry = media
+    }
+    
+    /**
         Call in order to prepare the media on the player.
      
         * Note:

@@ -86,18 +86,6 @@ import KalturaNetKit
     // MARK: - Public Methods
     
     /**
-       Set the player's MediaEntry.
-    
-       * Parameters:
-           * media: The media entry.
-           * options: Additional media options. See `MediaOptions`.
-    */
-    @objc public func setMedia(_ media: PKMediaEntry, options: MediaOptions? = nil) {
-        mediaOptions = options
-        mediaEntry = media
-    }
-    
-    /**
         Set up the player's MediaEntry.
      
         * Parameters:

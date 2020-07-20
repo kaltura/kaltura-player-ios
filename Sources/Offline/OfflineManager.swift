@@ -24,6 +24,10 @@ public enum OfflineManagerError: PKError {
     case noMediaSourceToDownload
     case itemCanNotBeAdded(message: String)
     case loadItemMetadataFailed(message: String)
+    case mediaProviderNotRetrieved
+    case mediaProviderError(code:String, message:String)
+    case invalidPKMediaEntry
+    case mediaProviderUnsupported
     
     public static let domain = "com.kaltura.player.offline.error"
     public static let serverErrorCodeKey = "code"
@@ -34,6 +38,10 @@ public enum OfflineManagerError: PKError {
         case .noMediaSourceToDownload: return 8801
         case .itemCanNotBeAdded: return 8802
         case .loadItemMetadataFailed: return 8803
+        case .mediaProviderNotRetrieved: return 8804
+        case .mediaProviderError: return 8805
+        case .invalidPKMediaEntry: return 8806
+        case .mediaProviderUnsupported: return 8807
         }
     }
     
@@ -42,6 +50,10 @@ public enum OfflineManagerError: PKError {
         case .noMediaSourceToDownload: return "No preferred downloadable media source available."
         case .itemCanNotBeAdded(let message): return "The item can't be added: \(message)"
         case .loadItemMetadataFailed(let message): return "Load item metadata failed: \(message)"
+        case .mediaProviderNotRetrieved: return "Fetching the Media Provider from the media options returned with an empty provider."
+        case .mediaProviderError(let code, let message): return "Media Provider Error, code: \(code), \n message: \(message)"
+        case .invalidPKMediaEntry: return "Load media on the provider returned with an empty PKMediaEntry."
+        case .mediaProviderUnsupported: return "The retrieved Media Provider from the media options is not supported."
         }
     }
     
@@ -127,10 +139,6 @@ public enum OfflineManagerError: PKError {
         }
     }
     
-    public func prepareAsset(mediaOptions: MediaOptions, options: OfflineSelectionOptions, callback: @escaping (Error?, AssetInfo?) -> Void) {
-        
-    }
-    
     /**
         Start or resume downloading the asset.
     
@@ -197,8 +205,11 @@ public enum OfflineManagerError: PKError {
         
         return localAssetsManager.createLocalMediaEntry(for: assetId, localURL: playbackURL)
     }
+}
     
-    // MARK: DRM
+// MARK: - DRM
+
+extension OfflineManager {
     
     public func getDRMStatus(assetId: String) -> DRMStatus? {
         guard let url = try? ContentManager.shared.itemPlaybackUrl(id: assetId) else {
@@ -234,10 +245,6 @@ public enum OfflineManagerError: PKError {
         } catch {
             PKLog.error(error.localizedDescription)
         }
-    }
-
-    public func renewDrmAssetLicense(mediaOptions: MediaOptions) {
-        
     }
 }
 
