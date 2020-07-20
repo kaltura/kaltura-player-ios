@@ -63,13 +63,7 @@ import DownloadToGo
     }
     
     @objc public var progress: Float {
-        if estimatedSize <= 0 { return 0.0 }
-        
-        if estimatedSize > downloadedSize {
-            return Float(downloadedSize) / Float(estimatedSize)
-        } else {
-            return 1.0
-        }
+        return downloadItem.completedFraction
     }
     
     private var downloadItem: DTGItem
