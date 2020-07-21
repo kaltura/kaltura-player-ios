@@ -11,19 +11,7 @@ import PlayKitKava
 
 class KavaHelper {
     
-    static func getPluginConfig(ovpPartnerId: Int64, ovpEntryId: String, ks: String?, referrer: String?, playbackContext: String?, analyticsUrl: String?) -> KavaPluginConfig {
-        
-        // TODO: Add a function to the Utils
-        var referrer = referrer ?? ""
-        if referrer.isEmpty == true {
-            referrer = "app://"
-            if let appId = Bundle.main.bundleIdentifier {
-                referrer += appId
-            } else {
-                PKLog.warning("The app's bundle identifier is not set")
-                referrer += "bundleIdentifier_is_empty"
-            }
-        }
+    static func getPluginConfig(ovpPartnerId: Int64, ovpEntryId: String, ks: String?, referrer: String, playbackContext: String?, analyticsUrl: String?) -> KavaPluginConfig {
             
         let clientAppVersion: String = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "BundleVersionMissing"
         let kavaPluginConfig = KavaPluginConfig(partnerId: Int(ovpPartnerId),

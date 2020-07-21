@@ -33,10 +33,14 @@ import PlayKitKava
         * Parameters:
             * partnerId: The OTT Partner ID.
             * serverURL: The OTT Server URL.
+            * referrer:  A custom referrer. Default value, the application bundle id.
     */
-    @objc public static func setup(partnerId: Int64, serverURL: String) {
+    @objc public static func setup(partnerId: Int64, serverURL: String, referrer: String? = nil) {
         KalturaOTTPlayerManager.shared.partnerId = partnerId
         KalturaOTTPlayerManager.shared.serverURL = serverURL
+        if let referrer = referrer, !referrer.isEmpty {
+            KalturaOTTPlayerManager.shared.referrer = referrer
+        }
         
         KalturaOTTPlayerManager.shared.fetchConfiguration()
         
@@ -89,7 +93,7 @@ import PlayKitKava
         let kavaPluginConfig = KavaHelper.getPluginConfig(ovpPartnerId: ovpPartnerId,
                                                           ovpEntryId: ovpEntryId,
                                                           ks: ks,
-                                                          referrer: playerOptions.referrer,
+                                                          referrer: KalturaOTTPlayerManager.shared.referrer,
                                                           playbackContext: mediaOptions.playbackContextType.description,
                                                           analyticsUrl: KalturaOTTPlayerManager.shared.cachedConfigData?.analyticsUrl)
         
@@ -137,7 +141,7 @@ import PlayKitKava
         }
         
         let phoenixMediaProvider = options.mediaProvider()
-        phoenixMediaProvider.set(referrer: playerOptions.referrer)
+        phoenixMediaProvider.set(referrer: KalturaOTTPlayerManager.shared.referrer)
         phoenixMediaProvider.set(sessionProvider: sessionProvider)
         
         phoenixMediaProvider.loadMedia { [weak self] (pkMediaEntry, error) in

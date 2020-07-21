@@ -58,15 +58,7 @@ import KalturaNetKit
         request.setParam(key: "partnerId", value: String(DEFAULT_KAVA_PARTNER_ID))
         request.setParam(key: "entryId", value: DEFAULT_KAVA_ENTRY_ID)
         request.setParam(key: "sessionId", value: self.sessionId)
-        
-        var referrer: String = "app://"
-        if let appId = Bundle.main.bundleIdentifier {
-            referrer += appId
-        } else {
-            PKLog.warning("The app's bundle identifier is not set")
-            referrer += "bundleIdentifier_is_empty"
-        }
-        request.setParam(key: "referrer", value: referrer)
+        request.setParam(key: "referrer", value: KalturaBasicPlayerManager.shared.referrer)
         
         request.setParam(key: "deliveryType", value: "url")
         //request.setParam(key: "playbackType", value: "vod")

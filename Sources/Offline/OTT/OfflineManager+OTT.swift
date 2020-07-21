@@ -18,16 +18,7 @@ extension OfflineManager {
                                                     partnerId: KalturaOTTPlayerManager.shared.partnerId,
                                                     ks: mediaOptions.ks)
         
-        // Add a function to the Utils
-        var referrer: String = "app://"
-        if let appId = Bundle.main.bundleIdentifier {
-            referrer += appId
-        } else {
-            PKLog.warning("The app's bundle identifier is not set")
-            referrer += "bundleIdentifier_is_empty"
-        }
-        
-        phoenixMediaProvider.set(referrer: referrer)
+        phoenixMediaProvider.set(referrer: KalturaOTTPlayerManager.shared.referrer)
         phoenixMediaProvider.set(sessionProvider: sessionProvider)
         
         phoenixMediaProvider.loadMedia { (pkMediaEntry, error) in

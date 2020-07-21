@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import PlayKitUtils
 
 protocol KalturaPlayerOffline {
     static func setup()
@@ -22,8 +23,10 @@ struct ConfigData {
 class KalturaPlayerManager: NSObject {
     
     let domain = "com.kaltura.player"
+    var referrer: String
     
     internal override init() {
+        referrer = PKUtils.referrer
         super.init()
         
         registerKnownPlugins()
