@@ -91,7 +91,7 @@ public enum OfflineManagerError: PKError {
         
         let itemId = mediaEntry.id
         guard let mediaSource = localAssetsManager.getPreferredDownloadableMediaSource(for: mediaEntry) else {
-            PKLog.error("No preferred downloadable media source available.")
+            PKLog.error("No downloadable media source available.")
             callback(OfflineManagerError.noMediaSourceToDownload, nil)
             return
         }
