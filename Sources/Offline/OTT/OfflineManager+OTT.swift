@@ -60,7 +60,7 @@ extension OfflineManager {
 
 extension OfflineManager {
     
-    public func renewDrmAssetLicense(mediaOptions: OTTMediaOptions) {
+    public func renewAssetDRMLicense(mediaOptions: OTTMediaOptions) {
         retrieveMediaEntry(mediaOptions: mediaOptions) { [weak self] (error, pkMediaEntry) in
             guard let self = self else { return }
             
@@ -69,7 +69,7 @@ extension OfflineManager {
                 return
             }
             
-            self.renewDrmAssetLicense(mediaEntry: mediaEntry)
+            self.renewAssetDRMLicense(mediaEntry: mediaEntry)
         }
     }
 }

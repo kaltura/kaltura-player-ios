@@ -78,7 +78,7 @@ import DownloadToGo
         downloadItem = item
     }
     
-    public override var description: String {
+    @objc public override var description: String {
         return super.description + " itemId: \(itemId) state: \(state.description) estimatedSize: \(estimatedSize) downloadedSize: \(downloadedSize)"
     }
 }

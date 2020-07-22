@@ -28,6 +28,9 @@ public enum OfflineManagerError: PKError {
     case mediaProviderError(code:String, message:String)
     case invalidPKMediaEntry
     case mediaProviderUnsupported
+    case startAssetError(message: String)
+    case pauseAssetError(message: String)
+    case removeAssetError(message: String)
     
     public static let domain = "com.kaltura.player.offline.error"
     public static let serverErrorCodeKey = "code"
@@ -42,6 +45,9 @@ public enum OfflineManagerError: PKError {
         case .mediaProviderError: return 8805
         case .invalidPKMediaEntry: return 8806
         case .mediaProviderUnsupported: return 8807
+        case .startAssetError: return 8808
+        case .pauseAssetError: return 8809
+        case .removeAssetError: return 8810
         }
     }
     
@@ -54,6 +60,9 @@ public enum OfflineManagerError: PKError {
         case .mediaProviderError(let code, let message): return "Media Provider Error, code: \(code), \n message: \(message)"
         case .invalidPKMediaEntry: return "Load media on the provider returned with an empty PKMediaEntry."
         case .mediaProviderUnsupported: return "The retrieved Media Provider from the media options is not supported."
+        case .startAssetError(let message): return "Attempt to start the asset failed with the following: \(message)"
+        case .pauseAssetError(let message): return "Attempt to pause the asset failed with the following: \(message)"
+        case .removeAssetError(let message): return "Attempt to remove the asset failed with the following: \(message)"
         }
     }
     
@@ -145,11 +154,12 @@ public enum OfflineManagerError: PKError {
         * Parameters:
             * assetId: The asset's id.
     */
-    public func startAssetDownload(assetId: String) {
+    public func startAssetDownload(assetId: String) throws {
         do {
             try ContentManager.shared.startItem(id: assetId)
         } catch {
             PKLog.error(error.localizedDescription)
+            throw OfflineManagerError.startAssetError(message: error.localizedDescription)
         }
     }
     
@@ -159,11 +169,12 @@ public enum OfflineManagerError: PKError {
         * Parameters:
             * assetId: The asset's id.
     */
-    public func pauseAssetDownload(assetId: String) {
+    public func pauseAssetDownload(assetId: String) throws {
         do {
             try ContentManager.shared.pauseItem(id: assetId)
         } catch {
             PKLog.error(error.localizedDescription)
+            throw OfflineManagerError.pauseAssetError(message: error.localizedDescription)
         }
     }
     
@@ -173,21 +184,22 @@ public enum OfflineManagerError: PKError {
         * Parameters:
             * assetId: The asset's id.
     */
-    public func removeAssetDownload(assetId: String) {
+    public func removeAssetDownload(assetId: String) throws {
         do {
-            guard let url = try ContentManager.shared.itemPlaybackUrl(id: assetId) else {
+            guard let url = try? ContentManager.shared.itemPlaybackUrl(id: assetId) else {
                 PKLog.error("Can't get the local url in order to remove the downloaded asset.")
-                return
+                throw OfflineManagerError.removeAssetError(message: "Can't get the local url in order to remove the downloaded asset.")
             }
             
             localAssetsManager.unregisterDownloadedAsset(location: url, callback: { (error) in
                 PKLog.debug("Unregister complete.")
             })
             
-            try? ContentManager.shared.removeItem(id: assetId)
+            try ContentManager.shared.removeItem(id: assetId)
             
         } catch {
             PKLog.error(error.localizedDescription)
+            throw OfflineManagerError.removeAssetError(message: error.localizedDescription)
         }
     }
     
@@ -222,7 +234,7 @@ extension OfflineManager {
         return DRMStatus(fpsExpirationInfo)
     }
     
-    public func renewDrmAssetLicense(mediaEntry: PKMediaEntry) {
+    public func renewAssetDRMLicense(mediaEntry: PKMediaEntry) {
         do {
             guard let url = try ContentManager.shared.itemPlaybackUrl(id: mediaEntry.id) else {
                 PKLog.error("Can't get local url to renew DRM License.")
