@@ -283,7 +283,7 @@ extension OfflineManager: KalturaPlayerOffline {
             }
             
             // Resume all interrupted downloads that were stopped in progress
-            try ContentManager.shared.startItems(inStates: .inProgress)
+            try ContentManager.shared.startItems(inStates: .inProgress, .interrupted)
         } catch {
             // Handle error here
             PKLog.error(error.localizedDescription)
