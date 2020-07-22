@@ -60,16 +60,19 @@ extension OfflineManager {
 
 extension OfflineManager {
     
-    public func renewAssetDRMLicense(mediaOptions: OTTMediaOptions) {
+    public func renewAssetDRMLicense(mediaOptions: OTTMediaOptions, callback: @escaping (Error?) -> Void) {
         retrieveMediaEntry(mediaOptions: mediaOptions) { [weak self] (error, pkMediaEntry) in
             guard let self = self else { return }
             
             guard let mediaEntry = pkMediaEntry else {
                 PKLog.error("The PKMediaEntry could not be retrieved, error: \(String(describing: error))")
+                callback(OfflineManagerError.renewAssetDRMLicenseError(message: error.debugDescription))
                 return
             }
             
-            self.renewAssetDRMLicense(mediaEntry: mediaEntry)
+            self.renewAssetDRMLicense(mediaEntry: mediaEntry) { (error) in
+                callback(error)
+            }
         }
     }
 }

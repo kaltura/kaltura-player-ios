@@ -12,12 +12,12 @@ import PlayKit
 public typealias OfflineSelectionOptions = DTGSelectionOptions
 
 /// Delegate that will receive download events.
-public protocol OfflineManagerDelegate: class {
+@objc public protocol OfflineManagerDelegate: class {
     /// Some data was downloaded for the item.
-    func item(id: String, didDownloadData totalBytesDownloaded: Int64, totalBytesEstimated: Int64?, completedFraction: Float)
+    @objc func item(id: String, didDownloadData totalBytesDownloaded: Int64, totalBytesEstimated: Int64, completedFraction: Float)
     
     /// Item has changed state. in case state will be failed, the error will be provided (interupted state could also provide error).
-    func item(id: String, didChangeToState newState: AssetDownloadState, error: Error?)
+    @objc func item(id: String, didChangeToState newState: AssetDownloadState, error: Error?)
 }
 
 public enum OfflineManagerError: PKError {
@@ -31,6 +31,7 @@ public enum OfflineManagerError: PKError {
     case startAssetError(message: String)
     case pauseAssetError(message: String)
     case removeAssetError(message: String)
+    case renewAssetDRMLicenseError(message: String)
     
     public static let domain = "com.kaltura.player.offline.error"
     public static let serverErrorCodeKey = "code"
@@ -48,6 +49,7 @@ public enum OfflineManagerError: PKError {
         case .startAssetError: return 8808
         case .pauseAssetError: return 8809
         case .removeAssetError: return 8810
+        case .renewAssetDRMLicenseError: return 8811
         }
     }
     
@@ -63,6 +65,7 @@ public enum OfflineManagerError: PKError {
         case .startAssetError(let message): return "Attempt to start the asset failed with the following: \(message)"
         case .pauseAssetError(let message): return "Attempt to pause the asset failed with the following: \(message)"
         case .removeAssetError(let message): return "Attempt to remove the asset failed with the following: \(message)"
+        case .renewAssetDRMLicenseError(let message): return "Attempt to renew the asset DRM License failed with the following: \(message)"
         }
     }
     
@@ -79,7 +82,7 @@ public enum OfflineManagerError: PKError {
     @objc public static let shared = OfflineManager()
     @objc public var localAssetsManager = LocalAssetsManager.managerWithDefaultDataStore()
     
-    public weak var offlineManagerDelegate: OfflineManagerDelegate?
+    @objc public weak var offlineManagerDelegate: OfflineManagerDelegate?
 
     private override init() {
         super.init()
@@ -92,7 +95,7 @@ public enum OfflineManagerError: PKError {
     
     // MARK: - Public Methods
     
-    public func setDefaultAudioBitrateEstimation(bitrate: Int) {
+    @objc public func setDefaultAudioBitrateEstimation(bitrate: Int) {
         ContentManager.shared.setDefaultAudioBitrateEstimation(bitrate: bitrate)
     }
     
@@ -154,7 +157,7 @@ public enum OfflineManagerError: PKError {
         * Parameters:
             * assetId: The asset's id.
     */
-    public func startAssetDownload(assetId: String) throws {
+    @objc public func startAssetDownload(assetId: String) throws {
         do {
             try ContentManager.shared.startItem(id: assetId)
         } catch {
@@ -169,7 +172,7 @@ public enum OfflineManagerError: PKError {
         * Parameters:
             * assetId: The asset's id.
     */
-    public func pauseAssetDownload(assetId: String) throws {
+    @objc public func pauseAssetDownload(assetId: String) throws {
         do {
             try ContentManager.shared.pauseItem(id: assetId)
         } catch {
@@ -184,7 +187,7 @@ public enum OfflineManagerError: PKError {
         * Parameters:
             * assetId: The asset's id.
     */
-    public func removeAssetDownload(assetId: String) throws {
+    @objc public func removeAssetDownload(assetId: String) throws {
         do {
             guard let url = try? ContentManager.shared.itemPlaybackUrl(id: assetId) else {
                 PKLog.error("Can't get the local url in order to remove the downloaded asset.")
@@ -203,13 +206,13 @@ public enum OfflineManagerError: PKError {
         }
     }
     
-    public func getAssetInfo(assetId: String) -> AssetInfo? {
+    @objc public func getAssetInfo(assetId: String) -> AssetInfo? {
         guard let dtgItem = try? ContentManager.shared.itemById(assetId) else { return nil }
         
         return AssetInfo(item: dtgItem)
     }
     
-    public func getLocalPlaybackEntry(assetId: String) -> PKMediaEntry? {
+    @objc public func getLocalPlaybackEntry(assetId: String) -> PKMediaEntry? {
         guard let playbackURL = try? ContentManager.shared.itemPlaybackUrl(id: assetId) else {
             PKLog.debug("Can't get local url for \(assetId)")
             return nil
@@ -223,7 +226,7 @@ public enum OfflineManagerError: PKError {
 
 extension OfflineManager {
     
-    public func getDRMStatus(assetId: String) -> DRMStatus? {
+    @objc public func getDRMStatus(assetId: String) -> DRMStatus? {
         guard let url = try? ContentManager.shared.itemPlaybackUrl(id: assetId) else {
             PKLog.debug("Can't get local url for \(assetId)")
             return nil
@@ -234,28 +237,33 @@ extension OfflineManager {
         return DRMStatus(fpsExpirationInfo)
     }
     
-    public func renewAssetDRMLicense(mediaEntry: PKMediaEntry) {
+    @objc public func renewAssetDRMLicense(mediaEntry: PKMediaEntry, callback: @escaping (Error?) -> Void) {
         do {
             guard let url = try ContentManager.shared.itemPlaybackUrl(id: mediaEntry.id) else {
                 PKLog.error("Can't get local url to renew DRM License.")
+                callback(OfflineManagerError.renewAssetDRMLicenseError(message: "Can't get local url to renew DRM License."))
                 return
             }
             
             guard let source = localAssetsManager.getPreferredDownloadableMediaSource(for: mediaEntry) else {
                 PKLog.error("No valid source in order to renew DRM License.")
+                callback(OfflineManagerError.renewAssetDRMLicenseError(message: "No valid source in order to renew DRM License."))
                 return
             }
                         
             localAssetsManager.renewDownloadedAsset(location: url, mediaSource: source) { (error) in
                 if let error = error {
-                    PKLog.error("Renew DRM License failed with error: \(error)")
+                    PKLog.error("Renew DRM License failed with error: \(error.localizedDescription)")
+                    callback(OfflineManagerError.renewAssetDRMLicenseError(message: error.localizedDescription))
                 } else {
                     PKLog.debug("Renew DRM License completed.")
+                    callback(nil)
                 }
             }
             
         } catch {
             PKLog.error(error.localizedDescription)
+            callback(OfflineManagerError.renewAssetDRMLicenseError(message: error.localizedDescription))
         }
     }
 }
@@ -264,7 +272,7 @@ extension OfflineManager {
 
 extension OfflineManager: KalturaPlayerOffline {
 
-    static func setup() {
+    internal static func setup() {
         do {
             // Setup the content manager.
             try ContentManager.shared.setup()
@@ -288,7 +296,7 @@ extension OfflineManager: KalturaPlayerOffline {
 extension OfflineManager: ContentManagerDelegate {
     
     public func item(id: String, didDownloadData totalBytesDownloaded: Int64, totalBytesEstimated: Int64?, completedFraction: Float) {
-        offlineManagerDelegate?.item(id: id, didDownloadData: totalBytesDownloaded, totalBytesEstimated: totalBytesEstimated, completedFraction: completedFraction)
+        offlineManagerDelegate?.item(id: id, didDownloadData: totalBytesDownloaded, totalBytesEstimated: totalBytesEstimated ?? 0, completedFraction: completedFraction)
     }
     
     public func item(id: String, didChangeToState newState: DTGItemState, error: Error?) {
