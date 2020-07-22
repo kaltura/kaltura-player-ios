@@ -14,7 +14,7 @@ public typealias OfflineSelectionOptions = DTGSelectionOptions
 /// Delegate that will receive download events.
 public protocol OfflineManagerDelegate: class {
     /// Some data was downloaded for the item.
-    func item(id: String, didDownloadData totalBytesDownloaded: Int64, totalBytesEstimated: Int64?)
+    func item(id: String, didDownloadData totalBytesDownloaded: Int64, totalBytesEstimated: Int64?, completedFraction: Float)
     
     /// Item has changed state. in case state will be failed, the error will be provided (interupted state could also provide error).
     func item(id: String, didChangeToState newState: AssetDownloadState, error: Error?)
@@ -287,8 +287,8 @@ extension OfflineManager: KalturaPlayerOffline {
 
 extension OfflineManager: ContentManagerDelegate {
     
-    public func item(id: String, didDownloadData totalBytesDownloaded: Int64, totalBytesEstimated: Int64?) {
-        offlineManagerDelegate?.item(id: id, didDownloadData: totalBytesDownloaded, totalBytesEstimated: totalBytesEstimated)
+    public func item(id: String, didDownloadData totalBytesDownloaded: Int64, totalBytesEstimated: Int64?, completedFraction: Float) {
+        offlineManagerDelegate?.item(id: id, didDownloadData: totalBytesDownloaded, totalBytesEstimated: totalBytesEstimated, completedFraction: completedFraction)
     }
     
     public func item(id: String, didChangeToState newState: DTGItemState, error: Error?) {
