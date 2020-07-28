@@ -9,17 +9,60 @@ import Foundation
 import DownloadToGo
 import PlayKit
 
+/**
+    Selection options for the specific media to prepare for the download process.
+ 
+    The default behavior is as following:
+     - **Video -** Select the track most suitable for the current device (codec, width, height).
+     - **Audio -** Select the default, as specified by the HLS playlist.
+     - **Subtitles -** Select nothing.
+ */
 public typealias OfflineSelectionOptions = DTGSelectionOptions
 
 /// Delegate that will receive download events.
 @objc public protocol OfflineManagerDelegate: class {
-    /// Some data was downloaded for the item.
+    /**
+        Some data was downloaded for the item.
+     
+        * Parameters:
+            * id: The item's id.
+            * totalBytesDownloaded: The total bytes downloaded for that item.
+            * totalBytesEstimated: The total bytes estimated for that item.
+            * completedFraction: The completed fraction for that item, a value from 0 to 1.
+     */
     @objc func item(id: String, didDownloadData totalBytesDownloaded: Int64, totalBytesEstimated: Int64, completedFraction: Float)
     
-    /// Item has changed state. in case state will be failed, the error will be provided (interupted state could also provide error).
+    /**
+        The item has changed state.
+     
+        In case of a failed state, the error will be provided.
+     
+        * Parameters:
+            * id: The item's id.
+            * newState: The new state of the item. See `AssetDownloadState` for more details.
+            * error: An `Error` if an error has occurred, otherwise nil.
+    */
     @objc func item(id: String, didChangeToState newState: AssetDownloadState, error: Error?)
 }
 
+/**
+    Errors that can occur in the `OfflineManager` in various places will be represented as an `OfflineManagerError`.
+
+    Each error has a `code` and an `errorDescription`.
+    
+    *Available errors:*
+    * noMediaSourceToDownload
+    * itemCanNotBeAdded
+    * loadItemMetadataFailed
+    * mediaProviderNotRetrieved
+    * mediaProviderError
+    * invalidPKMediaEntry
+    * mediaProviderUnsupported
+    * startAssetError
+    * pauseAssetError
+    * removeAssetError
+    * renewAssetDRMLicenseError
+ */
 public enum OfflineManagerError: PKError {
     case noMediaSourceToDownload
     case itemCanNotBeAdded(message: String)
@@ -71,17 +114,31 @@ public enum OfflineManagerError: PKError {
     
     public var userInfo: [String: Any] {
         switch self {
+        case .mediaProviderError(let code, let message):
+            return [OfflineManagerError.serverErrorCodeKey: code,
+                    OfflineManagerError.serverErrorMessageKey: message]
         default:
             return [String: Any]()
         }
     }
 }
 
+/**
+    The `OfflineManager` provides you with a way to download medias and play them locally.
+    It provides a shared instance in order to perform all actions needed on the media asset.
+ 
+     **Example:**
+ 
+         try? OfflineManager.shared.startAssetDownload(assetId: "123456")
+ */
 @objc public class OfflineManager: NSObject {
     
+    /// This is the shared instance of the `OfflineManager` that should be used.
     @objc public static let shared = OfflineManager()
+    /// This is the `LocalAssetsManager`, a default Data Store is used.
     @objc public var localAssetsManager = LocalAssetsManager.managerWithDefaultDataStore()
     
+    /// The delegate to receive the download events. See `OfflineManagerDelegate` for more info.
     @objc public weak var offlineManagerDelegate: OfflineManagerDelegate?
 
     private override init() {
@@ -95,11 +152,35 @@ public enum OfflineManagerError: PKError {
     
     // MARK: - Public Methods
     
+    /**
+        Set the default audio bitrate for size-estimation purposes. Defaults to 64000.
+     
+        * Parameters:
+            * bitrate: A desired bitrate.
+     */
     @objc public func setDefaultAudioBitrateEstimation(bitrate: Int) {
         ContentManager.shared.setDefaultAudioBitrateEstimation(bitrate: bitrate)
     }
     
-    public func prepareAsset(mediaEntry: PKMediaEntry, options: OfflineSelectionOptions, callback: @escaping (Error?, AssetInfo?) -> Void) {
+    /**
+        Call this function to prepare the asset in order to start downloading the media.
+            
+        The function will fetch the preferred `PKMediaSource` for download purposes, taking into account the capabilities of the device. If a media source was not retrieved, an `OfflineManagerError.noMediaSourceToDownload` is returned.
+     
+        The item will be added to the ContentManager, in case of an error, an `OfflineManagerError.itemCanNotBeAdded` with the error message will be returned.
+     
+        The item metadata will be loaded with the `OfflineSelectionOptions` provided. In case of an error an `OfflineManagerError.loadItemMetadataFailed` with the error message will be returned.
+     
+        If all has been successful, an `AssetInfo` object will be returned.
+     
+        * Parameters:
+            * mediaEntry: The `PKMediaEntry` in order to retrieve the media source. See `PKMediaEntry` for more details.
+            * options: The preferred options for selection. See `OfflineSelectionOptions` for more details.
+            * callback:
+            * error: An `OfflineManagerError` if an error has occurred, otherwise nil. See `OfflineManagerError` for more details.
+            * assetInfo: The asset info object, otherwise nil. See `AssetInfo` for more details.
+     */
+    public func prepareAsset(mediaEntry: PKMediaEntry, options: OfflineSelectionOptions, callback: @escaping (_ error: Error?, _ assetInfo: AssetInfo?) -> Void) {
         
         let itemId = mediaEntry.id
         guard let mediaSource = localAssetsManager.getPreferredDownloadableMediaSource(for: mediaEntry) else {
@@ -153,6 +234,8 @@ public enum OfflineManagerError: PKError {
     
     /**
         Start or resume downloading the asset.
+     
+        In case of an error, an `OfflineManagerError.startAssetError` with the error message will be thrown.
     
         * Parameters:
             * assetId: The asset's id.
@@ -168,6 +251,8 @@ public enum OfflineManagerError: PKError {
     
     /**
         Pause downloading the asset.
+     
+        In case of an error, an `OfflineManagerError.pauseAssetError` with the error message will be thrown.
     
         * Parameters:
             * assetId: The asset's id.
@@ -183,6 +268,8 @@ public enum OfflineManagerError: PKError {
     
     /**
         Remove the asset with all it's data.
+     
+        In case of an error, an `OfflineManagerError.removeAssetError` with the error message will be thrown.
     
         * Parameters:
             * assetId: The asset's id.
@@ -206,12 +293,28 @@ public enum OfflineManagerError: PKError {
         }
     }
     
+    /**
+        This function will fetch for the item by the given id and return an `AssetInfo` object.
+     
+        * Parameters:
+            * assetId: The asset's id.
+     
+        * Returns: An `AssetInfo` if the item was found, nil otherwise.
+     */
     @objc public func getAssetInfo(assetId: String) -> AssetInfo? {
         guard let dtgItem = try? ContentManager.shared.itemById(assetId) else { return nil }
         
         return AssetInfo(item: dtgItem)
     }
     
+    /**
+        This function will fetch for the item by the given id and return the local `PKMediaEntry`.
+     
+        * Parameters:
+            * assetId: The asset's id.
+     
+        * Returns: A `PKMediaEntry` if the local item was found, nil otherwise.
+     */
     @objc public func getLocalPlaybackEntry(assetId: String) -> PKMediaEntry? {
         guard let playbackURL = try? ContentManager.shared.itemPlaybackUrl(id: assetId) else {
             PKLog.debug("Can't get local url for \(assetId)")
@@ -226,6 +329,14 @@ public enum OfflineManagerError: PKError {
 
 extension OfflineManager {
     
+    /**
+        This function will fetch for the item by the given id and return its `DRMStatus` if available.
+     
+        * Parameters:
+            * assetId: The asset's id.
+     
+        * Returns: A `DRMStatus` if the item was found and has DRM data, nil otherwise.
+     */
     @objc public func getDRMStatus(assetId: String) -> DRMStatus? {
         guard let url = try? ContentManager.shared.itemPlaybackUrl(id: assetId) else {
             PKLog.debug("Can't get local url for \(assetId)")
@@ -237,7 +348,17 @@ extension OfflineManager {
         return DRMStatus(fpsExpirationInfo)
     }
     
-    @objc public func renewAssetDRMLicense(mediaEntry: PKMediaEntry, callback: @escaping (Error?) -> Void) {
+    /**
+        Renew the asset DRM license.
+     
+        In case of an error, an `OfflineManagerError.renewAssetDRMLicenseError` with the error message will be returned.
+     
+        * Parameters:
+            * mediaEntry: The mediaEntry in order to renew the DRM License.
+            * callback:
+            * error: An `OfflineManagerError` if an error has occurred, otherwise nil. See `OfflineManagerError` for more details.
+     */
+    @objc public func renewAssetDRMLicense(mediaEntry: PKMediaEntry, callback: @escaping (_ error: Error?) -> Void) {
         do {
             guard let url = try ContentManager.shared.itemPlaybackUrl(id: mediaEntry.id) else {
                 PKLog.error("Can't get local url to renew DRM License.")
@@ -271,7 +392,13 @@ extension OfflineManager {
 // MARK: - KalturaPlayerOffline
 
 extension OfflineManager: KalturaPlayerOffline {
-
+    
+    /**
+        This function will be called automatically upon creation of the KalturaPlayerManager.
+     
+        It calls the `ContentManager` for setup and then start.
+        After that a call to resume the `inProgress` and `interrupted` tasks is performed.
+     */
     internal static func setup() {
         do {
             // Setup the content manager.
