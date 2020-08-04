@@ -12,7 +12,7 @@ public enum KalturaPlayerError: PKError {
     case mediaProviderError(code:String, message:String)
     case invalidPKMediaEntry
     
-    public static let domain = "com.kaltura.ott.player.error"
+    public static let domain = "com.kaltura.player.error"
     public static let serverErrorCodeKey = "code"
     public static let serverErrorMessageKey = "message"
     
@@ -88,6 +88,18 @@ public enum KalturaPlayerError: PKError {
     }
     
     /**
+       Set the player's MediaEntry.
+    
+       * Parameters:
+           * media: The media entry.
+           * options: Additional media options. See `MediaOptions`.
+    */
+    @objc public func setMedia(_ media: PKMediaEntry, options: MediaOptions? = nil) {
+        mediaOptions = options
+        mediaEntry = media
+    }
+    
+    /**
         Call in order to prepare the media on the player.
      
         * Note:
@@ -102,7 +114,7 @@ public enum KalturaPlayerError: PKError {
         shouldPrepare = false
         // Create media config
         let mediaConfig: MediaConfig
-        if let startTime = mediaOptions?.startTime {
+        if let startTime = mediaOptions?.startTime, startTime != TimeInterval.nan {
             mediaConfig = MediaConfig(mediaEntry: mediaEntry, startTime: startTime)
         } else {
             mediaConfig = MediaConfig(mediaEntry: mediaEntry)

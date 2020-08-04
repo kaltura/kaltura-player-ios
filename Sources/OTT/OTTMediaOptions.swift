@@ -18,4 +18,17 @@ import PlayKitProviders
     @objc public var fileIds: [String]?
     @objc public var playbackContextType: PlaybackContextType = .unset
     @objc public var networkProtocol: String?
+    
+    internal func mediaProvider() -> PhoenixMediaProvider {
+        let phoenixMediaProvider = PhoenixMediaProvider()
+        phoenixMediaProvider.set(assetId: assetId)
+        phoenixMediaProvider.set(type: assetType)
+        phoenixMediaProvider.set(refType: assetReferenceType)
+        phoenixMediaProvider.set(formats: formats)
+        phoenixMediaProvider.set(fileIds: fileIds)
+        phoenixMediaProvider.set(playbackContextType: playbackContextType)
+        phoenixMediaProvider.set(networkProtocol: networkProtocol)
+        
+        return phoenixMediaProvider
+    }
 }

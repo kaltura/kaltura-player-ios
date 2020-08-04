@@ -50,11 +50,6 @@ import PlayKit
      */
     @objc public var ks: String?
     
-    /**
-        Set up the player with a referrer.
-     */
-    @objc public var referrer: String?
-    
     // MARK: -
     
     @objc public override init() {

@@ -33,10 +33,14 @@ import PlayKitKava
         * Parameters:
             * partnerId: The OTT Partner ID.
             * serverURL: The OTT Server URL.
+            * referrer:  A custom referrer. Default value, the application bundle id.
     */
-    @objc public static func setup(partnerId: Int64, serverURL: String) {
+    @objc public static func setup(partnerId: Int64, serverURL: String, referrer: String? = nil) {
         KalturaOTTPlayerManager.shared.partnerId = partnerId
         KalturaOTTPlayerManager.shared.serverURL = serverURL
+        if let referrer = referrer, !referrer.isEmpty {
+            KalturaOTTPlayerManager.shared.referrer = referrer
+        }
         
         KalturaOTTPlayerManager.shared.fetchConfiguration()
         
@@ -89,7 +93,7 @@ import PlayKitKava
         let kavaPluginConfig = KavaHelper.getPluginConfig(ovpPartnerId: ovpPartnerId,
                                                           ovpEntryId: ovpEntryId,
                                                           ks: ks,
-                                                          referrer: playerOptions.referrer,
+                                                          referrer: KalturaOTTPlayerManager.shared.referrer,
                                                           playbackContext: mediaOptions.playbackContextType.description,
                                                           analyticsUrl: KalturaOTTPlayerManager.shared.cachedConfigData?.analyticsUrl)
         
@@ -117,17 +121,18 @@ import PlayKitKava
     /**
         Loads the media with the provided media options.
         
-        Will set the MediaEntry and automatically prepare the media in case the `PlayerOptions` autoPlay or preload is set to true, which is the default value.
+        Will set the MediaEntry and automatically prepare the media in case the `PlayerOptions` autoPlay or preload is set to true, which is the default value. Call prepare manually in case the autoPlay and preload was set to false.
         
         In case an error occurred retrieving the media from the provider, the error will return in the callback function.
      
-        Kava and Phoenix Analytics is updated automaticlly.
+        Kava and Phoenix Analytics is updated automatically.
         
         * Parameters:
             * options: The media options. See `OTTMediaOptions` for more details.
-            * callback: A callback function to observe if an error has occurred, or in case prepare needs to be called manually.
+            * callback:
+            * error: A `KalturaPlayerError` in case of an issue. See `KalturaPlayerError` for more details.
      */
-    @objc public func loadMedia(options: OTTMediaOptions, callback: @escaping (Error?) -> Void) {
+    @objc public func loadMedia(options: OTTMediaOptions, callback: @escaping (_ error: Error?) -> Void) {
         ottMediaOptions = options
         
         if options.ks?.isEmpty == false {
@@ -136,15 +141,8 @@ import PlayKitKava
             sessionProvider.ks = playerOptions.ks
         }
         
-        let phoenixMediaProvider = PhoenixMediaProvider()
-        phoenixMediaProvider.set(assetId: options.assetId)
-        phoenixMediaProvider.set(type: options.assetType)
-        phoenixMediaProvider.set(refType: options.assetReferenceType)
-        phoenixMediaProvider.set(playbackContextType: options.playbackContextType)
-        phoenixMediaProvider.set(formats: options.formats)
-        phoenixMediaProvider.set(fileIds: options.fileIds)
-        phoenixMediaProvider.set(networkProtocol: options.networkProtocol)
-        phoenixMediaProvider.set(referrer: playerOptions.referrer)
+        let phoenixMediaProvider = options.mediaProvider()
+        phoenixMediaProvider.set(referrer: KalturaOTTPlayerManager.shared.referrer)
         phoenixMediaProvider.set(sessionProvider: sessionProvider)
         
         phoenixMediaProvider.loadMedia { [weak self] (pkMediaEntry, error) in

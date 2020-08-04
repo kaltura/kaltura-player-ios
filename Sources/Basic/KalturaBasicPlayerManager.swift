@@ -14,6 +14,4 @@ class KalturaBasicPlayerManager: KalturaPlayerManager {
     private override init() {
         super.init()
     }
-    
-
 }

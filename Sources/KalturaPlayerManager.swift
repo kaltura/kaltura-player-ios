@@ -6,6 +6,11 @@
 //
 
 import Foundation
+import PlayKitUtils
+
+protocol KalturaPlayerOffline {
+    static func setup()
+}
 
 struct ConfigData {
     var analyticsUrl: String
@@ -18,11 +23,14 @@ struct ConfigData {
 class KalturaPlayerManager: NSObject {
     
     let domain = "com.kaltura.player"
+    var referrer: String
     
     internal override init() {
+        referrer = PKUtils.referrer
         super.init()
         
         registerKnownPlugins()
+        setupOfflineIfExists()
     }
     
     // MARK: - Configuration Data
@@ -91,5 +99,13 @@ class KalturaPlayerManager: NSObject {
     
     private func registerKnownPlugins() {
         KnownPlugins.registerAllPlugins()
+    }
+    
+    // MARK: - Offline
+    
+    private func setupOfflineIfExists() {
+        if let offlineManagerClass = NSClassFromString("KalturaPlayer.OfflineManager") as? KalturaPlayerOffline.Type {
+            offlineManagerClass.setup()
+        }
     }
 }
