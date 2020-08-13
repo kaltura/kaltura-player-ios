@@ -9,7 +9,6 @@ import Foundation
 import PlayKit
 import PlayKitProviders
 import PlayKitKava
-//import PlayKitUtils
 
 @objc public class KalturaOTTPlayer: KalturaPlayer {
 
@@ -51,14 +50,14 @@ import PlayKitKava
     /**
        A Kaltura Player for OTT Clients. Kava and Phoenix Analytics embeded.
     
-       Create the player options, `OTTPlayerOptions`, and pass it to the `KalturaOTTPlayer`.
-       Check the `OTTPlayerOptions` for more info regarding the available options and defaults.
+       Create the player options, `PlayerOptions`, and pass it to the `KalturaOTTPlayer`.
+       Check the `PlayerOptions` for more info regarding the available options and defaults.
        Create a `KalturaPlayerView` in the code or in the xib and pass it to the `KalturaOTTPlayer`.
        
        **Example:**
     
-           let ottPlayerOptions = OTTPlayerOptions()
-           let kalturaOTTPlayer = KalturaOTTPlayer(options: ottPlayerOptions)
+           let playerOptions = PlayerOptions()
+           let kalturaOTTPlayer = KalturaOTTPlayer(options: playerOptions)
            kalturaOTTPlayer.view = kalturaPlayerView
     
        * Parameters:

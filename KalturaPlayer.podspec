@@ -31,6 +31,16 @@ Pod::Spec.new do |s|
     sp.dependency 'PlayKitKava', '~> 1.5'
     
   end
+
+  s.subspec 'OVP' do |sp|
+    sp.source_files = 'Sources/OVP/*', 'Sources/Common'
+    sp.resources = 'Sources/OVP/*.xcdatamodeld'
+    
+    sp.dependency 'KalturaPlayer/Core'
+    sp.dependency 'PlayKitProviders', '~> 1.6'
+    sp.dependency 'PlayKitKava', '~> 1.5'
+    
+  end
   
   s.subspec 'Offline' do |sp|
     sp.source_files = 'Sources/Offline/*'
@@ -44,6 +54,13 @@ Pod::Spec.new do |s|
 
     sp.dependency 'KalturaPlayer/Offline'
     sp.dependency 'KalturaPlayer/OTT'
+  end
+
+  s.subspec 'Offline_OVP' do |sp|
+    sp.source_files =  'Sources/Offline/OVP/*'
+
+    sp.dependency 'KalturaPlayer/Offline'
+    sp.dependency 'KalturaPlayer/OVP'
   end
   
   s.default_subspec = 'Core'
