@@ -33,8 +33,6 @@ class KalturaOTTPlayerManager: KalturaPlayerManager {
         
         return ConfigData(analyticsUrl: cachedConfig.analyticsUrl,
                           ovpPartnerId: cachedConfig.ovpPartnerId,
-                          ovpServiceUrl: cachedConfig.ovpServiceUrl,
-                          uiConfId: cachedConfig.uiConfId,
                           createdDate: cachedConfig.createdDate)
     }
     
@@ -101,8 +99,6 @@ class KalturaOTTPlayerManager: KalturaPlayerManager {
                 
                 let configData = ConfigData(analyticsUrl: analyticsUrl,
                                             ovpPartnerId: ovpPartnerId,
-                                            ovpServiceUrl: ovpServiceUrl,
-                                            uiConfId: uiConfId,
                                             createdDate: Date())
                 callback(configData, nil)
                 

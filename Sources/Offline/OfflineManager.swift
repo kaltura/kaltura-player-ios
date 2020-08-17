@@ -173,6 +173,8 @@ public enum OfflineManagerError: PKError {
      
         If all has been successful, an `AssetInfo` object will be returned.
      
+        If it's a DRM media the license will be registered automatically.
+     
         * Parameters:
             * mediaEntry: The `PKMediaEntry` in order to retrieve the media source. See `PKMediaEntry` for more details.
             * options: The preferred options for selection. See `OfflineSelectionOptions` for more details.
@@ -220,6 +222,15 @@ public enum OfflineManagerError: PKError {
         DispatchQueue.global().async {
             do {
                 try ContentManager.shared.loadItemMetadata(id: itemId, options: options)
+                
+                // Register the DRM License if exists.
+                if let url = try? ContentManager.shared.itemPlaybackUrl(id: itemId) {
+                    self.localAssetsManager.renewDownloadedAsset(location: url, mediaSource: mediaSource) { (error) in
+                        if let error = error {
+                            PKLog.error("Renew DRM License failed with error: \(error.localizedDescription)")
+                        }
+                    }
+                }
                 
                 PKLog.debug("Item Metadata Loaded")
                 callback(nil, assetInfo)
@@ -361,14 +372,16 @@ extension OfflineManager {
     @objc public func renewAssetDRMLicense(mediaEntry: PKMediaEntry, callback: @escaping (_ error: Error?) -> Void) {
         do {
             guard let url = try ContentManager.shared.itemPlaybackUrl(id: mediaEntry.id) else {
-                PKLog.error("Can't get local url to renew DRM License.")
-                callback(OfflineManagerError.renewAssetDRMLicenseError(message: "Can't get local url to renew DRM License."))
+                let message = "Can't get local url to renew DRM License."
+                PKLog.error(message)
+                callback(OfflineManagerError.renewAssetDRMLicenseError(message: message))
                 return
             }
             
             guard let source = localAssetsManager.getPreferredDownloadableMediaSource(for: mediaEntry) else {
-                PKLog.error("No valid source in order to renew DRM License.")
-                callback(OfflineManagerError.renewAssetDRMLicenseError(message: "No valid source in order to renew DRM License."))
+                let message = "No valid source in order to renew DRM License."
+                PKLog.error(message)
+                callback(OfflineManagerError.renewAssetDRMLicenseError(message: message))
                 return
             }
                         

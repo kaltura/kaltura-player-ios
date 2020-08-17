@@ -15,8 +15,6 @@ protocol KalturaPlayerOffline {
 struct ConfigData {
     var analyticsUrl: String
     var ovpPartnerId: Int64
-    var ovpServiceUrl: String
-    var uiConfId: Int64
     var createdDate: Date
 }
 
