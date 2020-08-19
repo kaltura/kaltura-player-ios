@@ -1,4 +1,4 @@
-suffix = '-dev'   # Dev mode
+suffix = '.0000'   # Dev mode
 # suffix = ''       # Release
 
 Pod::Spec.new do |s|
@@ -29,7 +29,6 @@ Pod::Spec.new do |s|
     sp.dependency 'KalturaPlayer/Core'
     sp.dependency 'PlayKitProviders', '~> 1.6'
     sp.dependency 'PlayKitKava', '~> 1.5'
-    
   end
 
   s.subspec 'OVP' do |sp|
@@ -39,7 +38,6 @@ Pod::Spec.new do |s|
     sp.dependency 'KalturaPlayer/Core'
     sp.dependency 'PlayKitProviders', '~> 1.6'
     sp.dependency 'PlayKitKava', '~> 1.5'
-    
   end
   
   s.subspec 'Offline' do |sp|
