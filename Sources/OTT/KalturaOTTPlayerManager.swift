@@ -54,7 +54,7 @@ class KalturaOTTPlayerManager: KalturaPlayerManager {
         
         request.set(method: .get)
         
-        let ApplicationName = "com.kaltura.player"
+        let ApplicationName = "com.kaltura.player." + String(partnerId)
         let ClientVersion = "4"
         let Platform = "iOS"
         let Tag = "1"
