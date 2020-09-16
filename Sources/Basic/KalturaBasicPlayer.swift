@@ -72,7 +72,7 @@ import KalturaNetKit
             PKLog.debug("Response:\nStatus Code: \(response.statusCode)\nError: \(response.error?.localizedDescription ?? "")\nData: \(response.data ?? "")")
         }
         PKLog.debug("Sending Kava Event, Impression (1)")
-        USRExecutor.shared.send(request: request.build())
+        KNKRequestExecutor.shared.send(request: request.build())
     }
     
     // MARK: - Public Methods
