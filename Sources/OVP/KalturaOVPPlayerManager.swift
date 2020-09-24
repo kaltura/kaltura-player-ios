@@ -91,6 +91,6 @@ class KalturaOVPPlayerManager: KalturaPlayerManager {
         }
         
         PKLog.debug("Sending request for the DMS Configuration.")
-        USRExecutor.shared.send(request: request.build())
+        KNKRequestExecutor.shared.send(request: request.build())
     }
 }
