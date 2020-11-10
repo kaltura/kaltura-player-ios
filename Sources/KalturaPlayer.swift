@@ -334,6 +334,13 @@ public enum KalturaPlayerError: PKError {
         }
     }
     
+    /// The current player's buffered time.
+    @objc public var bufferedTime: TimeInterval {
+        get {
+            return pkPlayer.bufferedTime
+        }
+    }
+    
     /// Send a play action for the player.
     @objc public func play() {
         pkPlayer.play()
