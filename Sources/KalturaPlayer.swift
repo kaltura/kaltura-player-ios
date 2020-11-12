@@ -402,7 +402,7 @@ public enum KalturaPlayerError: PKError {
         
         func update(entry: PKMediaEntry, withInterceptor interceptor: PKMediaEntryInterceptor) {
             
-            interceptor.apply(entry: entry) { (error: Error?) in
+            interceptor.apply(entry: entry) { [weak self] (error: Error?) in
                 
                 if let error = error {
                     // In case we get some error from Interceptor apply, we should ignore it and continue with next Interceptor.
@@ -411,7 +411,7 @@ public enum KalturaPlayerError: PKError {
                 
                 if interceptors.isEmpty {
                     PKLog.debug("KalturaPlayer finished with applying all interceptors for MediaEntry id: \(entry.id)")
-                    self.mediaEntry = entry
+                    self?.mediaEntry = entry
                     callback(nil)
                 } else {
                     update(entry: entry, withInterceptor: interceptors.removeFirst())
