@@ -51,6 +51,15 @@ public enum KalturaPlayerError: PKError {
     private var pkPlayer: Player!
     private var shouldPrepare: Bool = true
     
+    internal var interceptors: [PKMediaEntryInterceptor]? {
+        get {
+            guard let player = pkPlayer as? MediaEntryInterceptorsDatasource else {
+                return nil
+            }
+            return player.interceptors
+        }
+    }
+    
     /// The player's view which the media will be displayed within.
     @objc public var view: KalturaPlayerView? {
         didSet {
@@ -382,4 +391,35 @@ public enum KalturaPlayerError: PKError {
     @objc public func startBuffering() {
         pkPlayer.startBuffering()
     }
+    
+    internal func updateMediaEntryWithLoadedInterceptors(_ mediaEntry: PKMediaEntry, callback: @escaping (_ error: Error?) -> Void) {
+        
+        guard var interceptors = self.interceptors, !interceptors.isEmpty else {
+            self.mediaEntry = mediaEntry
+            callback(nil)
+            return
+        }
+        
+        func update(entry: PKMediaEntry, withInterceptor interceptor: PKMediaEntryInterceptor) {
+            
+            interceptor.apply(entry: entry) { (error: Error?) in
+                
+                if let error = error {
+                    // In case we get some error from Interceptor apply, we should ignore it and continue with next Interceptor.
+                    PKLog.debug("MediaEntry Interceptor apply Error: \(error.localizedDescription)")
+                }
+                
+                if interceptors.isEmpty {
+                    PKLog.debug("KalturaPlayer finished with applying all interceptors for MediaEntry id: \(entry.id)")
+                    self.mediaEntry = entry
+                    callback(nil)
+                } else {
+                    update(entry: entry, withInterceptor: interceptors.removeFirst())
+                }
+            }
+        }
+        
+        update(entry: mediaEntry, withInterceptor: interceptors.removeFirst())
+    }
+    
 }

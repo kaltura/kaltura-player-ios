@@ -174,8 +174,9 @@ import PlayKitKava
             self.updateKavaPlugin(ovpPartnerId: ovpPartnerId, ovpEntryId: ovpEntryId, mediaOptions: options)
             self.updatePhoenixAnalyticsPlugin()
             
-            self.mediaEntry = mediaEntry
-            callback(nil)
+            self.updateMediaEntryWithLoadedInterceptors(mediaEntry) { (error: Error?) in
+                callback(error)
+            }
         }
     }
 }
