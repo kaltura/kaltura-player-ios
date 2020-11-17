@@ -53,10 +53,11 @@ public enum KalturaPlayerError: PKError {
     
     internal var interceptors: [PKMediaEntryInterceptor]? {
         get {
-            guard let player = pkPlayer as? MediaEntryInterceptorsDatasource else {
+            guard let player = pkPlayer as? PlayerPluginsDataSource else {
                 return nil
             }
-            return player.interceptors
+            
+            return player.getLoadedPlugins(ofType: PKMediaEntryInterceptor.self)
         }
     }
     
