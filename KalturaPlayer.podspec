@@ -20,7 +20,7 @@ Pod::Spec.new do |s|
   s.subspec 'Core' do |sp|
     sp.source_files = 'Sources/*', 'Sources/Basic/**/*'
     
-    sp.dependency 'PlayKit', '~> ' + play_kit_version
+    sp.dependency 'PlayKit', '~> ' + playkitVersion
     
   end
   
@@ -76,4 +76,3 @@ https://github.com/realm/realm-cocoa/issues/6800
   
   s.default_subspec = 'Core'
 end
-
