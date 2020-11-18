@@ -1,7 +1,7 @@
 suffix = '.0000'   # Dev mode
 # suffix = ''       # Release
 
-play_kit_version = '3.18'
+playkitVersion = '3.18'
 
 Pod::Spec.new do |s|
   
