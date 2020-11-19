@@ -127,10 +127,18 @@ import PlayKitProviders
             guard let mediaEntry = pkMediaEntry else {
                 if let error = error {
                     switch error {
-                    case let nsError as NSError:
-                        callback(KalturaPlayerError.mediaProviderError(code: String(nsError.code), message: nsError.description))
                     case let pkError as PKError:
                         callback(KalturaPlayerError.mediaProviderError(code: String(pkError.code), message: pkError.errorDescription))
+                    case let nsError as NSError:
+                        var code = String(nsError.code)
+                        if let serverErrorCode = nsError.userInfo[ProviderServerErrorCodeKey] as? String, !serverErrorCode.isEmpty {
+                            code = serverErrorCode
+                        }
+                        var message = nsError.description
+                        if let serverErrorMessage = nsError.userInfo[ProviderServerErrorMessageKey] as? String, !serverErrorMessage.isEmpty {
+                            message = serverErrorMessage
+                        }
+                        callback(KalturaPlayerError.mediaProviderError(code: code, message: message))
                     default:
                         callback(KalturaPlayerError.mediaProviderError(code: "LoadMediaError", message: error.localizedDescription))
                     }
