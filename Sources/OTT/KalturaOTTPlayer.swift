@@ -131,7 +131,7 @@ import PlayKitKava
             * callback:
             * error: A `KalturaPlayerError` in case of an issue. See `KalturaPlayerError` for more details.
      */
-    @objc public func loadMedia(options: OTTMediaOptions, callback: @escaping (_ error: Error?) -> Void) {
+    @objc public func loadMedia(options: OTTMediaOptions, callback: @escaping (_ error: NSError?) -> Void) {
         ottMediaOptions = options
         
         if options.ks?.isEmpty == false {
@@ -151,7 +151,7 @@ import PlayKitKava
                 if let error = error {
                     switch error {
                     case let pkError as PKError:
-                        callback(KalturaPlayerError.mediaProviderError(code: String(pkError.code), message: pkError.errorDescription))
+                        callback(KalturaPlayerError.mediaProviderError(code: String(pkError.code), message: pkError.errorDescription).asNSError)
                     case let nsError as NSError:
                         var code = String(nsError.code)
                         if let serverErrorCode = nsError.userInfo[ProviderServerErrorCodeKey] as? String, !serverErrorCode.isEmpty {
@@ -161,12 +161,12 @@ import PlayKitKava
                         if let serverErrorMessage = nsError.userInfo[ProviderServerErrorMessageKey] as? String, !serverErrorMessage.isEmpty {
                             message = serverErrorMessage
                         }
-                        callback(KalturaPlayerError.mediaProviderError(code: code, message: message))
+                        callback(KalturaPlayerError.mediaProviderError(code: code, message: message).asNSError)
                     default:
-                        callback(KalturaPlayerError.mediaProviderError(code: "LoadMediaError", message: error.localizedDescription))
+                        callback(KalturaPlayerError.mediaProviderError(code: "LoadMediaError", message: error.localizedDescription).asNSError)
                     }
                 } else {
-                    callback(KalturaPlayerError.invalidPKMediaEntry)
+                    callback(KalturaPlayerError.invalidPKMediaEntry.asNSError)
                 }
                 
                 return
@@ -174,7 +174,7 @@ import PlayKitKava
             
             // The DMS Configuration is needed in order to continue.
             guard let ovpPartnerId = KalturaOTTPlayerManager.shared.cachedConfigData?.ovpPartnerId else {
-                callback(KalturaPlayerError.configurationMissing)
+                callback(KalturaPlayerError.configurationMissing.asNSError)
                 return
             }
             
