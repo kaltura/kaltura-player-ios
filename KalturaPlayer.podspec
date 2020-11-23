@@ -1,5 +1,5 @@
-suffix = '.0000'   # Dev mode
-# suffix = ''       # Release
+# suffix = '.0000'   # Dev mode
+suffix = '.beta.2'       # Release
 
 Pod::Spec.new do |s|
   
