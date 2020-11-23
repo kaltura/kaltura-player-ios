@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
   s.subspec 'Core' do |sp|
     sp.source_files = 'Sources/*', 'Sources/Basic/*'
     
-    sp.dependency 'PlayKit', '~> 3.18'
+    sp.dependency 'PlayKit', '~> 3.19'
     
   end
   
@@ -27,7 +27,7 @@ Pod::Spec.new do |s|
     sp.resources = 'Sources/OTT/*.xcdatamodeld'
     
     sp.dependency 'KalturaPlayer/Core'
-    sp.dependency 'PlayKitProviders', '~> 1.9'
+    sp.dependency 'PlayKitProviders', '~> 1.10'
     sp.dependency 'PlayKitKava', '~> 1.6'
   end
 
@@ -36,7 +36,7 @@ Pod::Spec.new do |s|
     sp.resources = 'Sources/OVP/*.xcdatamodeld'
     
     sp.dependency 'KalturaPlayer/Core'
-    sp.dependency 'PlayKitProviders', '~> 1.9'
+    sp.dependency 'PlayKitProviders', '~> 1.10'
     sp.dependency 'PlayKitKava', '~> 1.6'
   end
   

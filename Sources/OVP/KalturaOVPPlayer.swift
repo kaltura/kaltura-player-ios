@@ -108,7 +108,7 @@ import PlayKitProviders
             * callback:
             * error: A `KalturaPlayerError` in case of an issue. See `KalturaPlayerError` for more details.
      */
-    @objc public func loadMedia(options: OVPMediaOptions, callback: @escaping (_ error: Error?) -> Void) {
+    @objc public func loadMedia(options: OVPMediaOptions, callback: @escaping (_ error: NSError?) -> Void) {
         ovpMediaOptions = options
         
         if options.ks?.isEmpty == false {
@@ -127,15 +127,23 @@ import PlayKitProviders
             guard let mediaEntry = pkMediaEntry else {
                 if let error = error {
                     switch error {
-                    case let nsError as NSError:
-                        callback(KalturaPlayerError.mediaProviderError(code: String(nsError.code), message: nsError.description))
                     case let pkError as PKError:
-                        callback(KalturaPlayerError.mediaProviderError(code: String(pkError.code), message: pkError.errorDescription))
+                        callback(KalturaPlayerError.mediaProviderError(code: String(pkError.code), message: pkError.errorDescription).asNSError)
+                    case let nsError as NSError:
+                        var code = String(nsError.code)
+                        if let serverErrorCode = nsError.userInfo[ProviderServerErrorCodeKey] as? String, !serverErrorCode.isEmpty {
+                            code = serverErrorCode
+                        }
+                        var message = nsError.description
+                        if let serverErrorMessage = nsError.userInfo[ProviderServerErrorMessageKey] as? String, !serverErrorMessage.isEmpty {
+                            message = serverErrorMessage
+                        }
+                        callback(KalturaPlayerError.mediaProviderError(code: code, message: message).asNSError)
                     default:
-                        callback(KalturaPlayerError.mediaProviderError(code: "LoadMediaError", message: error.localizedDescription))
+                        callback(KalturaPlayerError.mediaProviderError(code: "LoadMediaError", message: error.localizedDescription).asNSError)
                     }
                 } else {
-                    callback(KalturaPlayerError.invalidPKMediaEntry)
+                    callback(KalturaPlayerError.invalidPKMediaEntry.asNSError)
                 }
                 
                 return
@@ -143,7 +151,7 @@ import PlayKitProviders
             
             // The Configuration is needed in order to continue.
             guard let ovpPartnerId = KalturaOVPPlayerManager.shared.cachedConfigData?.ovpPartnerId else {
-                callback(KalturaPlayerError.configurationMissing)
+                callback(KalturaPlayerError.configurationMissing.asNSError)
                 return
             }
             
