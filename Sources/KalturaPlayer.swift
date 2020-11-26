@@ -393,6 +393,12 @@ public enum KalturaPlayerError: PKError {
         pkPlayer.startBuffering()
     }
     
+}
+
+// MARK: - Interceptor
+
+extension KalturaPlayer {
+    
     internal func updateMediaEntryWithLoadedInterceptors(_ mediaEntry: PKMediaEntry, callback: @escaping (_ error: Error?) -> Void) {
         guard var interceptors = self.interceptors, !interceptors.isEmpty else {
             self.mediaEntry = mediaEntry
