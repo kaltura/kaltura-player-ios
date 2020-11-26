@@ -1,8 +1,6 @@
 suffix = '.0000'   # Dev mode
 # suffix = ''       # Release
 
-playkitVersion = '3.19'
-
 Pod::Spec.new do |s|
   
   s.name             = 'KalturaPlayer'
@@ -17,11 +15,16 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '10.0'
   s.tvos.deployment_target = '10.0'
   
+  s.subspec 'Interceptor' do |sp|
+    sp.source_files = 'Sources/Interceptor/*'
+    
+    sp.dependency 'PlayKit', '~> 3.19'
+  end
+  
   s.subspec 'Core' do |sp|
     sp.source_files = 'Sources/*', 'Sources/Basic/*'
     
     sp.dependency 'KalturaPlayer/Interceptor'
-    sp.dependency 'PlayKit', '~> ' + playkitVersion
   end
   
   s.subspec 'OTT' do |sp|
@@ -40,12 +43,6 @@ Pod::Spec.new do |s|
     sp.dependency 'KalturaPlayer/Core'
     sp.dependency 'PlayKitProviders', '~> 1.10'
     sp.dependency 'PlayKitKava', '~> 1.6'
-  end
-  
-  s.subspec 'Interceptor' do |sp|
-    sp.source_files = 'Sources/Interceptor/*'
-    
-    sp.dependency 'PlayKit', '~> ' + playkitVersion
   end
   
 =begin
