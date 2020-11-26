@@ -18,8 +18,9 @@ Pod::Spec.new do |s|
   s.tvos.deployment_target = '10.0'
   
   s.subspec 'Core' do |sp|
-    sp.source_files = 'Sources/*', 'Sources/Basic/**/*'
+    sp.source_files = 'Sources/*', 'Sources/Basic/*'
     
+    sp.dependency 'KalturaPlayer/Interceptor'
     sp.dependency 'PlayKit', '~> ' + playkitVersion
     
   end
@@ -43,7 +44,7 @@ Pod::Spec.new do |s|
   end
   
   s.subspec 'Interceptor' do |sp|
-    sp.source_files = 'Sources/Basic/Interceptor/*'
+    sp.source_files = 'Sources/Interceptor/*'
     
     sp.dependency 'PlayKit', '~> ' + playkitVersion
   end
