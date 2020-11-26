@@ -401,7 +401,7 @@ public enum KalturaPlayerError: PKError {
         }
         
         func update(entry: PKMediaEntry, withInterceptor interceptor: PKMediaEntryInterceptor) {
-            interceptor.apply(entry: entry) { [weak self] (error: Error?) in
+            interceptor.apply(on: entry) { [weak self] (error: Error?) in
                 
                 if let error = error {
                     // In case we get some error from Interceptor apply, we should ignore it and continue with next Interceptor.
