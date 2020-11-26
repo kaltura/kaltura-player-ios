@@ -1,7 +1,7 @@
 suffix = '.0000'   # Dev mode
 # suffix = ''       # Release
 
-playkitVersion = '3.18'
+playkitVersion = '3.19'
 
 Pod::Spec.new do |s|
   
@@ -22,7 +22,6 @@ Pod::Spec.new do |s|
     
     sp.dependency 'KalturaPlayer/Interceptor'
     sp.dependency 'PlayKit', '~> ' + playkitVersion
-    
   end
   
   s.subspec 'OTT' do |sp|
@@ -30,7 +29,7 @@ Pod::Spec.new do |s|
     sp.resources = 'Sources/OTT/*.xcdatamodeld'
     
     sp.dependency 'KalturaPlayer/Core'
-    sp.dependency 'PlayKitProviders', '~> 1.8'
+    sp.dependency 'PlayKitProviders', '~> 1.10'
     sp.dependency 'PlayKitKava', '~> 1.6'
   end
 
@@ -39,7 +38,7 @@ Pod::Spec.new do |s|
     sp.resources = 'Sources/OVP/*.xcdatamodeld'
     
     sp.dependency 'KalturaPlayer/Core'
-    sp.dependency 'PlayKitProviders', '~> 1.8'
+    sp.dependency 'PlayKitProviders', '~> 1.10'
     sp.dependency 'PlayKitKava', '~> 1.6'
   end
   
