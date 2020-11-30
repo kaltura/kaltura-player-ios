@@ -51,6 +51,16 @@ public enum KalturaPlayerError: PKError {
     private var pkPlayer: Player!
     private var shouldPrepare: Bool = true
     
+    internal var interceptors: [PKMediaEntryInterceptor]? {
+        get {
+            guard let player = pkPlayer as? PlayerPluginsDataSource else {
+                return nil
+            }
+            
+            return player.getLoadedPlugins(ofType: PKMediaEntryInterceptor.self)
+        }
+    }
+    
     /// The player's view which the media will be displayed within.
     @objc public var view: KalturaPlayerView? {
         didSet {
@@ -389,4 +399,33 @@ public enum KalturaPlayerError: PKError {
     @objc public func startBuffering() {
         pkPlayer.startBuffering()
     }
+    
+}
+
+// MARK: - Interceptor
+
+extension KalturaPlayer {
+    
+    internal func updateMediaEntryWithLoadedInterceptors(_ mediaEntry: PKMediaEntry, callback: @escaping () -> Void) {
+        guard var interceptors = self.interceptors, !interceptors.isEmpty else {
+            self.mediaEntry = mediaEntry
+            callback()
+            return
+        }
+        
+        func update(entry: PKMediaEntry, withInterceptor interceptor: PKMediaEntryInterceptor) {
+            interceptor.apply(on: entry) { [weak self] in
+                if interceptors.isEmpty {
+                    PKLog.debug("KalturaPlayer finished with applying all interceptors for MediaEntry id: \(entry.id)")
+                    self?.mediaEntry = entry
+                    callback()
+                } else {
+                    update(entry: entry, withInterceptor: interceptors.removeFirst())
+                }
+            }
+        }
+        
+        update(entry: mediaEntry, withInterceptor: interceptors.removeFirst())
+    }
+    
 }

@@ -15,11 +15,16 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '10.0'
   s.tvos.deployment_target = '10.0'
   
+  s.subspec 'Interceptor' do |sp|
+    sp.source_files = 'Sources/Interceptor/*'
+    
+    sp.dependency 'PlayKit', '~> 3.19'
+  end
+  
   s.subspec 'Core' do |sp|
     sp.source_files = 'Sources/*', 'Sources/Basic/*'
     
-    sp.dependency 'PlayKit', '~> 3.19'
-    
+    sp.dependency 'KalturaPlayer/Interceptor'
   end
   
   s.subspec 'OTT' do |sp|
@@ -68,4 +73,3 @@ https://github.com/realm/realm-cocoa/issues/6800
   
   s.default_subspec = 'Core'
 end
-
