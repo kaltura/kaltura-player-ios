@@ -406,9 +406,10 @@ public enum KalturaPlayerError: PKError {
 
 extension KalturaPlayer {
     
-    internal func updateMediaEntryWithLoadedInterceptors(_ mediaEntry: PKMediaEntry) {
+    internal func updateMediaEntryWithLoadedInterceptors(_ mediaEntry: PKMediaEntry, callback: @escaping () -> Void) {
         guard var interceptors = self.interceptors, !interceptors.isEmpty else {
             self.mediaEntry = mediaEntry
+            callback()
             return
         }
         
@@ -417,6 +418,7 @@ extension KalturaPlayer {
                 if interceptors.isEmpty {
                     PKLog.debug("KalturaPlayer finished with applying all interceptors for MediaEntry id: \(entry.id)")
                     self?.mediaEntry = entry
+                    callback()
                 } else {
                     update(entry: entry, withInterceptor: interceptors.removeFirst())
                 }

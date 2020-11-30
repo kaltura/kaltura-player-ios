@@ -181,7 +181,9 @@ import PlayKitKava
             let ovpEntryId = mediaEntry.metadata?["entryId"] ?? options.assetId ?? ""
             self.updateKavaPlugin(ovpPartnerId: ovpPartnerId, ovpEntryId: ovpEntryId, mediaOptions: options)
             self.updatePhoenixAnalyticsPlugin()
-            self.updateMediaEntryWithLoadedInterceptors(mediaEntry)
+            self.updateMediaEntryWithLoadedInterceptors(mediaEntry) {
+                callback(nil)
+            }
         }
     }
 }
