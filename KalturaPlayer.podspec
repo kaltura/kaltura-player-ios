@@ -44,10 +44,6 @@ Pod::Spec.new do |s|
     sp.dependency 'PlayKitProviders', '~> 1.10'
     sp.dependency 'PlayKitKava', '~> 1.6'
   end
-  
-=begin
-Removing Offline until a fix will be provided by Cocoapods or Realm for the release in Xcode 12.
-https://github.com/realm/realm-cocoa/issues/6800
 
   s.subspec 'Offline' do |sp|
     sp.source_files = 'Sources/Offline/*'
@@ -69,7 +65,6 @@ https://github.com/realm/realm-cocoa/issues/6800
     sp.dependency 'KalturaPlayer/Offline'
     sp.dependency 'KalturaPlayer/OVP'
   end
-=end
   
   s.default_subspec = 'Core'
 end
