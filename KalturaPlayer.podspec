@@ -49,7 +49,7 @@ Pod::Spec.new do |s|
     sp.source_files = 'Sources/Offline/*'
     
     sp.dependency 'KalturaPlayer/Core'
-    sp.dependency 'DownloadToGo', '~> 3.12'
+    sp.dependency 'DownloadToGo', '~> 3.13'
   end
 
   s.subspec 'Offline_OTT' do |sp|
