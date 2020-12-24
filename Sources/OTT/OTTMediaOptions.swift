@@ -21,6 +21,9 @@ import PlayKitProviders
     @objc public var urlType: String?
     @objc public var streamerType: String?
     
+    @objc public var disableMediaHit: Bool = false
+    @objc public var disableMediaMark: Bool = false
+    
     internal func mediaProvider() -> PhoenixMediaProvider {
         let phoenixMediaProvider = PhoenixMediaProvider()
         phoenixMediaProvider.set(assetId: assetId)
