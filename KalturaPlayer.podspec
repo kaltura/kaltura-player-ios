@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
   s.subspec 'Interceptor' do |sp|
     sp.source_files = 'Sources/Interceptor/*'
     
-    sp.dependency 'PlayKit', '~> 3.19'
+    sp.dependency 'PlayKit', '~> 3.20'
   end
   
   s.subspec 'Core' do |sp|
