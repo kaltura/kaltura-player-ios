@@ -1,9 +1,6 @@
 suffix = '.0000'   # Dev mode
 # suffix = ''       # Release
 
-PlayKitVersion = '~> 3.20'
-PlayKitProvidersVersion = '~> 1.10'
-PlayKitKavaVersion = '~> 1.6'
 
 Pod::Spec.new do |s|
   
@@ -22,7 +19,7 @@ Pod::Spec.new do |s|
   s.subspec 'Interceptor' do |sp|
     sp.source_files = 'Sources/Interceptor/*'
     
-    sp.dependency 'PlayKit', PlayKitVersion
+    sp.dependency 'PlayKit', '~> 3.20'
   end
   
 ################################################################
@@ -41,8 +38,8 @@ Pod::Spec.new do |s|
     sp.resources = 'Sources/OTT/*.xcdatamodeld'
     
     sp.dependency 'KalturaPlayer/Core'
-    sp.dependency 'PlayKitProviders', PlayKitProvidersVersion
-    sp.dependency 'PlayKitKava', PlayKitKavaVersion
+    sp.dependency 'PlayKitProviders', '~> 1.10'
+    sp.dependency 'PlayKitKava', '~> 1.6'
   end
 
   s.subspec 'OVP' do |sp|
@@ -50,8 +47,8 @@ Pod::Spec.new do |s|
     sp.resources = 'Sources/OVP/*.xcdatamodeld'
     
     sp.dependency 'KalturaPlayer/Core'
-    sp.dependency 'PlayKitProviders', PlayKitProvidersVersion
-    sp.dependency 'PlayKitKava', PlayKitKavaVersion
+    sp.dependency 'PlayKitProviders', '~> 1.10'
+    sp.dependency 'PlayKitKava', '~> 1.6'
   end
 
 ################################################################
@@ -64,7 +61,7 @@ Pod::Spec.new do |s|
     sp.source_files = 'Sources/Offline/*', 'Sources/*', 'Sources/Basic/*', 'Sources/Interceptor/*'
     
     sp.dependency 'DownloadToGo', '~> 3.13'
-    sp.dependency 'PlayKit', PlayKitVersion
+    sp.dependency 'PlayKit', '~> 3.20'
 
     sp.xcconfig = {
       ### The following is required for Xcode 12 (https://stackoverflow.com/questions/63607158/xcode-12-building-for-ios-simulator-but-linking-in-object-file-built-for-ios)
@@ -80,8 +77,8 @@ Pod::Spec.new do |s|
     sp.resources = 'Sources/OTT/*.xcdatamodeld'
 
     sp.dependency 'KalturaPlayer/Offline'
-    sp.dependency 'PlayKitProviders', PlayKitProvidersVersion
-    sp.dependency 'PlayKitKava', PlayKitKavaVersion
+    sp.dependency 'PlayKitProviders', '~> 1.10'
+    sp.dependency 'PlayKitKava', '~> 1.6'
   end
 
   s.subspec 'Offline_OVP' do |sp|
@@ -91,8 +88,8 @@ Pod::Spec.new do |s|
     sp.resources = 'Sources/OVP/*.xcdatamodeld'
 
     sp.dependency 'KalturaPlayer/Offline'
-    sp.dependency 'PlayKitProviders', PlayKitProvidersVersion
-    sp.dependency 'PlayKitKava', PlayKitKavaVersion
+    sp.dependency 'PlayKitProviders', '~> 1.10'
+    sp.dependency 'PlayKitKava', '~> 1.6'
   end
   
 ################################################################
