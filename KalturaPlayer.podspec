@@ -1,11 +1,15 @@
 suffix = '.0000'   # Dev mode
 # suffix = ''       # Release
 
+PlayKitVersion = '~> 3.20'
+PlayKitProvidersVersion = '~> 1.10'
+PlayKitKavaVersion = '~> 1.6'
+
 Pod::Spec.new do |s|
   
   s.name             = 'KalturaPlayer'
   s.version          = '4.0.0' + suffix
-  s.summary          = 'KalturaPlayer -- Kaltura Player for iOS'
+  s.summary          = 'KalturaPlayer -- Kaltura Player for iOS and tvOS'
   s.homepage         = 'https://github.com/kaltura/kaltura-player-ios'
   s.license          = { :type => 'AGPLv3', :file => 'LICENSE' }
   s.author           = { 'Kaltura' => 'community@kaltura.com' }
@@ -18,10 +22,15 @@ Pod::Spec.new do |s|
   s.subspec 'Interceptor' do |sp|
     sp.source_files = 'Sources/Interceptor/*'
     
-    sp.dependency 'PlayKit', '~> 3.20'
+    sp.dependency 'PlayKit', PlayKitVersion
   end
   
+################################################################
+  
   s.subspec 'Core' do |sp|
+    sp.ios.deployment_target = '10.0'
+    sp.tvos.deployment_target = '10.0'
+    
     sp.source_files = 'Sources/*', 'Sources/Basic/*'
     
     sp.dependency 'KalturaPlayer/Interceptor'
@@ -32,8 +41,8 @@ Pod::Spec.new do |s|
     sp.resources = 'Sources/OTT/*.xcdatamodeld'
     
     sp.dependency 'KalturaPlayer/Core'
-    sp.dependency 'PlayKitProviders', '~> 1.10'
-    sp.dependency 'PlayKitKava', '~> 1.6'
+    sp.dependency 'PlayKitProviders', PlayKitProvidersVersion
+    sp.dependency 'PlayKitKava', PlayKitKavaVersion
   end
 
   s.subspec 'OVP' do |sp|
@@ -41,30 +50,52 @@ Pod::Spec.new do |s|
     sp.resources = 'Sources/OVP/*.xcdatamodeld'
     
     sp.dependency 'KalturaPlayer/Core'
-    sp.dependency 'PlayKitProviders', '~> 1.10'
-    sp.dependency 'PlayKitKava', '~> 1.6'
+    sp.dependency 'PlayKitProviders', PlayKitProvidersVersion
+    sp.dependency 'PlayKitKava', PlayKitKavaVersion
   end
 
+################################################################
+###		Offline Supported only in iOS		     ###
+################################################################
+
   s.subspec 'Offline' do |sp|
-    sp.source_files = 'Sources/Offline/*'
+    sp.ios.deployment_target = '10.0'
     
-    sp.dependency 'KalturaPlayer/Core'
+    sp.source_files = 'Sources/Offline/*', 'Sources/*', 'Sources/Basic/*', 'Sources/Interceptor/*'
+    
     sp.dependency 'DownloadToGo', '~> 3.13'
+    sp.dependency 'PlayKit', PlayKitVersion
+
+    sp.xcconfig = {
+      ### The following is required for Xcode 12 (https://stackoverflow.com/questions/63607158/xcode-12-building-for-ios-simulator-but-linking-in-object-file-built-for-ios)
+      'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64'
+    }
+
   end
 
   s.subspec 'Offline_OTT' do |sp|
-    sp.source_files =  'Sources/Offline/OTT/*'
+    sp.ios.deployment_target = '10.0'
+
+    sp.source_files =  'Sources/Offline/OTT/*', 'Sources/OTT/*', 'Sources/Common'
+    sp.resources = 'Sources/OTT/*.xcdatamodeld'
 
     sp.dependency 'KalturaPlayer/Offline'
-    sp.dependency 'KalturaPlayer/OTT'
+    sp.dependency 'PlayKitProviders', PlayKitProvidersVersion
+    sp.dependency 'PlayKitKava', PlayKitKavaVersion
   end
 
   s.subspec 'Offline_OVP' do |sp|
-    sp.source_files =  'Sources/Offline/OVP/*'
+    sp.ios.deployment_target = '10.0'
+
+    sp.source_files =  'Sources/Offline/OVP/*', 'Sources/OVP/*', 'Sources/Common'
+    sp.resources = 'Sources/OVP/*.xcdatamodeld'
 
     sp.dependency 'KalturaPlayer/Offline'
-    sp.dependency 'KalturaPlayer/OVP'
+    sp.dependency 'PlayKitProviders', PlayKitProvidersVersion
+    sp.dependency 'PlayKitKava', PlayKitKavaVersion
   end
   
+################################################################
+
   s.default_subspec = 'Core'
 end
