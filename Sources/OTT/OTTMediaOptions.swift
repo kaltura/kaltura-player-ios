@@ -20,6 +20,7 @@ import PlayKitProviders
     @objc public var networkProtocol: String?
     @objc public var urlType: String?
     @objc public var streamerType: String?
+    @objc public var adapterData: [String: String]?
     
     internal func mediaProvider() -> PhoenixMediaProvider {
         let phoenixMediaProvider = PhoenixMediaProvider()
@@ -32,6 +33,7 @@ import PlayKitProviders
         phoenixMediaProvider.set(networkProtocol: networkProtocol)
         phoenixMediaProvider.set(urlType: urlType)
         phoenixMediaProvider.set(streamerType: streamerType)
+        phoenixMediaProvider.set(adapterData: adapterData)
         
         return phoenixMediaProvider
     }
