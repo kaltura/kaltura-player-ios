@@ -5,7 +5,7 @@ suffix = '.0000'   # Dev mode
 Pod::Spec.new do |s|
   
   s.name             = 'KalturaPlayer'
-  s.version          = '4.0.0' + suffix
+  s.version          = '4.1.0' + suffix
   s.summary          = 'KalturaPlayer -- Kaltura Player for iOS and tvOS'
   s.homepage         = 'https://github.com/kaltura/kaltura-player-ios'
   s.license          = { :type => 'AGPLv3', :file => 'LICENSE' }
@@ -43,7 +43,7 @@ Pod::Spec.new do |s|
     sp.resources = 'Sources/OTT/*.xcdatamodeld'
     
     sp.dependency 'KalturaPlayer/Core'
-    sp.dependency 'PlayKitProviders', '~> 1.10'
+    sp.dependency 'PlayKitProviders', '~> 1.11'
     sp.dependency 'PlayKitKava', '~> 1.6'
   end
 
@@ -52,7 +52,7 @@ Pod::Spec.new do |s|
     sp.resources = 'Sources/OVP/*.xcdatamodeld'
     
     sp.dependency 'KalturaPlayer/Core'
-    sp.dependency 'PlayKitProviders', '~> 1.10'
+    sp.dependency 'PlayKitProviders', '~> 1.11'
     sp.dependency 'PlayKitKava', '~> 1.6'
   end
 
@@ -82,7 +82,7 @@ Pod::Spec.new do |s|
     sp.resources = 'Sources/OTT/*.xcdatamodeld'
 
     sp.dependency 'KalturaPlayer/Offline'
-    sp.dependency 'PlayKitProviders', '~> 1.10'
+    sp.dependency 'PlayKitProviders', '~> 1.11'
     sp.dependency 'PlayKitKava', '~> 1.6'
 
     sp.xcconfig = {
@@ -99,7 +99,7 @@ Pod::Spec.new do |s|
     sp.resources = 'Sources/OVP/*.xcdatamodeld'
 
     sp.dependency 'KalturaPlayer/Offline'
-    sp.dependency 'PlayKitProviders', '~> 1.10'
+    sp.dependency 'PlayKitProviders', '~> 1.11'
     sp.dependency 'PlayKitKava', '~> 1.6'
 
     sp.xcconfig = {
