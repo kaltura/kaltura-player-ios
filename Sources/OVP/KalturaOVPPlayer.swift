@@ -162,3 +162,23 @@ import PlayKitProviders
         }
     }
 }
+
+// MARK: - Bypass Config Fetching
+
+extension KalturaOVPPlayer {
+    
+    /**
+        Call this function in case the BE environment has not been set up yet with the config data.
+     
+        This function needs to be called before the `setup` function.
+     
+        * Parameters:
+            * partnerId:                    The OVP Partner ID.
+            * analyticsUrl:                 The Analytics Url used for Kava.
+            * analyticsPersistentSessionId: Whether to set a persistent session id.
+    */
+    @objc public static func bypassConfigFetching(partnerId: Int64, analyticsUrl: String, analyticsPersistentSessionId: Bool) {
+        
+        KPOVPConfigModel.shared.addPartnerConfig(partnerId: partnerId, analyticsUrl: analyticsUrl, analyticsPersistentSessionId: analyticsPersistentSessionId)
+    }
+}
