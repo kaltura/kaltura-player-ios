@@ -187,3 +187,25 @@ import PlayKitKava
         }
     }
 }
+
+// MARK: - Bypass Config Fetching
+
+extension KalturaOTTPlayer {
+    
+    /**
+        Call this function in case the BE environment has not been set up yet with the config data.
+     
+        This function needs to be called before the `setup` function.
+     
+        * Parameters:
+            * partnerId:     The OTT Partner ID.
+            * ovpPartnerId:  The OVP Partner ID.
+            * analyticsUrl:  The Analytics Url used for Kava.
+            * ovpServiceUrl: The OVP Service Url.
+            * uiConfId:      The UI Conf ID.
+    */
+    @objc public static func bypassConfigFetching(partnerId: Int64, ovpPartnerId: Int64, analyticsUrl: String, ovpServiceUrl: String, uiConfId: Int64) {
+        
+        KPOTTDMSConfigModel.shared.addPartnerConfig(partnerId: partnerId, ovpPartnerId: ovpPartnerId, analyticsUrl: analyticsUrl, ovpServiceUrl: ovpServiceUrl, uiConfId: uiConfId)
+    }
+}
