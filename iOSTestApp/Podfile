@@ -5,7 +5,9 @@ target 'iOSTestApp' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 
-  pod 'KalturaPlayer', :path => '..'
+  pod 'KalturaPlayer/Offline', :path => '..'
+  pod 'KalturaPlayer/Offline_OTT', :path => '..'
+  pod 'KalturaPlayer/Offline_OVP', :path => '..'
 
   target 'iOSTestAppTests' do
     inherit! :search_paths
