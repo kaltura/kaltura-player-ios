@@ -16,7 +16,17 @@ buildiOSApp() {
   cd iOSTestApp
   pod install
   CODE=0
-  xcodebuild clean build -workspace iOSTestApp.xcworkspace -scheme iOSTestApp -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO -destination 'platform=iOS Simulator,name=iPhone X' | tee xcodebuild.log | xcpretty -r html || CODE=$?
+  xcodebuild clean build -workspace iOSTestApp.xcworkspace -scheme iOSTestApp ONLY_ACTIVE_ARCH=NO | tee xcodebuild.log | xcpretty -r html || CODE=$?
+  cd ../
+  export CODE
+}
+
+buildtvOSApp() {
+  echo Building the tvOS TestApp
+  cd tvOSTestApp
+  pod install
+  CODE=0
+  xcodebuild clean build -workspace tvOSTestApp.xcworkspace -scheme tvOSTestApp ONLY_ACTIVE_ARCH=NO | tee xcodebuild.log | xcpretty -r html || CODE=$?
   cd ../
   export CODE
 }
@@ -34,6 +44,7 @@ if [ -n "$TRAVIS_TAG" ] || [ "$TRAVIS_EVENT_TYPE" == "cron" ]; then
   libLint
 else
   buildiOSApp
+  buildtvOSApp
 fi
 
 rm $FLAG  # stop keepAlive
