@@ -65,7 +65,7 @@ Pod::Spec.new do |s|
     
     sp.source_files = 'Sources/Offline/*', 'Sources/*', 'Sources/Basic/*', 'Sources/Interceptor/*'
     
-    sp.dependency 'DownloadToGo', '~> 3.13'
+    sp.dependency 'DownloadToGo', '~> 3.14'
     sp.dependency 'PlayKit', '~> 3.20'
 
     sp.xcconfig = {
