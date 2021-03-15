@@ -43,7 +43,7 @@ Pod::Spec.new do |s|
     sp.resources = 'Sources/OTT/*.xcdatamodeld'
     
     sp.dependency 'KalturaPlayer/Core'
-    sp.dependency 'PlayKitProviders', '~> 1.11'
+    sp.dependency 'PlayKitProviders', '~> 1.12'
     sp.dependency 'PlayKitKava', '~> 1.6'
   end
 
@@ -52,7 +52,7 @@ Pod::Spec.new do |s|
     sp.resources = 'Sources/OVP/*.xcdatamodeld'
     
     sp.dependency 'KalturaPlayer/Core'
-    sp.dependency 'PlayKitProviders', '~> 1.11'
+    sp.dependency 'PlayKitProviders', '~> 1.12'
     sp.dependency 'PlayKitKava', '~> 1.6'
   end
 
@@ -82,7 +82,7 @@ Pod::Spec.new do |s|
     sp.resources = 'Sources/OTT/*.xcdatamodeld'
 
     sp.dependency 'KalturaPlayer/Offline'
-    sp.dependency 'PlayKitProviders', '~> 1.11'
+    sp.dependency 'PlayKitProviders', '~> 1.12'
     sp.dependency 'PlayKitKava', '~> 1.6'
 
     sp.xcconfig = {
@@ -99,7 +99,7 @@ Pod::Spec.new do |s|
     sp.resources = 'Sources/OVP/*.xcdatamodeld'
 
     sp.dependency 'KalturaPlayer/Offline'
-    sp.dependency 'PlayKitProviders', '~> 1.11'
+    sp.dependency 'PlayKitProviders', '~> 1.12'
     sp.dependency 'PlayKitKava', '~> 1.6'
 
     sp.xcconfig = {
