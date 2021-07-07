@@ -30,7 +30,7 @@ class KnownPlugins {
                 return "PlayKit_IMA.IMADAIPlugin"
             case .Youbora:
                 return "PlayKitYoubora.YouboraPlugin"
-            case . SmartSwitch:
+            case .SmartSwitch:
                 return "PlayKitSmartSwitch.SmartSwitchMediaEntryInterceptor"
             }
         }
