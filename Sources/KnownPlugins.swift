@@ -16,6 +16,7 @@ class KnownPlugins {
         case IMA
         case IMADAI
         case Youbora
+        case Broadpeak
         
         private func className() -> String {
             switch self {
@@ -29,6 +30,8 @@ class KnownPlugins {
                 return "PlayKit_IMA.IMADAIPlugin"
             case .Youbora:
                 return "PlayKitYoubora.YouboraPlugin"
+            case .Broadpeak:
+                return "PlayKitBroadpeak.BroadpeakMediaEntryInterceptor"
             }
         }
         
