@@ -71,10 +71,6 @@ public enum KalturaPlayerError: PKError {
         }
     }
     
-    let DEFAULT_KAVA_BASE_URL: String = "https://analytics.kaltura.com/api_v3/index.php"
-    let DEFAULT_KAVA_PARTNER_ID: Int = 2504201
-    let DEFAULT_KAVA_ENTRY_ID: String = "1_3bwzbc9o"
-    
     internal init(playerOptions: PlayerOptions) {
         self.playerOptions = playerOptions
         pkPlayer = PlayKitManager.shared.loadPlayer(pluginConfig: self.playerOptions.pluginConfig)
