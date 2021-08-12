@@ -110,7 +110,9 @@ import PlayKitKava
         let phoenixAnalyticsPluginConfig = PhoenixAnalyticsPluginConfig(baseUrl: KalturaOTTPlayerManager.shared.serverURL,
                                                                         timerInterval: PhoenixAnalyticsTimerInterval,
                                                                         ks: ks,
-                                                                        partnerId: Int(KalturaOTTPlayerManager.shared.partnerId))
+                                                                        partnerId: Int(KalturaOTTPlayerManager.shared.partnerId),
+                                                                        disableMediaHit: ottMediaOptions?.disableMediaHit ?? false,
+                                                                        disableMediaMark: ottMediaOptions?.disableMediaMark ?? false)
         
         self.updatePluginConfig(pluginName: PhoenixAnalyticsPlugin.pluginName, config: phoenixAnalyticsPluginConfig)
     }

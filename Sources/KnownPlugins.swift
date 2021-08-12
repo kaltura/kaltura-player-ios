@@ -17,6 +17,7 @@ class KnownPlugins {
         case IMADAI
         case Youbora
         case Broadpeak
+        case SmartSwitch
         
         private func className() -> String {
             switch self {
@@ -32,6 +33,8 @@ class KnownPlugins {
                 return "PlayKitYoubora.YouboraPlugin"
             case .Broadpeak:
                 return "PlayKitBroadpeak.BroadpeakMediaEntryInterceptor"
+            case .SmartSwitch:
+                return "PlayKitSmartSwitch.SmartSwitchMediaEntryInterceptor"
             }
         }
         
