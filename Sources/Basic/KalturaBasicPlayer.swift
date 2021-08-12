@@ -40,7 +40,6 @@ import KalturaNetKit
      */
     @objc public init(options: PlayerOptions) {
         super.init(playerOptions: options)
-//        sendKavaImpression()
     }
     
     // MARK: - Public Methods
