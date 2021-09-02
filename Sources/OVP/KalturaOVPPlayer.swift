@@ -182,3 +182,29 @@ extension KalturaOVPPlayer {
         KPOVPConfigModel.shared.addPartnerConfig(partnerId: partnerId, analyticsUrl: analyticsUrl, analyticsPersistentSessionId: analyticsPersistentSessionId)
     }
 }
+
+extension KalturaOVPPlayer {
+    
+    @objc public func loadPlaylist(options: OVPPlaylistOptions, callback: @escaping (_ error: NSError?) -> Void) {
+        
+        if options.ks?.isEmpty == false {
+            sessionProvider.ks = options.ks
+        } else {
+            sessionProvider.ks = playerOptions.ks
+        }
+        
+        let ovpPlaylistProvider = options.playlistProvider()
+        ovpPlaylistProvider.set(referrer: KalturaOVPPlayerManager.shared.referrer)
+        ovpPlaylistProvider.set(sessionProvider: sessionProvider)
+        
+        ovpPlaylistProvider.loadPlaylist { [weak self] (playlist: PKPlaylist?, error: Error?) in
+            guard let self = self else { return }
+            
+            if let error = error {
+                callback(KalturaPlayerError.mediaProviderError(code: "TBD Code", message: "TBD Message").asNSError)
+            }
+            
+            callback(nil)
+        }
+    }
+}
