@@ -8,7 +8,9 @@
 import Foundation
 import PlayKit
 
-public protocol PlaylistController {
+@objc public protocol PlaylistController {
+    
+    var playlist: PKPlaylist { get }
     
     func playNext()
     
@@ -33,4 +35,11 @@ public protocol PlaylistController {
     var loop: Bool { get set }
     
     var autoContinue: Bool { get set }
+}
+
+protocol EntryLoader {
+    
+    func loadMedia(options: OVPMediaOptions, callback: @escaping (_ entry: PKMediaEntry?, _ error: NSError?) -> Void)
+    
+    func prepareMediaOptions()
 }

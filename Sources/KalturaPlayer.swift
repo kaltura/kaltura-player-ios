@@ -175,6 +175,9 @@ public enum KalturaPlayerError: PKError {
         }
     }
     
+    /// Playlist controller
+    @objc public var playlistController: PlaylistController?
+    
     /**
         Add an observation to a relevant event.
 
