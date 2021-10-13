@@ -12,6 +12,7 @@ import PlayKitProviders
     
     @objc public var ks: String?
     @objc public var assetId: String?
+    @objc public var epgId: String?
     @objc public var assetType: AssetType = .unset
     @objc public var assetReferenceType: AssetReferenceType = .unset
     @objc public var formats: [String]?
@@ -28,6 +29,7 @@ import PlayKitProviders
     internal func mediaProvider() -> PhoenixMediaProvider {
         let phoenixMediaProvider = PhoenixMediaProvider()
         phoenixMediaProvider.set(assetId: assetId)
+        phoenixMediaProvider.set(epgId: epgId)
         phoenixMediaProvider.set(type: assetType)
         phoenixMediaProvider.set(refType: assetReferenceType)
         phoenixMediaProvider.set(formats: formats)
