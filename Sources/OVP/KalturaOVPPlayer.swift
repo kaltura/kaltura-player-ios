@@ -191,6 +191,45 @@ extension KalturaOVPPlayer {
             callback(nil)
         }
     }
+    
+    // TODO: Rename this function
+    @objc public func loadPlaylistByEntryIds(options: [OVPMediaOptions], callback: @escaping (_ error: NSError?) -> Void) {
+        
+        if options.first?.ks?.isEmpty == false {
+            // TODO: change this logic!
+            sessionProvider.ks = options.first?.ks
+        } else {
+            sessionProvider.ks = playerOptions.ks
+        }
+        
+        let assets: [OVPMediaAsset] = options.map { OVPMediaAsset(id: $0.entryId, referenceId: $0.referenceId) }
+        
+        let ovpPlaylistProvider = OVPPlaylistProvider()
+        ovpPlaylistProvider.set(referrer: KalturaOVPPlayerManager.shared.referrer)
+        ovpPlaylistProvider.set(sessionProvider: sessionProvider)
+        //ovpMediaProvider.set(uiconfId: uiconfId)
+        ovpPlaylistProvider.set(mediaAssets: assets)
+        
+        ovpPlaylistProvider.loadPlaylist { [weak self] (playList: PKPlaylist?, error: Error?) in
+            guard let self = self else { return }
+            guard let playList = playList else {
+                if let error = error {
+                    
+                }
+                callback(KalturaPlayerError.mediaProviderError(code: "TBD Code", message: "TBD Message").asNSError)
+                return
+            }
+            
+            let controller = PKPlaylistController(playlistConfig: nil,
+                                                  playlist: playList,
+                                                  player: self)
+            
+            self.playlistController = controller
+            
+            callback(nil)
+        }
+    }
+    
 }
 
 extension KalturaOVPPlayer: EntryLoader {

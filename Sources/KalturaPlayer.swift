@@ -403,6 +403,19 @@ public enum KalturaPlayerError: PKError {
         pkPlayer.startBuffering()
     }
     
+    /**
+       Set the player's Playlist.
+    
+       * Parameters:
+           * playlist: Playlist to play.
+           * playlistConfig: PlaylistController configuration.
+    */
+    @objc public func setPlaylist(_ playlist: PKPlaylist, playlistConfig: Any? = nil) {
+        playlistController = PKPlaylistController(playlistConfig: playlistConfig,
+                                                  playlist: playlist,
+                                                  player: self)
+    }
+    
 }
 
 // MARK: - Interceptor

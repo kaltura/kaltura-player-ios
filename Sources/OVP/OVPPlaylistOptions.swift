@@ -15,10 +15,10 @@ import PlayKitProviders
     @objc public var uiconfId: NSNumber?
 
     internal func playlistProvider() -> OVPPlaylistProvider {
-        let ovpMediaProvider = OVPPlaylistProvider()
-        ovpMediaProvider.set(playlistId: playlistId)
-        ovpMediaProvider.set(uiconfId: uiconfId)
+        let ovpPlaylistProvider = OVPPlaylistProvider()
+        ovpPlaylistProvider.set(playlistId: playlistId)
+        ovpPlaylistProvider.set(uiconfId: uiconfId)
         
-        return ovpMediaProvider
+        return ovpPlaylistProvider
     }
 }
