@@ -26,10 +26,12 @@ import PlayKit
     // private var playlistOptions: PlaylistOptions
     // private var playlistCountDownOptions: CountDownOptions
     
+    // TODO: remove originalPlaylistEntries and use self.playlist.medias instead
     private let originalPlaylistEntries: [PKMediaEntry]
     private var entries: [PKMediaEntry]
     
     // private var loadedMediasMap: (String, PKMediaEntry)
+    private var preloadingInProgressForMediasId: [String] = []
     
     required init(playlistConfig: Any?, playlist: PKPlaylist, player: KalturaPlayer) {
         self.originalPlaylistEntries = playlist.medias ?? []
@@ -136,8 +138,6 @@ import PlayKit
         self.preloadMedia(atIndex: preloadMediaIndex)
     }
     
-    var preloadingInProgressForMediasId: [String] = []
-    
     private func preloadMedia(atIndex index: Int) {
         let entry = self.entries[index]
         guard self.preloadingInProgressForMediasId.contains(entry.id) == false else {
@@ -217,11 +217,20 @@ import PlayKit
     }
     
     public func reset() {
+        //log("reset");
+        currentPlayingIndex = -1
+        loop = false
+        autoContinue = true
+        recoverOnError = true
         
+        entries.removeAll()
+        entries = playlist.medias ?? []
     }
     
     public func shuffle() {
-        
+        self.player?.stop()
+        self.entries.shuffle()
+        currentPlayingIndex = -1
     }
     
 }
