@@ -16,6 +16,8 @@ import PlayKit
     
     func playPrev()
     
+    func preloadNext()
+    
     func removeItemFromPlaylist(index: Int)
     
     func addItemToPlayList(index: Int, item: PKMediaEntry)
@@ -35,6 +37,11 @@ import PlayKit
     var loop: Bool { get set }
     
     var autoContinue: Bool { get set }
+    
+    var currentMediaIndex: Int { get }
+    
+    func isPreviousItemAvailable() -> Bool
+    func isNextItemAvailable() -> Bool
 }
 
 protocol EntryLoader {

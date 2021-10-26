@@ -10,39 +10,73 @@ import PlayKit
 
 @objc public class PKPlaylistController: NSObject, PlaylistController {
     
-    public var loop: Bool
-    public var autoContinue: Bool = true
-    
-    public var playlist: PKPlaylist
-    
-    //
-    //
-    private weak var player: KalturaPlayer? {
-        didSet {
-            self.subscribeToPlayerEvents()
-        }
+    public var currentMediaIndex: Int {
+        return currentPlayingIndex
     }
+    
+    public var loop: Bool = false
+    public var autoContinue: Bool = true
     private var currentPlayingIndex: Int = -1
     private var recoverOnError: Bool = true
+    
+    public var playlist: PKPlaylist
+    private weak var player: KalturaPlayer?
+    
     // private var playlistType: PKPlaylistType
     // private var playlistOptions: PlaylistOptions
     // private var playlistCountDownOptions: CountDownOptions
     
-    private let origlPlaylistEntries: [PKMediaEntry]
+    private let originalPlaylistEntries: [PKMediaEntry]
     private var entries: [PKMediaEntry]
     
     // private var loadedMediasMap: (String, PKMediaEntry)
     
     required init(playlistConfig: Any?, playlist: PKPlaylist, player: KalturaPlayer) {
-        self.playlist = playlist
-        self.origlPlaylistEntries = playlist.medias ?? []
-        self.entries = origlPlaylistEntries
+        self.originalPlaylistEntries = playlist.medias ?? []
         self.loop = true
+        self.playlist = playlist
+        self.entries = originalPlaylistEntries
         self.player = player
+        
+        super.init()
+        
+        self.subscribeToPlayerEvents()
+    }
+    
+    deinit {
+        self.player?.removeObserver(self, events: KPPlayerEvent.allEventTypes)
     }
     
     func subscribeToPlayerEvents() {
-        
+        self.player?.addObserver(self, events: [KPPlayerEvent.ended, KPPlayerEvent.playheadUpdate]) { [weak self] event in
+            guard let self = self else { return }
+            
+            DispatchQueue.main.async {
+                switch event {
+                case is KPPlayerEvent.Ended:
+                    if self.autoContinue {
+                        if self.isNextItemAvailable() {
+                            self.playNext()
+                        } else {
+                            if self.loop == true {
+                                self.replay()
+                            }
+                        }
+                    }
+                case is KPPlayerEvent.PlayheadUpdate:
+                    guard let currentTime = event.currentTime,
+                          let player = self.player else { return }
+                    
+                    let preloadTime: TimeInterval = 20
+                    
+                    if (player.duration - currentTime.doubleValue) < preloadTime {
+                        self.preloadNext()
+                    }
+                default: break
+                    
+                }
+            }
+        }
     }
     
     // MARK: - PlaylistController
@@ -55,7 +89,9 @@ import PlayKit
         }
         
         guard currentPlayingIndex < self.entries.count else {
-            // handle error
+            if isNextItemAvailable() {
+                replay()
+            }
             return
         }
         
@@ -77,6 +113,56 @@ import PlayKit
         self.playItem(index: currentPlayingIndex)
     }
     
+    public func isNextItemAvailable() -> Bool {
+        let nextItemIndex = currentPlayingIndex + 1
+        if loop == true && self.entries.count == nextItemIndex {
+            return true
+        }
+        
+        return self.entries.indices.contains(nextItemIndex)
+    }
+    
+    public func isPreviousItemAvailable() -> Bool {
+        return self.entries.indices.contains(currentPlayingIndex - 1)
+    }
+    
+    public func preloadNext() {
+        let preloadMediaIndex = currentPlayingIndex + 1
+        guard self.entries.indices.contains(preloadMediaIndex) else {
+            // TODO: Handle error
+            return
+        }
+        
+        self.preloadMedia(atIndex: preloadMediaIndex)
+    }
+    
+    var preloadingInProgressForMediasId: [String] = []
+    
+    private func preloadMedia(atIndex index: Int) {
+        let entry = self.entries[index]
+        guard self.preloadingInProgressForMediasId.contains(entry.id) == false else {
+            // TODO: Handle error
+            return
+        }
+        
+        if !self.isMediaLoaded(index: index) {
+            guard let loader = self.player as? EntryLoader else { return }
+            
+            self.preloadingInProgressForMediasId.append(entry.id)
+            
+            let options: OVPMediaOptions = OVPMediaOptions()
+            options.ks = self.player?.playerOptions.ks
+            options.entryId = entry.id
+            
+            loader.loadMedia(options: options) { [weak self] (loadedEntry: PKMediaEntry?, error: NSError?) in
+                guard let self = self else { return }
+                
+                self.preloadingInProgressForMediasId.removeAll { $0 == entry.id }
+                entry.sources = loadedEntry?.sources
+            }
+        }
+    }
+    
     public func replay() {
         currentPlayingIndex = -1
         playNext()
@@ -91,7 +177,12 @@ import PlayKit
     }
     
     public func playItem(index: Int) {
-        // TODO: add check if index out of range
+        self.player?.stop()
+        guard self.entries.indices.contains(index) else {
+            // TODO: Handle error
+            return
+        }
+        
         currentPlayingIndex = index
         
         let currentEntry = self.entries[currentPlayingIndex]
@@ -109,10 +200,10 @@ import PlayKit
             options.ks = self.player?.playerOptions.ks
             options.entryId = currentEntry.id
             
-            loader.loadMedia(options: options) { (entry: PKMediaEntry?, error: NSError?) in
+            loader.loadMedia(options: options) { [weak self] (entry: PKMediaEntry?, error: NSError?) in
                 currentEntry.sources = entry?.sources
                 
-                self.player?.mediaEntry = currentEntry
+                self?.player?.mediaEntry = currentEntry
             }
         }
     }
