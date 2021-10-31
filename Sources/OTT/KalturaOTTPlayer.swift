@@ -133,18 +133,7 @@ import PlayKitKava
      */
     @objc public func loadMedia(options: OTTMediaOptions, callback: @escaping (_ error: NSError?) -> Void) {
         ottMediaOptions = options
-        
-        if options.ks?.isEmpty == false {
-            sessionProvider.ks = options.ks
-        } else {
-            sessionProvider.ks = playerOptions.ks
-        }
-        
-        let phoenixMediaProvider = options.mediaProvider()
-        phoenixMediaProvider.set(referrer: KalturaOTTPlayerManager.shared.referrer)
-        phoenixMediaProvider.set(sessionProvider: sessionProvider)
-        
-        phoenixMediaProvider.loadMedia { [weak self] (pkMediaEntry, error) in
+        self.loadMedia(options: options) { [weak self] (pkMediaEntry: PKMediaEntry?, error: NSError?) in
             guard let self = self else { return }
             
             guard let mediaEntry = pkMediaEntry else {
@@ -208,4 +197,102 @@ extension KalturaOTTPlayer {
         
         KPOTTDMSConfigModel.shared.addPartnerConfig(partnerId: partnerId, ovpPartnerId: ovpPartnerId, analyticsUrl: analyticsUrl, ovpServiceUrl: ovpServiceUrl, uiConfId: uiConfId)
     }
+}
+
+// MARK: - Playlists
+
+extension KalturaOTTPlayer {
+    
+    // TODO: Rename this function
+    @objc public func loadPlaylistByEntryIds(options: [OTTMediaOptions], callback: @escaping (_ error: NSError?) -> Void) {
+        
+        if options.first?.ks?.isEmpty == false {
+            // TODO: change this logic!
+            sessionProvider.ks = options.first?.ks
+        } else {
+            sessionProvider.ks = playerOptions.ks
+        }
+        
+//        let assets: [OTTMediaAsset] = options.map { OTTMediaAsset() }
+        
+        let ottPlaylistProvider = OTTPlaylistProvider()
+        ottPlaylistProvider.set(referrer: KalturaOVPPlayerManager.shared.referrer)
+        ottPlaylistProvider.set(sessionProvider: sessionProvider)
+        //ovpPlaylistProvider.set(uiconfId: uiconfId)
+//        ottPlaylistProvider.set(mediaAssets: assets)
+        
+        ottPlaylistProvider.loadPlaylist { [weak self] (playList: PKPlaylist?, error: Error?) in
+            guard let self = self else { return }
+            guard let playList = playList else {
+                if let error = error {
+                    
+                }
+                callback(KalturaPlayerError.mediaProviderError(code: "TBD Code", message: "TBD Message").asNSError)
+                return
+            }
+            
+            let controller = PKPlaylistController(playlistConfig: nil,
+                                                  playlist: playList,
+                                                  player: self)
+            
+            self.playlistController = controller
+            
+            callback(nil)
+        }
+    }
+    
+}
+
+extension KalturaOTTPlayer: EntryLoader {
+    
+    func prepareMediaOptions() {
+        
+    }
+    
+    internal func loadMedia(options: MediaOptions, callback: @escaping (_ entry: PKMediaEntry?, _ error: NSError?) -> Void) {
+        guard let options = options as? OTTMediaOptions else {
+            callback(nil, KalturaPlayerError.configurationMissing.asNSError)
+            return
+        }
+        
+        if options.ks?.isEmpty == false {
+            sessionProvider.ks = options.ks
+        } else {
+            sessionProvider.ks = playerOptions.ks
+        }
+        
+        let phoenixMediaProvider = options.mediaProvider()
+        phoenixMediaProvider.set(referrer: KalturaOTTPlayerManager.shared.referrer)
+        phoenixMediaProvider.set(sessionProvider: sessionProvider)
+        
+        phoenixMediaProvider.loadMedia { [weak self] (pkMediaEntry, error) in
+            guard let mediaEntry = pkMediaEntry else {
+                if let error = error {
+                    switch error {
+                    case let pkError as PKError:
+                        callback(nil, KalturaPlayerError.mediaProviderError(code: String(pkError.code), message: pkError.errorDescription).asNSError)
+                    case let nsError as NSError:
+                        var code = String(nsError.code)
+                        if let serverErrorCode = nsError.userInfo[ProviderServerErrorCodeKey] as? String, !serverErrorCode.isEmpty {
+                            code = serverErrorCode
+                        }
+                        var message = nsError.description
+                        if let serverErrorMessage = nsError.userInfo[ProviderServerErrorMessageKey] as? String, !serverErrorMessage.isEmpty {
+                            message = serverErrorMessage
+                        }
+                        callback(nil, KalturaPlayerError.mediaProviderError(code: code, message: message).asNSError)
+                    default:
+                        callback(nil, KalturaPlayerError.mediaProviderError(code: "LoadMediaError", message: error.localizedDescription).asNSError)
+                    }
+                } else {
+                    callback(nil, KalturaPlayerError.invalidPKMediaEntry.asNSError)
+                }
+                
+                return
+            }
+            
+            callback(mediaEntry, nil)
+        }
+    }
+    
 }

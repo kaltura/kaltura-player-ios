@@ -207,7 +207,7 @@ extension KalturaOVPPlayer {
         let ovpPlaylistProvider = OVPPlaylistProvider()
         ovpPlaylistProvider.set(referrer: KalturaOVPPlayerManager.shared.referrer)
         ovpPlaylistProvider.set(sessionProvider: sessionProvider)
-        //ovpMediaProvider.set(uiconfId: uiconfId)
+        //ovpPlaylistProvider.set(uiconfId: uiconfId)
         ovpPlaylistProvider.set(mediaAssets: assets)
         
         ovpPlaylistProvider.loadPlaylist { [weak self] (playList: PKPlaylist?, error: Error?) in
@@ -238,7 +238,12 @@ extension KalturaOVPPlayer: EntryLoader {
         
     }
     
-    internal func loadMedia(options: OVPMediaOptions, callback: @escaping (_ entry: PKMediaEntry?, _ error: NSError?) -> Void) {
+    internal func loadMedia(options: MediaOptions, callback: @escaping (_ entry: PKMediaEntry?, _ error: NSError?) -> Void) {
+        guard let options = options as? OVPMediaOptions else {
+            callback(nil, KalturaPlayerError.configurationMissing.asNSError)
+            return
+        }
+        
         if options.ks?.isEmpty == false {
             sessionProvider.ks = options.ks
         } else {

@@ -177,6 +177,7 @@ import PlayKit
     }
     
     public func playItem(index: Int) {
+        PKLog.debug("playItem index = \(index)")
         self.player?.stop()
         guard self.entries.indices.contains(index) else {
             // TODO: Handle error

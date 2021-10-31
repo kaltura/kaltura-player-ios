@@ -46,7 +46,7 @@ import PlayKit
 
 protocol EntryLoader {
     
-    func loadMedia(options: OVPMediaOptions, callback: @escaping (_ entry: PKMediaEntry?, _ error: NSError?) -> Void)
+    func loadMedia(options: MediaOptions, callback: @escaping (_ entry: PKMediaEntry?, _ error: NSError?) -> Void)
     
     func prepareMediaOptions()
 }
