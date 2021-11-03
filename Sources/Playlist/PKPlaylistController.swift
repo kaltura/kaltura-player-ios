@@ -197,14 +197,28 @@ import PlayKit
                 return
             }
             
-            let options: OVPMediaOptions = OVPMediaOptions()
-            options.ks = self.player?.playerOptions.ks
-            options.entryId = currentEntry.id
+            let options: MediaOptions
+            
+            if self.player is KalturaOTTPlayer {
+                let ottOptions = OTTMediaOptions()
+                ottOptions.ks = self.player?.playerOptions.ks
+                ottOptions.assetId = currentEntry.id
+                options = ottOptions
+            } else if self.player is KalturaOVPPlayer {
+                let ovpOptions = OVPMediaOptions()
+                ovpOptions.ks = self.player?.playerOptions.ks
+                ovpOptions.entryId = currentEntry.id
+                options = ovpOptions
+            } else {
+                options = MediaOptions()
+            }
             
             loader.loadMedia(options: options) { [weak self] (entry: PKMediaEntry?, error: NSError?) in
                 currentEntry.sources = entry?.sources
                 
                 self?.player?.mediaEntry = currentEntry
+                
+//                self?.player?.post(event: PlayerEvent.Playing())
             }
         }
     }

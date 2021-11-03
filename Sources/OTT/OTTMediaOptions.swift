@@ -37,4 +37,29 @@ import PlayKitProviders
         
         return phoenixMediaProvider
     }
+    
+    @discardableResult
+    @nonobjc public func set(ks: String?) -> Self {
+        self.ks = ks
+        return self
+    }
+    
+    @discardableResult
+    @nonobjc public func set(assetId: String?) -> Self {
+        self.assetId = assetId
+        return self
+    }
+    
+    @discardableResult
+    @nonobjc public func set(assetType: AssetType) -> Self {
+        self.assetType = assetType
+        return self
+    }
+    
+    @discardableResult
+    @nonobjc public func set(assetReferenceType: AssetReferenceType) -> Self {
+        self.assetReferenceType = assetReferenceType
+        return self
+    }
+    
 }

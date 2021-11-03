@@ -213,15 +213,16 @@ extension KalturaOTTPlayer {
             sessionProvider.ks = playerOptions.ks
         }
         
-//        let assets: [OTTMediaAsset] = options.map { OTTMediaAsset() }
+        let assets: [OTTPlaylistAsset] = options.map { OTTPlaylistAsset(id: $0.assetId,
+                                                                        assetReferenceType: $0.assetReferenceType) }
         
-        let ottPlaylistProvider = OTTPlaylistProvider()
-        ottPlaylistProvider.set(referrer: KalturaOVPPlayerManager.shared.referrer)
-        ottPlaylistProvider.set(sessionProvider: sessionProvider)
-        //ovpPlaylistProvider.set(uiconfId: uiconfId)
-//        ottPlaylistProvider.set(mediaAssets: assets)
+        let phoenixPlaylistProvider = PhoenixPlaylistProvider()
+        phoenixPlaylistProvider.set(referrer: KalturaOVPPlayerManager.shared.referrer)
+        phoenixPlaylistProvider.set(sessionProvider: sessionProvider)
+        //phoenixPlaylistProvider.set(uiconfId: uiconfId)
+        phoenixPlaylistProvider.set(mediaAssets: assets)
         
-        ottPlaylistProvider.loadPlaylist { [weak self] (playList: PKPlaylist?, error: Error?) in
+        phoenixPlaylistProvider.loadPlaylist { [weak self] (playList: PKPlaylist?, error: Error?) in
             guard let self = self else { return }
             guard let playList = playList else {
                 if let error = error {
