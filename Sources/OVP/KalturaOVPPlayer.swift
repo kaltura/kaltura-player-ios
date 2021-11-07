@@ -78,16 +78,14 @@ import PlayKitProviders
     
     // MARK: - Private Methods
     
-    func updateKavaPlugin(partnerId: Int64, entryId: String, mediaOptions: OVPMediaOptions) {
-        
-        let ks = mediaOptions.ks?.isEmpty == false ? mediaOptions.ks : playerOptions.ks
-        
+    func updateKavaPlugin(partnerId: Int64, entryId: String, mediaOptions: MediaOptions?) {
         let kavaPluginConfig = KavaHelper.getPluginConfig(ovpPartnerId: partnerId,
                                                           ovpEntryId: entryId,
-                                                          ks: ks,
+                                                          ks: mediaOptions?.ks ?? playerOptions.ks,
                                                           referrer: KalturaOVPPlayerManager.shared.referrer,
                                                           playbackContext: nil,
-                                                          analyticsUrl: KalturaOVPPlayerManager.shared.cachedConfigData?.analyticsUrl)
+                                                          analyticsUrl: KalturaOVPPlayerManager.shared.cachedConfigData?.analyticsUrl,
+                                                          playlistId: self.playlistController?.playlist.id)
         
         self.updatePluginConfig(pluginName: KavaPlugin.pluginName, config: kavaPluginConfig)
     }
@@ -122,17 +120,21 @@ import PlayKitProviders
                 return
             }
             
-            // The Configuration is needed in order to continue.
-            guard let ovpPartnerId = KalturaOVPPlayerManager.shared.cachedConfigData?.ovpPartnerId else {
-                callback(KalturaPlayerError.configurationMissing.asNSError)
-                return
-            }
-            
-            self.updateKavaPlugin(partnerId: ovpPartnerId, entryId: mediaEntry.id, mediaOptions: options)
-            
-            self.mediaEntry = mediaEntry
-            callback(nil)
+            self.setMediaAndUpdatePlugins(mediaEntry: mediaEntry, options: options, callback: callback)
         }
+    }
+    
+    internal override func setMediaAndUpdatePlugins(mediaEntry: PKMediaEntry, options: MediaOptions?, callback: @escaping (_ error: NSError?) -> Void) {
+        // The Configuration is needed in order to continue.
+        guard let ovpPartnerId = KalturaOVPPlayerManager.shared.cachedConfigData?.ovpPartnerId else {
+            callback(KalturaPlayerError.configurationMissing.asNSError)
+            return
+        }
+        
+        self.updateKavaPlugin(partnerId: ovpPartnerId, entryId: mediaEntry.id, mediaOptions: options)
+        
+        self.mediaEntry = mediaEntry
+        callback(nil)
     }
 }
 

@@ -137,6 +137,19 @@ public enum KalturaPlayerError: PKError {
         }
     }
     
+    /**
+       Set the player's Playlist.
+    
+       * Parameters:
+           * playlist: Playlist to play.
+           * playlistConfig: PlaylistController configuration.
+    */
+    @objc public func setPlaylist(_ playlist: PKPlaylist, playlistConfig: Any? = nil) {
+        playlistController = PKPlaylistController(playlistConfig: playlistConfig,
+                                                  playlist: playlist,
+                                                  player: self)
+    }
+    
     // MARK: - Player
     
     /**
@@ -404,16 +417,17 @@ public enum KalturaPlayerError: PKError {
     }
     
     /**
-       Set the player's Playlist.
-    
+     Set current media and update plugins if needs.
+     Must be overridden in subclass.
+
        * Parameters:
-           * playlist: Playlist to play.
-           * playlistConfig: PlaylistController configuration.
+           * mediaEntry: Media entry to play.
+           * options: The Plugin configuration object.
+           * callback: Error handler callback.
     */
-    @objc public func setPlaylist(_ playlist: PKPlaylist, playlistConfig: Any? = nil) {
-        playlistController = PKPlaylistController(playlistConfig: playlistConfig,
-                                                  playlist: playlist,
-                                                  player: self)
+    internal func setMediaAndUpdatePlugins(mediaEntry: PKMediaEntry, options: MediaOptions?, callback: @escaping (_ error: NSError?) -> Void) {
+        self.mediaEntry = mediaEntry
+        callback(nil)
     }
     
 }

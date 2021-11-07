@@ -10,7 +10,6 @@ import PlayKitProviders
 
 @objc public class OVPMediaOptions: MediaOptions {
     
-    @objc public var ks: String?
     @objc public var entryId: String?
     @objc public var referenceId: String?
     @objc public var uiconfId: NSNumber?

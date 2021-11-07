@@ -11,7 +11,13 @@ import PlayKitKava
 
 class KavaHelper {
     
-    static func getPluginConfig(ovpPartnerId: Int64, ovpEntryId: String, ks: String?, referrer: String, playbackContext: String?, analyticsUrl: String?) -> KavaPluginConfig {
+    static func getPluginConfig(ovpPartnerId: Int64,
+                                ovpEntryId: String,
+                                ks: String?,
+                                referrer: String,
+                                playbackContext: String?,
+                                analyticsUrl: String?,
+                                playlistId: String?) -> KavaPluginConfig {
             
         let clientAppVersion: String = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "BundleVersionMissing"
         let kavaPluginConfig = KavaPluginConfig(partnerId: Int(ovpPartnerId),
@@ -21,7 +27,7 @@ class KavaHelper {
                                                 playbackContext: playbackContext,
                                                 referrer: referrer,
                                                 applicationVersion: clientAppVersion,
-                                                playlistId: nil, // We currently don't have in iOS.
+                                                playlistId: playlistId,
                                                 customVar1: nil, // TODO: customVar's are missing to be sent to kava
                                                 customVar2: nil,
                                                 customVar3: nil)

@@ -214,9 +214,12 @@ import PlayKit
             }
             
             loader.loadMedia(options: options) { [weak self] (entry: PKMediaEntry?, error: NSError?) in
+                guard let self = self else { return }
                 currentEntry.sources = entry?.sources
                 
-                self?.player?.mediaEntry = currentEntry
+                self.player?.setMediaAndUpdatePlugins(mediaEntry: currentEntry, options: nil, callback: { error in
+                    
+                })
                 
 //                self?.player?.post(event: PlayerEvent.Playing())
             }

@@ -12,13 +12,10 @@ import PlayKitProviders
     
     @objc public var ks: String?
     @objc public var playlistId: String?
-    @objc public var uiconfId: NSNumber?
 
     internal func playlistProvider() -> OVPPlaylistProvider {
         let ovpPlaylistProvider = OVPPlaylistProvider()
         ovpPlaylistProvider.set(playlistId: playlistId)
-        ovpPlaylistProvider.set(uiconfId: uiconfId)
-        
         return ovpPlaylistProvider
     }
 }
