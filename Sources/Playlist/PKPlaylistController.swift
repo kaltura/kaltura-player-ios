@@ -14,35 +14,44 @@ import PlayKit
         return currentPlayingIndex
     }
     
-    public var loop: Bool = false
-    public var autoContinue: Bool = true
+    public var loop: Bool = false {
+        didSet {
+            self.messageBus?.post(PlaylistEvent.PlaylistLoopStateChanged())
+        }
+    }
+    public var autoContinue: Bool = true {
+        didSet {
+            self.messageBus?.post(PlaylistEvent.PlaylistAutoContinueStateChanged())
+        }
+    }
     private var currentPlayingIndex: Int = -1
     private var recoverOnError: Bool = true
     
     public var playlist: PKPlaylist
-    private weak var player: KalturaPlayer?
     
-    // private var playlistType: PKPlaylistType
+    private weak var player: KalturaPlayer?
+    private var messageBus: MessageBus?
+    
     // private var playlistOptions: PlaylistOptions
     // private var playlistCountDownOptions: CountDownOptions
     
-    // TODO: remove originalPlaylistEntries and use self.playlist.medias instead
-    private let originalPlaylistEntries: [PKMediaEntry]
     private var entries: [PKMediaEntry]
     
-    // private var loadedMediasMap: (String, PKMediaEntry)
     private var preloadingInProgressForMediasId: [String] = []
     
     required init(playlistConfig: Any?, playlist: PKPlaylist, player: KalturaPlayer) {
-        self.originalPlaylistEntries = playlist.medias ?? []
         self.loop = true
         self.playlist = playlist
-        self.entries = originalPlaylistEntries
+        self.entries = playlist.medias ?? []
         self.player = player
         
+        self.messageBus = player.getMessageBus()
+            
         super.init()
         
         self.subscribeToPlayerEvents()
+        
+        self.messageBus?.post(PlaylistEvent.PlayListLoaded())
     }
     
     deinit {
@@ -62,6 +71,8 @@ import PlayKit
                         } else {
                             if self.loop == true {
                                 self.replay()
+                            } else {
+                                self.messageBus?.post(PlaylistEvent.PlayListEnded())
                             }
                         }
                     }
@@ -107,8 +118,8 @@ import PlayKit
             currentPlayingIndex -= 1
         }
         
-        guard currentPlayingIndex < self.entries.count else {
-            // handle error
+        guard self.entries.indices.contains(currentPlayingIndex) else {
+            PKLog.error("playItem index is out of range.")
             return
         }
         
@@ -129,9 +140,14 @@ import PlayKit
     }
     
     public func preloadNext() {
+        if let interceptors = self.player?.interceptors, !interceptors.isEmpty {
+            PKLog.error("It is not possible to pleload next playlist item with loaded interceptor plugins.")
+            return
+        }
+        
         let preloadMediaIndex = currentPlayingIndex + 1
         guard self.entries.indices.contains(preloadMediaIndex) else {
-            // TODO: Handle error
+            PKLog.error("Trere is no next media to preload.")
             return
         }
         
@@ -141,7 +157,7 @@ import PlayKit
     private func preloadMedia(atIndex index: Int) {
         let entry = self.entries[index]
         guard self.preloadingInProgressForMediasId.contains(entry.id) == false else {
-            // TODO: Handle error
+            PKLog.error("Media :\(entry.id) is loading already.")
             return
         }
         
@@ -177,10 +193,10 @@ import PlayKit
     }
     
     public func playItem(index: Int) {
-        PKLog.debug("playItem index = \(index)")
+        PKLog.debug("Play Item with index = \(index)")
         self.player?.stop()
         guard self.entries.indices.contains(index) else {
-            // TODO: Handle error
+            PKLog.error("playItem index is out of range.")
             return
         }
         
@@ -188,8 +204,12 @@ import PlayKit
         
         let currentEntry = self.entries[currentPlayingIndex]
         
+        self.messageBus?.post(PlaylistEvent.PlayListCurrentPlayingItemChanged())
+        
         if let sources = currentEntry.sources, !sources.isEmpty {
-            self.player?.mediaEntry = currentEntry
+            self.player?.setMediaAndUpdatePlugins(mediaEntry: currentEntry, options: nil, callback: { error in
+                
+            })
         } else {
             // Entry is not loaded.
             
@@ -215,13 +235,22 @@ import PlayKit
             
             loader.loadMedia(options: options) { [weak self] (entry: PKMediaEntry?, error: NSError?) in
                 guard let self = self else { return }
+                
+                if let error = error {
+                    PKLog.error(error.description)
+                    self.messageBus?.post(PlaylistEvent.PlayListLoadMediaError(nsError: error))
+                    
+                    if self.recoverOnError == true {
+                        PKLog.error("Trying to play next media")
+                        self.playNext()
+                    }
+                }
+                
                 currentEntry.sources = entry?.sources
                 
                 self.player?.setMediaAndUpdatePlugins(mediaEntry: currentEntry, options: nil, callback: { error in
                     
                 })
-                
-//                self?.player?.post(event: PlayerEvent.Playing())
             }
         }
     }
@@ -235,7 +264,6 @@ import PlayKit
     }
     
     public func reset() {
-        //log("reset");
         currentPlayingIndex = -1
         loop = false
         autoContinue = true
