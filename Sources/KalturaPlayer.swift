@@ -6,6 +6,7 @@ import PlayKit
 public typealias KPPlayerEvent = PlayerEvent
 public typealias KPTrack = Track
 public typealias KPAdEvent = AdEvent
+public typealias KPPlaylistEvent = PlaylistEvent
 
 public enum KalturaPlayerError: PKError {
     case configurationMissing
