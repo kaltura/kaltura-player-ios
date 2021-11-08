@@ -10,6 +10,8 @@ import PlayKit
 
 @objc public protocol PlaylistController {
     
+    weak var delegate: PlaylistControllerDelegate? { get set }
+    
     var playlist: PKPlaylist { get }
     
     func playNext()
@@ -49,4 +51,11 @@ protocol EntryLoader {
     func loadMedia(options: MediaOptions, callback: @escaping (_ entry: PKMediaEntry?, _ error: NSError?) -> Void)
     
     func prepareMediaOptions()
+}
+
+@objc public protocol PlaylistControllerDelegate: class {
+    
+    func playlistController(_ controller: PlaylistController, needsUpdatePluginConfigForMediaItemAtIndex mediaItemIndex: Int) -> Bool
+    
+    func playlistController(_ controller: PlaylistController, pluginConfigForMediaItemAtIndex mediaItemIndex: Int) -> PluginConfig
 }

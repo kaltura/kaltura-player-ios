@@ -159,11 +159,20 @@ import PlayKitKava
                 return
             }
             
-            self.setMediaAndUpdatePlugins(mediaEntry: mediaEntry, options: options, callback: callback)
+            self.setMediaAndUpdatePlugins(mediaEntry: mediaEntry, mediaOptions: options, pluginConfig: nil, callback: callback)
         }
     }
     
-    internal override func setMediaAndUpdatePlugins(mediaEntry: PKMediaEntry, options: MediaOptions?, callback: @escaping (_ error: NSError?) -> Void) {
+    internal override func setMediaAndUpdatePlugins(mediaEntry: PKMediaEntry,
+                                                    mediaOptions: MediaOptions?,
+                                                    pluginConfig: PluginConfig?,
+                                                    callback: @escaping (_ error: NSError?) -> Void) {
+        if let pluginConfig = pluginConfig {
+            let playerOptions = self.playerOptions
+            playerOptions.pluginConfig = pluginConfig
+            self.updatePlayerOptions(playerOptions)
+        }
+        
         // The DMS Configuration is needed in order to continue.
         guard let ovpPartnerId = KalturaOTTPlayerManager.shared.cachedConfigData?.ovpPartnerId else {
             callback(KalturaPlayerError.configurationMissing.asNSError)
@@ -174,11 +183,11 @@ import PlayKitKava
         
         if let entryId = mediaEntry.metadata?["entryId"] {
             ovpEntryId = entryId
-        } else if let options = options as? OTTMediaOptions, let entryId = options.assetId {
+        } else if let options = mediaOptions as? OTTMediaOptions, let entryId = options.assetId {
             ovpEntryId = entryId
         }
         
-        self.updateKavaPlugin(ovpPartnerId: ovpPartnerId, ovpEntryId: ovpEntryId, mediaOptions: options as? OTTMediaOptions)
+        self.updateKavaPlugin(ovpPartnerId: ovpPartnerId, ovpEntryId: ovpEntryId, mediaOptions: mediaOptions as? OTTMediaOptions)
         self.updatePhoenixAnalyticsPlugin()
         self.updateMediaEntryWithLoadedInterceptors(mediaEntry) {
             callback(nil)

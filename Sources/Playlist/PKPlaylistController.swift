@@ -10,6 +10,8 @@ import PlayKit
 
 @objc public class PKPlaylistController: NSObject, PlaylistController {
     
+    public weak var delegate: PlaylistControllerDelegate?
+    
     public var currentMediaIndex: Int {
         return currentPlayingIndex
     }
@@ -207,7 +209,14 @@ import PlayKit
         self.messageBus?.post(PlaylistEvent.PlayListCurrentPlayingItemChanged())
         
         if let sources = currentEntry.sources, !sources.isEmpty {
-            self.player?.setMediaAndUpdatePlugins(mediaEntry: currentEntry, options: nil, callback: { error in
+            var pluginConfig: PluginConfig? = nil
+            
+            if let delegate = self.delegate,
+               delegate.playlistController(self, needsUpdatePluginConfigForMediaItemAtIndex: self.currentPlayingIndex) == true {
+                pluginConfig = delegate.playlistController(self, pluginConfigForMediaItemAtIndex: self.currentPlayingIndex)
+            }
+            
+            self.player?.setMediaAndUpdatePlugins(mediaEntry: currentEntry, mediaOptions: nil, pluginConfig: pluginConfig, callback: { error in
                 
             })
         } else {
@@ -248,7 +257,14 @@ import PlayKit
                 
                 currentEntry.sources = entry?.sources
                 
-                self.player?.setMediaAndUpdatePlugins(mediaEntry: currentEntry, options: nil, callback: { error in
+                var pluginConfig: PluginConfig? = nil
+                
+                if let delegate = self.delegate,
+                   delegate.playlistController(self, needsUpdatePluginConfigForMediaItemAtIndex: self.currentPlayingIndex) == true {
+                    pluginConfig = delegate.playlistController(self, pluginConfigForMediaItemAtIndex: self.currentPlayingIndex)
+                }
+                
+                self.player?.setMediaAndUpdatePlugins(mediaEntry: currentEntry, mediaOptions: nil, pluginConfig: pluginConfig, callback: { error in
                     
                 })
             }

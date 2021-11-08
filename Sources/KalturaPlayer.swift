@@ -426,7 +426,17 @@ public enum KalturaPlayerError: PKError {
            * options: The Plugin configuration object.
            * callback: Error handler callback.
     */
-    internal func setMediaAndUpdatePlugins(mediaEntry: PKMediaEntry, options: MediaOptions?, callback: @escaping (_ error: NSError?) -> Void) {
+    internal func setMediaAndUpdatePlugins(mediaEntry: PKMediaEntry,
+                                           mediaOptions: MediaOptions?,
+                                           pluginConfig: PluginConfig?,
+                                           callback: @escaping (_ error: NSError?) -> Void) {
+        
+        if let pluginConfig = pluginConfig {
+            let playerOptions = self.playerOptions
+            playerOptions.pluginConfig = pluginConfig
+            self.updatePlayerOptions(playerOptions)
+        }
+        
         self.mediaEntry = mediaEntry
         callback(nil)
     }

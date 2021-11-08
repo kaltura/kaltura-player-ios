@@ -120,18 +120,28 @@ import PlayKitProviders
                 return
             }
             
-            self.setMediaAndUpdatePlugins(mediaEntry: mediaEntry, options: options, callback: callback)
+            self.setMediaAndUpdatePlugins(mediaEntry: mediaEntry, mediaOptions: options, pluginConfig: nil, callback: callback)
         }
     }
     
-    internal override func setMediaAndUpdatePlugins(mediaEntry: PKMediaEntry, options: MediaOptions?, callback: @escaping (_ error: NSError?) -> Void) {
+    internal override func setMediaAndUpdatePlugins(mediaEntry: PKMediaEntry,
+                                                    mediaOptions: MediaOptions?,
+                                                    pluginConfig: PluginConfig?,
+                                                    callback: @escaping (_ error: NSError?) -> Void) {
+        
+        if let pluginConfig = pluginConfig {
+            let playerOptions = self.playerOptions
+            playerOptions.pluginConfig = pluginConfig
+            self.updatePlayerOptions(playerOptions)
+        }
+        
         // The Configuration is needed in order to continue.
         guard let ovpPartnerId = KalturaOVPPlayerManager.shared.cachedConfigData?.ovpPartnerId else {
             callback(KalturaPlayerError.configurationMissing.asNSError)
             return
         }
         
-        self.updateKavaPlugin(partnerId: ovpPartnerId, entryId: mediaEntry.id, mediaOptions: options)
+        self.updateKavaPlugin(partnerId: ovpPartnerId, entryId: mediaEntry.id, mediaOptions: mediaOptions)
         
         self.mediaEntry = mediaEntry
         callback(nil)
