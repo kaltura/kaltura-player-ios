@@ -10,12 +10,13 @@ import PlayKit
 
 @objc public class PKPlaylistController: NSObject, PlaylistController {
     
+    public var playlist: PKPlaylist
     public weak var delegate: PlaylistControllerDelegate?
     
+    public var preloadTime: TimeInterval = 10
     public var currentMediaIndex: Int {
         return currentPlayingIndex
     }
-    
     public var loop: Bool = false {
         didSet {
             self.messageBus?.post(PlaylistEvent.PlaylistLoopStateChanged())
@@ -26,17 +27,11 @@ import PlayKit
             self.messageBus?.post(PlaylistEvent.PlaylistAutoContinueStateChanged())
         }
     }
+    
     private var currentPlayingIndex: Int = -1
     private var recoverOnError: Bool = true
-    
-    public var playlist: PKPlaylist
-    
     private weak var player: KalturaPlayer?
     private var messageBus: MessageBus?
-    
-    // private var playlistOptions: PlaylistOptions
-    // private var playlistCountDownOptions: CountDownOptions
-    
     private var entries: [PKMediaEntry]
     
     private var preloadingInProgressForMediasId: [String] = []
@@ -82,9 +77,7 @@ import PlayKit
                     guard let currentTime = event.currentTime,
                           let player = self.player else { return }
                     
-                    let preloadTime: TimeInterval = 20
-                    
-                    if (player.duration - currentTime.doubleValue) < preloadTime {
+                    if (player.duration - currentTime.doubleValue) < self.preloadTime {
                         self.preloadNext()
                     }
                 default: break

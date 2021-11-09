@@ -42,6 +42,9 @@ import PlayKit
     
     var currentMediaIndex: Int { get }
     
+    /// Time interval that manage time in seconds when next media will be preloaded before current media ends.
+    var preloadTime: TimeInterval { get set }
+    
     func isPreviousItemAvailable() -> Bool
     func isNextItemAvailable() -> Bool
 }
