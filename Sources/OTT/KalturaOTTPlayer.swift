@@ -222,6 +222,7 @@ extension KalturaOTTPlayer {
 extension KalturaOTTPlayer {
     
     @objc public func loadPlaylist(options: [OTTMediaOptions], callback: @escaping (_ error: NSError?) -> Void) {
+        self.playlistController = nil
         
         if options.first?.ks?.isEmpty == false {
             // TODO: change this logic!

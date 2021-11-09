@@ -173,6 +173,7 @@ extension KalturaOVPPlayer {
 extension KalturaOVPPlayer {
     
     @objc public func loadPlaylistById(options: OVPPlaylistOptions, callback: @escaping (_ error: NSError?) -> Void) {
+        self.playlistController = nil
         
         if options.ks?.isEmpty == false {
             sessionProvider.ks = options.ks
@@ -206,7 +207,7 @@ extension KalturaOVPPlayer {
     }
     
     @objc public func loadPlaylist(options: [OVPMediaOptions], callback: @escaping (_ error: NSError?) -> Void) {
-        
+        self.playlistController = nil
         if options.first?.ks?.isEmpty == false {
             // TODO: change this logic!
             sessionProvider.ks = options.first?.ks
