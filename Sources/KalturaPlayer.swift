@@ -12,6 +12,7 @@ public enum KalturaPlayerError: PKError {
     case configurationMissing
     case mediaProviderError(code:String, message:String)
     case invalidPKMediaEntry
+    case playlistProviderError
     
     public static let domain = "com.kaltura.player.error"
     public static let serverErrorCodeKey = "code"
@@ -22,6 +23,7 @@ public enum KalturaPlayerError: PKError {
         case .configurationMissing: return 8001
         case .mediaProviderError: return 8002
         case .invalidPKMediaEntry: return 8003
+        case .playlistProviderError: return 8004
         }
     }
     
@@ -30,6 +32,7 @@ public enum KalturaPlayerError: PKError {
         case .configurationMissing: return "The Configuration has not been retrieved yet."
         case .mediaProviderError(let code, let message): return "Media Provider Error, code: \(code), \n message: \(message)"
         case .invalidPKMediaEntry: return "Load media on the provider returned with an empty PKMediaEntry."
+        case .playlistProviderError: return "loading playlist on the Playlist Provider returned with an error"
         }
     }
     

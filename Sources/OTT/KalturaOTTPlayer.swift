@@ -221,8 +221,7 @@ extension KalturaOTTPlayer {
 
 extension KalturaOTTPlayer {
     
-    // TODO: Rename this function
-    @objc public func loadPlaylistByEntryIds(options: [OTTMediaOptions], callback: @escaping (_ error: NSError?) -> Void) {
+    @objc public func loadPlaylist(options: [OTTMediaOptions], callback: @escaping (_ error: NSError?) -> Void) {
         
         if options.first?.ks?.isEmpty == false {
             // TODO: change this logic!
@@ -243,10 +242,11 @@ extension KalturaOTTPlayer {
         phoenixPlaylistProvider.loadPlaylist { [weak self] (playList: PKPlaylist?, error: Error?) in
             guard let self = self else { return }
             guard let playList = playList else {
-                if let error = error {
-                    
+                if let error = error as? PhoenixMediaProviderError {
+                    callback(error.asNSError)
+                    return
                 }
-                callback(KalturaPlayerError.mediaProviderError(code: "TBD Code", message: "TBD Message").asNSError)
+                callback(KalturaPlayerError.playlistProviderError.asNSError)
                 return
             }
             

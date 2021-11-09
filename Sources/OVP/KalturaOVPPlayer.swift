@@ -172,7 +172,7 @@ extension KalturaOVPPlayer {
 
 extension KalturaOVPPlayer {
     
-    @objc public func loadPlaylist(options: OVPPlaylistOptions, callback: @escaping (_ error: NSError?) -> Void) {
+    @objc public func loadPlaylistById(options: OVPPlaylistOptions, callback: @escaping (_ error: NSError?) -> Void) {
         
         if options.ks?.isEmpty == false {
             sessionProvider.ks = options.ks
@@ -187,10 +187,11 @@ extension KalturaOVPPlayer {
         ovpPlaylistProvider.loadPlaylist { [weak self] (playList: PKPlaylist?, error: Error?) in
             guard let self = self else { return }
             guard let playList = playList else {
-                if let error = error {
-                    
+                if let error = error as? OVPMediaProviderError {
+                    callback(error.asNSError)
+                    return
                 }
-                callback(KalturaPlayerError.mediaProviderError(code: "TBD Code", message: "TBD Message").asNSError)
+                callback(KalturaPlayerError.playlistProviderError.asNSError)
                 return
             }
             
@@ -204,8 +205,7 @@ extension KalturaOVPPlayer {
         }
     }
     
-    // TODO: Rename this function
-    @objc public func loadPlaylistByEntryIds(options: [OVPMediaOptions], callback: @escaping (_ error: NSError?) -> Void) {
+    @objc public func loadPlaylist(options: [OVPMediaOptions], callback: @escaping (_ error: NSError?) -> Void) {
         
         if options.first?.ks?.isEmpty == false {
             // TODO: change this logic!
