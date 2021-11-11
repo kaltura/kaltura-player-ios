@@ -232,7 +232,8 @@ extension KalturaOTTPlayer {
         }
         
         let assets: [OTTPlaylistAsset] = options.map { OTTPlaylistAsset(id: $0.assetId,
-                                                                        assetReferenceType: $0.assetReferenceType) }
+                                                                        assetReferenceType: $0.assetReferenceType,
+                                                                        networkProtocol: $0.networkProtocol) }
         
         let phoenixPlaylistProvider = PhoenixPlaylistProvider()
         phoenixPlaylistProvider.set(referrer: KalturaOVPPlayerManager.shared.referrer)

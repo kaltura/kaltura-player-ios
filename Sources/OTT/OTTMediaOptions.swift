@@ -55,4 +55,10 @@ import PlayKitProviders
         return self
     }
     
+    @discardableResult
+    @nonobjc public func set(networkProtocol: String) -> Self {
+        self.networkProtocol = networkProtocol
+        return self
+    }
+    
 }
