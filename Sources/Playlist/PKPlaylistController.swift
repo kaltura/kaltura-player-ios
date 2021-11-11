@@ -246,6 +246,7 @@ import PlayKit
                         PKLog.error("Trying to play next media")
                         self.playNext()
                     }
+                    return
                 }
                 
                 currentEntry.sources = entry?.sources
