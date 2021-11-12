@@ -13,6 +13,8 @@ import PlayKit
     public var playlist: PKPlaylist
     public weak var delegate: PlaylistControllerDelegate?
     
+    internal var originalOTTMediaOptions: [OTTMediaOptions]?
+    
     public var preloadTime: TimeInterval = 10
     public var currentMediaIndex: Int {
         return currentPlayingIndex
@@ -151,6 +153,7 @@ import PlayKit
     
     private func preloadMedia(atIndex index: Int) {
         let entry = self.entries[index]
+        
         guard self.preloadingInProgressForMediasId.contains(entry.id) == false else {
             PKLog.error("Media :\(entry.id) is loading already.")
             return
@@ -158,12 +161,12 @@ import PlayKit
         
         if !self.isMediaLoaded(index: index) {
             guard let loader = self.player as? EntryLoader else { return }
+            guard let options = self.prepareMediaOptions(forMediaEntry: entry) else {
+                PKLog.error("Cannot create proper options to load media: \(entry.description)")
+                return
+            }
             
             self.preloadingInProgressForMediasId.append(entry.id)
-            
-            let options: OVPMediaOptions = OVPMediaOptions()
-            options.ks = self.player?.playerOptions.ks
-            options.entryId = entry.id
             
             loader.loadMedia(options: options) { [weak self] (loadedEntry: PKMediaEntry?, error: NSError?) in
                 guard let self = self else { return }
@@ -172,6 +175,28 @@ import PlayKit
                 entry.sources = loadedEntry?.sources
             }
         }
+    }
+    
+    private func prepareMediaOptions(forMediaEntry entry: PKMediaEntry) -> MediaOptions? {
+        let options: MediaOptions
+        
+        if self.player is KalturaOTTPlayer {
+            if let ottOptions = self.originalOTTMediaOptions?.first(where: { $0.assetId == entry.id }) {
+                options = ottOptions
+            } else {
+                PKLog.error("Media :\(entry.id) is missing in playlist OTT media options.")
+                return nil
+            }
+        } else if self.player is KalturaOVPPlayer {
+            let ovpOptions = OVPMediaOptions()
+            ovpOptions.ks = self.player?.playerOptions.ks
+            ovpOptions.entryId = entry.id
+            options = ovpOptions
+        } else {
+            options = MediaOptions()
+        }
+        
+        return options
     }
     
     public func replay() {
@@ -189,16 +214,16 @@ import PlayKit
     
     public func playItem(index: Int) {
         PKLog.debug("Play Item with index = \(index)")
+        
         self.player?.stop()
+        
         guard self.entries.indices.contains(index) else {
             PKLog.error("playItem index is out of range.")
             return
         }
         
         currentPlayingIndex = index
-        
         let currentEntry = self.entries[currentPlayingIndex]
-        
         self.messageBus?.post(PlaylistEvent.PlayListCurrentPlayingItemChanged())
         
         if let sources = currentEntry.sources, !sources.isEmpty {
@@ -214,25 +239,11 @@ import PlayKit
             })
         } else {
             // Entry is not loaded.
+            guard let loader = self.player as? EntryLoader else { return }
             
-            guard let loader = self.player as? EntryLoader else {
+            guard let options = self.prepareMediaOptions(forMediaEntry: currentEntry) else {
+                PKLog.error("Cannot create proper options to load media: \(currentEntry.description)")
                 return
-            }
-            
-            let options: MediaOptions
-            
-            if self.player is KalturaOTTPlayer {
-                let ottOptions = OTTMediaOptions()
-                ottOptions.ks = self.player?.playerOptions.ks
-                ottOptions.assetId = currentEntry.id
-                options = ottOptions
-            } else if self.player is KalturaOVPPlayer {
-                let ovpOptions = OVPMediaOptions()
-                ovpOptions.ks = self.player?.playerOptions.ks
-                ovpOptions.entryId = currentEntry.id
-                options = ovpOptions
-            } else {
-                options = MediaOptions()
             }
             
             loader.loadMedia(options: options) { [weak self] (entry: PKMediaEntry?, error: NSError?) in
