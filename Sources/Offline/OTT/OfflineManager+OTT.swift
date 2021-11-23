@@ -71,7 +71,7 @@ extension OfflineManager {
             * assetInfo: The asset info object, otherwise nil. See `AssetInfo` for more details.
             * mediaEntry: The `PKMediaEntry` retrieved, otherwise nil. See `PKMediaEntry` for more details.
      */
-    public func prepareAsset(mediaOptions: OTTMediaOptions, options: OfflineSelectionOptions, callback: @escaping (_ error: Error?, _ assetInfo: AssetInfo?, _ mediaEntry: PKMediaEntry?) -> Void) {
+    @objc public func prepareAsset(mediaOptions: OTTMediaOptions, options: OfflineSelectionOptions, callback: @escaping (_ error: Error?, _ assetInfo: AssetInfo?, _ mediaEntry: PKMediaEntry?) -> Void) {
         
         retrieveMediaEntry(mediaOptions: mediaOptions) { (error, pkMediaEntry) in
             guard let mediaEntry = pkMediaEntry else {

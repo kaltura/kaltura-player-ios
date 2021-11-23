@@ -20,7 +20,7 @@ import PlayKit
 public typealias OfflineSelectionOptions = DTGSelectionOptions
 
 /// Delegate that will receive download events.
-@objc public protocol OfflineManagerDelegate: class {
+@objc public protocol OfflineManagerDelegate: AnyObject {
     /**
         Some data was downloaded for the item.
      
@@ -182,7 +182,7 @@ public enum OfflineManagerError: PKError {
             * error: An `OfflineManagerError` if an error has occurred, otherwise nil. See `OfflineManagerError` for more details.
             * assetInfo: The asset info object, otherwise nil. See `AssetInfo` for more details.
      */
-    public func prepareAsset(mediaEntry: PKMediaEntry, options: OfflineSelectionOptions, callback: @escaping (_ error: Error?, _ assetInfo: AssetInfo?) -> Void) {
+    @objc public func prepareAsset(mediaEntry: PKMediaEntry, options: OfflineSelectionOptions, callback: @escaping (_ error: Error?, _ assetInfo: AssetInfo?) -> Void) {
         
         let itemId = mediaEntry.id
         guard let mediaSource = localAssetsManager.getPreferredDownloadableMediaSource(for: mediaEntry) else {
