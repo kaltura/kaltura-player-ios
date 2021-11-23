@@ -5,7 +5,7 @@ suffix = '.0000'   # Dev mode
 Pod::Spec.new do |s|
   
   s.name             = 'KalturaPlayer'
-  s.version          = '4.4.0' + suffix
+  s.version          = '4.4.1' + suffix
   s.summary          = 'KalturaPlayer -- Kaltura Player for iOS and tvOS'
   s.homepage         = 'https://github.com/kaltura/kaltura-player-ios'
   s.license          = { :type => 'AGPLv3', :file => 'LICENSE' }
@@ -65,7 +65,7 @@ Pod::Spec.new do |s|
     
     sp.source_files = 'Sources/Offline/*', 'Sources/*', 'Sources/Basic/*', 'Sources/Interceptor/*'
     
-    sp.dependency 'DownloadToGo', '~> 3.15'
+    sp.dependency 'DownloadToGo', '~> 3.17'
     sp.dependency 'PlayKit', '~> 3.22'
 
     sp.xcconfig = {
