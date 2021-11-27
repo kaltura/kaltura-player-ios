@@ -31,15 +31,20 @@ import PlayKit
     }
     
     private var currentPlayingIndex: Int = -1
-    private var recoverOnError: Bool = true
+    public var recoverOnError: Bool = true
     private weak var player: KalturaPlayer?
     private var messageBus: MessageBus?
     private var entries: [PKMediaEntry]
     
+    private var currentItemCoundownOptions: CountdownOptions?
+    
     private var preloadingInProgressForMediasId: [String] = []
     
+    
+    private var shuffled: Bool = false
+    private var shuffledOrder: [Int] = []
+    
     required init(playlistConfig: Any?, playlist: PKPlaylist, player: KalturaPlayer) {
-        self.loop = true
         self.playlist = playlist
         self.entries = playlist.medias ?? []
         self.player = player
@@ -58,12 +63,22 @@ import PlayKit
     }
     
     func subscribeToPlayerEvents() {
-        self.player?.addObserver(self, events: [KPPlayerEvent.ended, KPPlayerEvent.playheadUpdate]) { [weak self] event in
-            guard let self = self else { return }
+        
+        let playerEvents = [KPPlayerEvent.ended,
+                            KPPlayerEvent.playheadUpdate,
+                            KPPlayerEvent.seeking,
+                            KPPlayerEvent.seeked,
+                            PlayerEvent.error]
+        
+        self.player?.addObserver(self, events: playerEvents) { [weak self] event in
+            guard let self = self,
+                  let player = self.player else { return }
             
             DispatchQueue.main.async {
                 switch event {
                 case is KPPlayerEvent.Ended:
+                    self.resetCountdown()
+                    
                     if self.autoContinue {
                         if self.isNextItemAvailable() {
                             self.playNext()
@@ -75,27 +90,60 @@ import PlayKit
                             }
                         }
                     }
-                case is KPPlayerEvent.PlayheadUpdate:
-                    guard let currentTime = event.currentTime,
-                          let player = self.player else { return }
+                case is KPPlayerEvent.Seeking:
+                    self.seeking = true
                     
-                    if (player.duration - currentTime.doubleValue) < self.preloadTime {
-                        self.preloadNext()
+                    if let seekingTime = event.targetSeekPosition?.doubleValue {
+                        if let countDownOptions = self.currentItemCoundownOptions {
+                            if seekingTime > (player.duration - countDownOptions.timeToShow) {
+                                self.resetCountdown()
+                            }
+                        }
+                    }
+                    
+                case is KPPlayerEvent.Seeked:
+                    self.seeking = false
+                case is KPPlayerEvent.PlayheadUpdate:
+                    if let event = event as? KPPlayerEvent.PlayheadUpdate {
+                        self.handlePlayheadUpdateEvent(event: event)
+                    }
+                case is PlayerEvent.Error:
+                    PKLog.error("Failed with playing playlist item: \(self.currentPlayingIndex)")
+                    if self.recoverOnError == true {
+                        PKLog.error("Trying to play next media")
+                        self.playNext()
                     }
                 default: break
                     
                 }
             }
         }
+        
+        self.player?.addObserver(self, events: [AdEvent.allAdsCompleted, AdEvent.adLoaded], block: { [weak self] event in
+            guard let self = self else { return }
+            
+            DispatchQueue.main.async {
+                switch event {
+                case is AdEvent.AllAdsCompleted: print("All Ads ended!")
+                case is AdEvent.AdLoaded: print("AD LOADED")
+                default: break
+                }
+                
+            }
+        })
     }
     
-    // MARK: - PlaylistController
+    // MARK: - PlaylistController. Public
     
     public func playNext() {
         if currentPlayingIndex == -1 {
             currentPlayingIndex = 0
         } else {
-            currentPlayingIndex += 1
+            if self.entries.count >= currentPlayingIndex + 1 {
+                currentPlayingIndex += 1
+            } else {
+                PKLog.error("Next item is out of range")
+            }
         }
         
         guard currentPlayingIndex < self.entries.count else {
@@ -112,7 +160,11 @@ import PlayKit
         if currentPlayingIndex == -1 {
             currentPlayingIndex = 0
         } else {
-            currentPlayingIndex -= 1
+            if currentPlayingIndex > 0 {
+                currentPlayingIndex -= 1
+            } else {
+                PKLog.error("Previous item should be 0 or higher")
+            }
         }
         
         guard self.entries.indices.contains(currentPlayingIndex) else {
@@ -124,6 +176,10 @@ import PlayKit
     }
     
     public func isNextItemAvailable() -> Bool {
+        if loop == true {
+            return true
+        }
+            
         let nextItemIndex = currentPlayingIndex + 1
         if loop == true && self.entries.count == nextItemIndex {
             return true
@@ -150,6 +206,129 @@ import PlayKit
         
         self.preloadMedia(atIndex: preloadMediaIndex)
     }
+    
+    public func replay() {
+        currentPlayingIndex = -1
+        playNext()
+    }
+    
+    public func removeItemFromPlaylist(index: Int) {
+        
+    }
+    
+    public func addItemToPlayList(index: Int, item: PKMediaEntry) {
+        
+    }
+    
+    public func resetCountdownForCurrentItem() {
+        self.resetCountdown()
+    }
+    
+    public func playItem(index: Int) {
+        PKLog.debug("Play Item with index = \(index)")
+        
+        self.player?.stop()
+        
+        self.resetCountdown()
+        
+        guard self.entries.indices.contains(index) else {
+            PKLog.error("playItem index is out of range.")
+            return
+        }
+        
+        currentPlayingIndex = index
+        let currentEntry = self.entries[currentPlayingIndex]
+        self.messageBus?.post(PlaylistEvent.PlayListCurrentPlayingItemChanged())
+        
+        if let sources = currentEntry.sources, !sources.isEmpty {
+            var pluginConfig: PluginConfig? = nil
+            
+            if let delegate = self.delegate {
+               
+                if delegate.playlistController(self, needsUpdatePluginConfigForMediaItemAtIndex: self.currentPlayingIndex) == true {
+                    pluginConfig = delegate.playlistController(self, pluginConfigForMediaItemAtIndex: self.currentPlayingIndex)
+                }
+            
+                if delegate.playlistController(self, enableCountdownForMediaItemAtIndex: self.currentPlayingIndex) == true {
+                    let countdown = delegate.playlistController(self, countdownOptionsForMediaItemAtIndex: self.currentPlayingIndex)
+                    self.currentItemCoundownOptions = countdown
+                }
+            }
+            
+            self.player?.setMediaAndUpdatePlugins(mediaEntry: currentEntry, mediaOptions: nil, pluginConfig: pluginConfig, callback: { error in
+                
+            })
+        } else {
+            // Entry is not loaded.
+            guard let loader = self.player as? EntryLoader else { return }
+            
+            guard let options = self.prepareMediaOptions(forMediaEntry: currentEntry) else {
+                PKLog.error("Cannot create proper options to load media: \(currentEntry.description)")
+                return
+            }
+            
+            loader.loadMedia(options: options) { [weak self] (entry: PKMediaEntry?, error: NSError?) in
+                guard let self = self else { return }
+                
+                if let error = error {
+                    PKLog.error(error.description)
+                    self.messageBus?.post(PlaylistEvent.PlayListLoadMediaError(nsError: error))
+                    
+                    if self.recoverOnError == true {
+                        PKLog.error("Trying to play next media")
+                        self.playNext()
+                    }
+                    return
+                }
+                
+                currentEntry.sources = entry?.sources
+                
+                var pluginConfig: PluginConfig? = nil
+                
+                if let delegate = self.delegate {
+                    
+                    if delegate.playlistController(self, needsUpdatePluginConfigForMediaItemAtIndex: self.currentPlayingIndex) == true {
+                        pluginConfig = delegate.playlistController(self, pluginConfigForMediaItemAtIndex: self.currentPlayingIndex)
+                    }
+                    
+                    if delegate.playlistController(self, enableCountdownForMediaItemAtIndex: self.currentPlayingIndex) == true {
+                        let countdown = delegate.playlistController(self, countdownOptionsForMediaItemAtIndex: self.currentPlayingIndex)
+                        self.currentItemCoundownOptions = countdown
+                    }
+                }
+                
+                self.player?.setMediaAndUpdatePlugins(mediaEntry: currentEntry, mediaOptions: nil, pluginConfig: pluginConfig, callback: { error in
+                    
+                })
+            }
+        }
+    }
+    
+    public func isMediaLoaded(index: Int) -> Bool {
+        let entry = self.entries[index]
+        if let sources = entry.sources, !sources.isEmpty {
+            return true
+        }
+        return false
+    }
+    
+    public func reset() {
+        currentPlayingIndex = -1
+        loop = false
+        autoContinue = true
+        recoverOnError = true
+        shuffled = false
+        
+        entries.removeAll()
+        entries = playlist.medias ?? []
+        self.resetCountdown()
+    }
+    
+    public func shuffle() {
+        PKLog.error("Not implemented")
+    }
+    
+    //
     
     private func preloadMedia(atIndex index: Int) {
         let entry = self.entries[index]
@@ -199,105 +378,64 @@ import PlayKit
         return options
     }
     
-    public func replay() {
-        currentPlayingIndex = -1
-        playNext()
+    private func resetCountdown() {
+        self.currentItemCoundownOptions = nil
     }
     
-    public func removeItemFromPlaylist(index: Int) {
-        
-    }
+    var seeking = false
     
-    public func addItemToPlayList(index: Int, item: PKMediaEntry) {
+    private func handlePlayheadUpdateEvent(event: KPPlayerEvent.PlayheadUpdate) {
+        guard let currentTime = event.currentTime,
+              let player = self.player else { return }
         
-    }
-    
-    public func playItem(index: Int) {
-        PKLog.debug("Play Item with index = \(index)")
-        
-        self.player?.stop()
-        
-        guard self.entries.indices.contains(index) else {
-            PKLog.error("playItem index is out of range.")
-            return
-        }
-        
-        currentPlayingIndex = index
-        let currentEntry = self.entries[currentPlayingIndex]
-        self.messageBus?.post(PlaylistEvent.PlayListCurrentPlayingItemChanged())
-        
-        if let sources = currentEntry.sources, !sources.isEmpty {
-            var pluginConfig: PluginConfig? = nil
+        if let countDownOptions = self.currentItemCoundownOptions {
             
-            if let delegate = self.delegate,
-               delegate.playlistController(self, needsUpdatePluginConfigForMediaItemAtIndex: self.currentPlayingIndex) == true {
-                pluginConfig = delegate.playlistController(self, pluginConfigForMediaItemAtIndex: self.currentPlayingIndex)
-            }
-            
-            self.player?.setMediaAndUpdatePlugins(mediaEntry: currentEntry, mediaOptions: nil, pluginConfig: pluginConfig, callback: { error in
-                
-            })
-        } else {
-            // Entry is not loaded.
-            guard let loader = self.player as? EntryLoader else { return }
-            
-            guard let options = self.prepareMediaOptions(forMediaEntry: currentEntry) else {
-                PKLog.error("Cannot create proper options to load media: \(currentEntry.description)")
+            if self.seeking == true {
                 return
             }
             
-            loader.loadMedia(options: options) { [weak self] (entry: PKMediaEntry?, error: NSError?) in
-                guard let self = self else { return }
-                
-                if let error = error {
-                    PKLog.error(error.description)
-                    self.messageBus?.post(PlaylistEvent.PlayListLoadMediaError(nsError: error))
+            // Countdown event start time should be less then playback time.
+            if countDownOptions.timeToShow >= player.duration {
+                self.resetCountdown()
+            }
+            
+            if player.duration <= countDownOptions.timeToShow {
+                self.resetCountdown()
+                return
+            }
+            
+            if (player.duration - currentTime.doubleValue) < countDownOptions.timeToShow {
+                if countDownOptions.eventSent != true {
+                    PKLog.debug("send count down event position = \(currentTime)")
+                    self.messageBus?.post(PlaylistEvent.PlaylistCountDownStart())
+                    countDownOptions.eventSent = true
+                    self.preloadNext()
                     
-                    if self.recoverOnError == true {
-                        PKLog.error("Trying to play next media")
-                        self.playNext()
+                } else if (player.duration - currentTime.doubleValue) < (countDownOptions.timeToShow - countDownOptions.duration) {
+                    PKLog.debug("playhead updated handlePlaylistMediaEnded");
+                    self.messageBus?.post(PlaylistEvent.PlaylistCountDownEnd())
+                    
+                    self.resetCountdown()
+                    
+                    if self.autoContinue {
+                        if self.isNextItemAvailable() {
+                            self.playNext()
+                        } else {
+                            if self.loop == true {
+                                self.replay()
+                            } else {
+                                self.messageBus?.post(PlaylistEvent.PlayListEnded())
+                            }
+                        }
                     }
-                    return
                 }
-                
-                currentEntry.sources = entry?.sources
-                
-                var pluginConfig: PluginConfig? = nil
-                
-                if let delegate = self.delegate,
-                   delegate.playlistController(self, needsUpdatePluginConfigForMediaItemAtIndex: self.currentPlayingIndex) == true {
-                    pluginConfig = delegate.playlistController(self, pluginConfigForMediaItemAtIndex: self.currentPlayingIndex)
-                }
-                
-                self.player?.setMediaAndUpdatePlugins(mediaEntry: currentEntry, mediaOptions: nil, pluginConfig: pluginConfig, callback: { error in
-                    
-                })
+            }
+            
+        } else {
+            if (player.duration - currentTime.doubleValue) < self.preloadTime {
+                self.preloadNext()
             }
         }
-    }
-    
-    public func isMediaLoaded(index: Int) -> Bool {
-        let entry = self.entries[index]
-        if let sources = entry.sources, !sources.isEmpty {
-            return true
-        }
-        return false
-    }
-    
-    public func reset() {
-        currentPlayingIndex = -1
-        loop = false
-        autoContinue = true
-        recoverOnError = true
-        
-        entries.removeAll()
-        entries = playlist.medias ?? []
-    }
-    
-    public func shuffle() {
-        self.player?.stop()
-        self.entries.shuffle()
-        currentPlayingIndex = -1
     }
     
 }

@@ -40,7 +40,12 @@ import PlayKit
     
     var autoContinue: Bool { get set }
     
+    /// Play next item if current can not be loaded.
+    var recoverOnError: Bool { get set }
+    
     var currentMediaIndex: Int { get }
+    
+    func resetCountdownForCurrentItem()
     
     /// Time interval that manage time in seconds when next media will be preloaded before current media ends.
     var preloadTime: TimeInterval { get set }
@@ -56,9 +61,14 @@ protocol EntryLoader {
     func prepareMediaOptions()
 }
 
-@objc public protocol PlaylistControllerDelegate: class {
+@objc public protocol PlaylistControllerDelegate: AnyObject {
     
     func playlistController(_ controller: PlaylistController, needsUpdatePluginConfigForMediaItemAtIndex mediaItemIndex: Int) -> Bool
     
     func playlistController(_ controller: PlaylistController, pluginConfigForMediaItemAtIndex mediaItemIndex: Int) -> PluginConfig
+    
+    func playlistController(_ controller: PlaylistController, enableCountdownForMediaItemAtIndex mediaItemIndex: Int) -> Bool
+    
+    func playlistController(_ controller: PlaylistController, countdownOptionsForMediaItemAtIndex mediaItemIndex: Int) -> CountdownOptions
+    
 }
