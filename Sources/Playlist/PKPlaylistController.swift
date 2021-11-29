@@ -163,7 +163,11 @@ import PlayKit
             if currentPlayingIndex > 0 {
                 currentPlayingIndex -= 1
             } else {
-                PKLog.error("Previous item should be 0 or higher")
+                if loop == true {
+                    currentPlayingIndex = self.entries.endIndex - 1
+                } else {
+                    PKLog.error("Previous item should be 0 or higher")
+                }
             }
         }
         
@@ -189,6 +193,10 @@ import PlayKit
     }
     
     public func isPreviousItemAvailable() -> Bool {
+        if loop == true {
+            return true
+        }
+        
         return self.entries.indices.contains(currentPlayingIndex - 1)
     }
     
