@@ -40,39 +40,6 @@ import KalturaNetKit
      */
     @objc public init(options: PlayerOptions) {
         super.init(playerOptions: options)
-        sendKavaImpression()
-    }
-    
-    // MARK: - Private Methods
-    
-    private func sendKavaImpression() {
-        guard let request: KalturaRequestBuilder = KalturaRequestBuilder(url: DEFAULT_KAVA_BASE_URL, service: nil, action: nil) else { return }
-        
-        request.set(method: .get)
-        request.add(headerKey: "User-Agent", headerValue: PlayKitManager.userAgent)
-        
-        request.setParam(key: "service", value: "analytics")
-        request.setParam(key: "action", value: "trackEvent")
-        request.setParam(key: "eventType", value: "1")
-        request.setParam(key: "eventIndex", value: "1")
-        request.setParam(key: "partnerId", value: String(DEFAULT_KAVA_PARTNER_ID))
-        request.setParam(key: "entryId", value: DEFAULT_KAVA_ENTRY_ID)
-        request.setParam(key: "sessionId", value: self.sessionId)
-        request.setParam(key: "referrer", value: KalturaBasicPlayerManager.shared.referrer)
-        
-        request.setParam(key: "deliveryType", value: "url")
-        //request.setParam(key: "playbackType", value: "vod")
-        request.setParam(key: "clientVer", value: "\(PlayKitManager.clientTag)")
-        request.setParam(key: "position", value: "0")
-        if let bundleId = Bundle.main.bundleIdentifier {
-            request.setParam(key: "application", value: "\(bundleId)")
-        }
-        
-        request.set { (response: Response) in
-            PKLog.debug("Response:\nStatus Code: \(response.statusCode)\nError: \(response.error?.localizedDescription ?? "")\nData: \(response.data ?? "")")
-        }
-        PKLog.debug("Sending Kava Event, Impression (1)")
-        KNKRequestExecutor.shared.send(request: request.build())
     }
     
     // MARK: - Public Methods
