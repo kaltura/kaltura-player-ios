@@ -40,9 +40,15 @@ import PlayKit
     
     private var preloadingInProgressForMediasId: [String] = []
     
-    
     private var shuffled: Bool = false
     private var shuffledOrder: [Int] = []
+    
+    enum PlaylistNavigationDirection {
+        case forward
+        case backward
+    }
+    
+    private var navigationDirection: PlaylistNavigationDirection = .forward
     
     required init(playlistConfig: Any?, playlist: PKPlaylist, player: KalturaPlayer) {
         self.playlist = playlist
@@ -109,9 +115,22 @@ import PlayKit
                     }
                 case is PlayerEvent.Error:
                     PKLog.error("Failed with playing playlist item: \(self.currentPlayingIndex)")
-                    if self.recoverOnError == true {
-                        PKLog.error("Trying to play next media")
-                        self.playNext()
+                    PKLog.error(event.error?.description)
+                    
+                    if let error = event.error {
+                        let currentEntry = self.entries[self.currentPlayingIndex]
+                        self.messageBus?.post(PlaylistEvent.PlayListLoadMediaError(entryId: currentEntry.id, nsError: error))
+                    }
+                    
+                    if self.recoverOnError {
+                        switch self.navigationDirection {
+                        case .backward:
+                            PKLog.error("Trying to play previous media")
+                            self.playPrev()
+                        default:
+                            PKLog.error("Trying to play next media")
+                            self.playNext()
+                        }
                     }
                 default: break
                     
@@ -153,6 +172,8 @@ import PlayKit
             return
         }
         
+        self.navigationDirection = .forward
+        
         self.playItem(index: currentPlayingIndex)
     }
     
@@ -175,6 +196,8 @@ import PlayKit
             PKLog.error("playItem index is out of range.")
             return
         }
+        
+        self.navigationDirection = .backward
         
         self.playItem(index: currentPlayingIndex)
     }
@@ -279,12 +302,19 @@ import PlayKit
                 guard let self = self else { return }
                 
                 if let error = error {
+                    PKLog.error("Failed with playing playlist item: \(self.currentPlayingIndex)")
                     PKLog.error(error.description)
-                    self.messageBus?.post(PlaylistEvent.PlayListLoadMediaError(nsError: error))
+                    self.messageBus?.post(PlaylistEvent.PlayListLoadMediaError(entryId: currentEntry.id, nsError: error))
                     
-                    if self.recoverOnError == true {
-                        PKLog.error("Trying to play next media")
-                        self.playNext()
+                    if self.recoverOnError {
+                        switch self.navigationDirection {
+                        case .backward:
+                            PKLog.error("Trying to play previous media")
+                            self.playPrev()
+                        default:
+                            PKLog.error("Trying to play next media")
+                            self.playNext()
+                        }
                     }
                     return
                 }
