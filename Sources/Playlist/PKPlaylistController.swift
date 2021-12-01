@@ -61,7 +61,7 @@ import PlayKit
         
         self.subscribeToPlayerEvents()
         
-        self.messageBus?.post(PlaylistEvent.PlayListLoaded())
+        self.messageBus?.post(PlaylistEvent.PlaylistLoaded())
     }
     
     deinit {
@@ -74,7 +74,7 @@ import PlayKit
                             KPPlayerEvent.playheadUpdate,
                             KPPlayerEvent.seeking,
                             KPPlayerEvent.seeked,
-                            PlayerEvent.error]
+                            KPPlayerEvent.error]
         
         self.player?.addObserver(self, events: playerEvents) { [weak self] event in
             guard let self = self,
@@ -92,7 +92,7 @@ import PlayKit
                             if self.loop == true {
                                 self.replay()
                             } else {
-                                self.messageBus?.post(PlaylistEvent.PlayListEnded())
+                                self.messageBus?.post(PlaylistEvent.PlaylistEnded())
                             }
                         }
                     }
@@ -119,7 +119,7 @@ import PlayKit
                     
                     if let error = event.error {
                         let currentEntry = self.entries[self.currentPlayingIndex]
-                        self.messageBus?.post(PlaylistEvent.PlayListLoadMediaError(entryId: currentEntry.id, nsError: error))
+                        self.messageBus?.post(PlaylistEvent.PlaylistLoadMediaError(entryId: currentEntry.id, nsError: error))
                     }
                     
                     if self.recoverOnError {
@@ -269,7 +269,7 @@ import PlayKit
         
         currentPlayingIndex = index
         let currentEntry = self.entries[currentPlayingIndex]
-        self.messageBus?.post(PlaylistEvent.PlayListCurrentPlayingItemChanged())
+        self.messageBus?.post(PlaylistEvent.PlaylistCurrentPlayingItemChanged())
         
         if let sources = currentEntry.sources, !sources.isEmpty {
             var pluginConfig: PluginConfig? = nil
@@ -304,7 +304,7 @@ import PlayKit
                 if let error = error {
                     PKLog.error("Failed with playing playlist item: \(self.currentPlayingIndex)")
                     PKLog.error(error.description)
-                    self.messageBus?.post(PlaylistEvent.PlayListLoadMediaError(entryId: currentEntry.id, nsError: error))
+                    self.messageBus?.post(PlaylistEvent.PlaylistLoadMediaError(entryId: currentEntry.id, nsError: error))
                     
                     if self.recoverOnError {
                         switch self.navigationDirection {
@@ -462,7 +462,7 @@ import PlayKit
                             if self.loop == true {
                                 self.replay()
                             } else {
-                                self.messageBus?.post(PlaylistEvent.PlayListEnded())
+                                self.messageBus?.post(PlaylistEvent.PlaylistEnded())
                             }
                         }
                     }
