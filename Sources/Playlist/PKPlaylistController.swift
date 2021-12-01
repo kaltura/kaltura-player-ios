@@ -11,6 +11,8 @@ import PlayKit
 @objc public class PKPlaylistController: NSObject, PlaylistController {
     
     public var playlist: PKPlaylist
+    private var entries: [PKMediaEntry]
+    
     public weak var delegate: PlaylistControllerDelegate?
     
     internal var originalOTTMediaOptions: [OTTMediaOptions]?
@@ -34,7 +36,6 @@ import PlayKit
     public var recoverOnError: Bool = true
     private weak var player: KalturaPlayer?
     private var messageBus: MessageBus?
-    private var entries: [PKMediaEntry]
     
     private var currentItemCoundownOptions: CountdownOptions?
     
@@ -206,7 +207,7 @@ import PlayKit
         if loop == true {
             return true
         }
-            
+        
         let nextItemIndex = currentPlayingIndex + 1
         if loop == true && self.entries.count == nextItemIndex {
             return true
