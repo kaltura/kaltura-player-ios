@@ -169,11 +169,6 @@ import PlayKitKava
                                                     mediaOptions: MediaOptions?,
                                                     pluginConfig: PluginConfig?,
                                                     callback: @escaping (_ error: NSError?) -> Void) {
-        if let pluginConfig = pluginConfig {
-            let playerOptions = self.playerOptions
-            playerOptions.pluginConfig = pluginConfig
-            self.updatePlayerOptions(playerOptions)
-        }
         
         // The DMS Configuration is needed in order to continue.
         guard let ovpPartnerId = KalturaOTTPlayerManager.shared.cachedConfigData?.ovpPartnerId else {
@@ -191,6 +186,13 @@ import PlayKitKava
         
         self.updateKavaPlugin(ovpPartnerId: ovpPartnerId, ovpEntryId: ovpEntryId, mediaOptions: mediaOptions as? OTTMediaOptions)
         self.updatePhoenixAnalyticsPlugin()
+        
+        if let pluginConfig = pluginConfig {
+            let playerOptions = self.playerOptions
+            playerOptions.pluginConfig = pluginConfig
+            self.updatePlayerOptions(playerOptions)
+        }
+        
         self.updateMediaEntryWithLoadedInterceptors(mediaEntry) {
             callback(nil)
         }

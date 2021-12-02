@@ -129,12 +129,6 @@ import PlayKitProviders
                                                     pluginConfig: PluginConfig?,
                                                     callback: @escaping (_ error: NSError?) -> Void) {
         
-        if let pluginConfig = pluginConfig {
-            let playerOptions = self.playerOptions
-            playerOptions.pluginConfig = pluginConfig
-            self.updatePlayerOptions(playerOptions)
-        }
-        
         // The Configuration is needed in order to continue.
         guard let ovpPartnerId = KalturaOVPPlayerManager.shared.cachedConfigData?.ovpPartnerId else {
             callback(KalturaPlayerError.configurationMissing.asNSError)
@@ -142,6 +136,12 @@ import PlayKitProviders
         }
         
         self.updateKavaPlugin(partnerId: ovpPartnerId, entryId: mediaEntry.id, mediaOptions: mediaOptions)
+        
+        if let pluginConfig = pluginConfig {
+            let playerOptions = self.playerOptions
+            playerOptions.pluginConfig = pluginConfig
+            self.updatePlayerOptions(playerOptions)
+        }
         
         self.mediaEntry = mediaEntry
         callback(nil)
