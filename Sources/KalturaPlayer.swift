@@ -403,11 +403,12 @@ public enum KalturaPlayerError: PKError {
 extension KalturaPlayer {
     
     internal func updateMediaEntryWithLoadedInterceptors(_ mediaEntry: PKMediaEntry, callback: @escaping () -> Void) {
-        guard var interceptors = self.interceptors, !interceptors.isEmpty else {
-            self.mediaEntry = mediaEntry
-            callback()
-            return
-        }
+        guard var interceptors = self.interceptors, !interceptors.isEmpty,
+              let mediaEntry = mediaEntry.copy() as? PKMediaEntry else {
+                  self.mediaEntry = mediaEntry
+                  callback()
+                  return
+              }
         
         func update(entry: PKMediaEntry, withInterceptor interceptor: PKMediaEntryInterceptor) {
             interceptor.apply(on: entry) { [weak self] in
