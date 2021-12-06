@@ -367,7 +367,6 @@ import PlayKit
         self.resetCountdown()
     }
     
-    /// Will shuffle the playlist and save the orig list for reset.
     func shuffle() {
         PKLog.error("Not implemented")
     }
