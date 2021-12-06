@@ -244,15 +244,19 @@ import PlayKit
         playNext()
     }
     
+    /*
     public func removeItemFromPlaylist(index: Int) {
         
     }
+    */
     
+    /*
     public func addItemToPlayList(index: Int, item: PKMediaEntry) {
         
     }
+    */
     
-    public func resetCountdownForCurrentItem() {
+    public func disableCountdownForCurrentItem() {
         self.resetCountdown()
     }
     
@@ -277,7 +281,7 @@ import PlayKit
             
             if let delegate = self.delegate {
                
-                if delegate.playlistController(self, needsUpdatePluginConfigForMediaItemAtIndex: self.currentPlayingIndex) == true {
+                if delegate.playlistController(self, updatePluginConfigForMediaItemAtIndex: self.currentPlayingIndex) == true {
                     pluginConfig = delegate.playlistController(self, pluginConfigForMediaItemAtIndex: self.currentPlayingIndex)
                 }
             
@@ -326,7 +330,7 @@ import PlayKit
                 
                 if let delegate = self.delegate {
                     
-                    if delegate.playlistController(self, needsUpdatePluginConfigForMediaItemAtIndex: self.currentPlayingIndex) == true {
+                    if delegate.playlistController(self, updatePluginConfigForMediaItemAtIndex: self.currentPlayingIndex) == true {
                         pluginConfig = delegate.playlistController(self, pluginConfigForMediaItemAtIndex: self.currentPlayingIndex)
                     }
                     
@@ -363,11 +367,12 @@ import PlayKit
         self.resetCountdown()
     }
     
-    public func shuffle() {
+    /// Will shuffle the playlist and save the orig list for reset.
+    func shuffle() {
         PKLog.error("Not implemented")
     }
     
-    //
+    // MARK: - PlaylistController. Private
     
     private func preloadMedia(atIndex index: Int) {
         let entry = self.entries[index]

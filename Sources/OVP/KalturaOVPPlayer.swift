@@ -247,10 +247,6 @@ extension KalturaOVPPlayer {
 
 extension KalturaOVPPlayer: EntryLoader {
     
-    func prepareMediaOptions() {
-        
-    }
-    
     internal func loadMedia(options: MediaOptions, callback: @escaping (_ entry: PKMediaEntry?, _ error: NSError?) -> Void) {
         guard let options = options as? OVPMediaOptions else {
             callback(nil, KalturaPlayerError.configurationMissing.asNSError)
