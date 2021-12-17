@@ -31,8 +31,8 @@ import PlayKit
     
     /// Time interval that manage time in seconds when next media will be preloaded before current media ends.
     /// It counts backwards (from the end of media playback), so set the time you need to preload in seconds before current media ends.
-    /// Set it once, it will be applyed to each media.
-    /// Default value is 10 seconds before media playback ended.
+    /// Set it once, it will be applied to each media.
+    /// Default value is 10 seconds before media playback ends.
     var preloadTime: TimeInterval { get set }
     
     /**
