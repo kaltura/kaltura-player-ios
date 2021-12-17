@@ -24,9 +24,9 @@ import PlayKit
     /// Will set previous media to players' playback
     func playPrev()
     
-    /// Run Get Playback Context request for next media in a list.
-    /// You are able to call this function with your own business logic
-    /// Or this function will be callen automatically according to preloadTime
+    /// Run Get Playback Context request for next media in the list.
+    /// You are able to call this function with your own business logic.
+    /// Or this function will be called automatically according to preloadTime.
     func preloadNext()
     
     /// Time interval that manage time in seconds when next media will be preloaded before current media ends.
