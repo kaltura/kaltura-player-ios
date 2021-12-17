@@ -85,6 +85,40 @@ import PlayKitKava
     
     // MARK: - Private Methods
     
+    internal override func setMediaAndUpdatePlugins(mediaEntry: PKMediaEntry,
+                                                    mediaOptions: MediaOptions?,
+                                                    pluginConfig: PluginConfig?,
+                                                    callback: @escaping (_ error: NSError?) -> Void) {
+        
+        // The DMS Configuration is needed in order to continue.
+        guard let ovpPartnerId = KalturaOTTPlayerManager.shared.cachedConfigData?.ovpPartnerId else {
+            callback(KalturaPlayerError.configurationMissing.asNSError)
+            return
+        }
+        
+        var ovpEntryId = ""
+        
+        if let entryId = mediaEntry.metadata?["entryId"] {
+            ovpEntryId = entryId
+        } else if let options = mediaOptions as? OTTMediaOptions, let entryId = options.assetId {
+            ovpEntryId = entryId
+        }
+        
+        self.updateKavaPlugin(ovpPartnerId: ovpPartnerId, ovpEntryId: ovpEntryId, mediaOptions: mediaOptions as? OTTMediaOptions)
+        self.updatePhoenixAnalyticsPlugin()
+        
+        if let pluginConfig = pluginConfig {
+            let playerOptions = self.playerOptions
+            playerOptions.pluginConfig = pluginConfig
+            self.updatePlayerOptions(playerOptions)
+        }
+        
+        self.updateMediaEntryWithLoadedInterceptors(mediaEntry) {
+            callback(nil)
+        }
+    }
+    
+    
     func updateKavaPlugin(ovpPartnerId: Int64, ovpEntryId: String, mediaOptions: OTTMediaOptions?) {
         let kavaPluginConfig = KavaHelper.getPluginConfig(ovpPartnerId: ovpPartnerId,
                                                           ovpEntryId: ovpEntryId,
@@ -165,38 +199,6 @@ import PlayKitKava
         }
     }
     
-    internal override func setMediaAndUpdatePlugins(mediaEntry: PKMediaEntry,
-                                                    mediaOptions: MediaOptions?,
-                                                    pluginConfig: PluginConfig?,
-                                                    callback: @escaping (_ error: NSError?) -> Void) {
-        
-        // The DMS Configuration is needed in order to continue.
-        guard let ovpPartnerId = KalturaOTTPlayerManager.shared.cachedConfigData?.ovpPartnerId else {
-            callback(KalturaPlayerError.configurationMissing.asNSError)
-            return
-        }
-        
-        var ovpEntryId = ""
-        
-        if let entryId = mediaEntry.metadata?["entryId"] {
-            ovpEntryId = entryId
-        } else if let options = mediaOptions as? OTTMediaOptions, let entryId = options.assetId {
-            ovpEntryId = entryId
-        }
-        
-        self.updateKavaPlugin(ovpPartnerId: ovpPartnerId, ovpEntryId: ovpEntryId, mediaOptions: mediaOptions as? OTTMediaOptions)
-        self.updatePhoenixAnalyticsPlugin()
-        
-        if let pluginConfig = pluginConfig {
-            let playerOptions = self.playerOptions
-            playerOptions.pluginConfig = pluginConfig
-            self.updatePlayerOptions(playerOptions)
-        }
-        
-        self.updateMediaEntryWithLoadedInterceptors(mediaEntry) {
-            callback(nil)
-        }
-    }
 }
 
 // MARK: - Bypass Config Fetching
@@ -255,9 +257,9 @@ extension KalturaOTTPlayer {
                 return
             }
             
-            let controller = PKPlaylistController(playlistConfig: nil,
-                                                  playlist: playList,
-                                                  player: self)
+            let controller = KPOTTPlaylistController(playlistConfig: nil,
+                                                     playlist: playList,
+                                                     player: self)
             
             controller.originalOTTMediaOptions = options
             self.playlistController = controller

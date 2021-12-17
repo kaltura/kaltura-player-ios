@@ -81,6 +81,31 @@ public enum KalturaPlayerError: PKError {
         super.init()
     }
     
+    /**
+     Set current media and update plugins if needed.
+     Must be overridden in subclass.
+
+       * Parameters:
+           * mediaEntry: Media entry to play.
+           * mediaOptions: Additional media options. See `MediaOptions`.
+           * pluginConfig: The Plugin configuration object.
+           * callback: Error handler callback.
+    */
+    internal func setMediaAndUpdatePlugins(mediaEntry: PKMediaEntry,
+                                           mediaOptions: MediaOptions?,
+                                           pluginConfig: PluginConfig?,
+                                           callback: @escaping (_ error: NSError?) -> Void) {
+        
+        if let pluginConfig = pluginConfig {
+            let playerOptions = self.playerOptions
+            playerOptions.pluginConfig = pluginConfig
+            self.updatePlayerOptions(playerOptions)
+        }
+        
+        self.mediaEntry = mediaEntry
+        callback(nil)
+    }
+    
     // MARK: - Public Methods
     
     /**
@@ -145,7 +170,7 @@ public enum KalturaPlayerError: PKError {
            * playlistConfig: PlaylistController configuration.
     */
     @objc public func setPlaylist(_ playlist: PKPlaylist, playlistConfig: Any? = nil) {
-        playlistController = PKPlaylistController(playlistConfig: playlistConfig,
+        playlistController = KPPlaylistController(playlistConfig: playlistConfig,
                                                   playlist: playlist,
                                                   player: self)
     }
@@ -414,31 +439,6 @@ public enum KalturaPlayerError: PKError {
      */
     @objc public func startBuffering() {
         pkPlayer.startBuffering()
-    }
-    
-    /**
-     Set current media and update plugins if needed.
-     Must be overridden in subclass.
-
-       * Parameters:
-           * mediaEntry: Media entry to play.
-           * mediaOptions: Additional media options. See `MediaOptions`.
-           * pluginConfig: The Plugin configuration object.
-           * callback: Error handler callback.
-    */
-    internal func setMediaAndUpdatePlugins(mediaEntry: PKMediaEntry,
-                                           mediaOptions: MediaOptions?,
-                                           pluginConfig: PluginConfig?,
-                                           callback: @escaping (_ error: NSError?) -> Void) {
-        
-        if let pluginConfig = pluginConfig {
-            let playerOptions = self.playerOptions
-            playerOptions.pluginConfig = pluginConfig
-            self.updatePlayerOptions(playerOptions)
-        }
-        
-        self.mediaEntry = mediaEntry
-        callback(nil)
     }
     
 }

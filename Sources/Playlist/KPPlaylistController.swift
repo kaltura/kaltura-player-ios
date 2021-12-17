@@ -8,14 +8,12 @@
 import Foundation
 import PlayKit
 
-@objc public class PKPlaylistController: NSObject, PlaylistController {
+@objc public class KPPlaylistController: NSObject, PlaylistController {
     
     public var playlist: PKPlaylist
     private var entries: [PKMediaEntry]
     
     public weak var delegate: PlaylistControllerDelegate?
-    
-    internal var originalOTTMediaOptions: [OTTMediaOptions]?
     
     public var preloadTime: TimeInterval = 10
     public var currentMediaIndex: Int {
@@ -34,7 +32,7 @@ import PlayKit
     
     private var currentPlayingIndex: Int = -1
     public var recoverOnError: Bool = true
-    private weak var player: KalturaPlayer?
+    internal weak var player: KalturaPlayer?
     private var messageBus: MessageBus?
     
     private var currentItemCoundownOptions: CountdownOptions?
@@ -388,26 +386,8 @@ import PlayKit
         }
     }
     
-    private func prepareMediaOptions(forMediaEntry entry: PKMediaEntry) -> MediaOptions? {
-        let options: MediaOptions
-        
-        if self.player is KalturaOTTPlayer {
-            if let ottOptions = self.originalOTTMediaOptions?.first(where: { $0.assetId == entry.id }) {
-                options = ottOptions
-            } else {
-                PKLog.error("Media :\(entry.id) is missing in playlist OTT media options.")
-                return nil
-            }
-        } else if self.player is KalturaOVPPlayer {
-            let ovpOptions = OVPMediaOptions()
-            ovpOptions.ks = self.player?.playerOptions.ks
-            ovpOptions.entryId = entry.id
-            options = ovpOptions
-        } else {
-            options = MediaOptions()
-        }
-        
-        return options
+    internal func prepareMediaOptions(forMediaEntry entry: PKMediaEntry) -> MediaOptions? {
+        return MediaOptions()
     }
     
     private func resetCountdown() {
