@@ -51,7 +51,7 @@ import PlayKit
      */
     func isMediaLoaded(index: Int) -> Bool
     
-    /// Reset to default given  configuration
+    /// Reset to default given configuration
     func reset()
     
     /// Start playlist from index 0
