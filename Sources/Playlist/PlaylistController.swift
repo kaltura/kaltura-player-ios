@@ -11,8 +11,8 @@ import PlayKit
 @objc public protocol PlaylistController {
     
     /// The object that acts as the delegate of the PlaylistController.
-    /// As a delegate you may provide plugins config for each item of the play list.
-    /// Also provide a CountdownOptions for indiwidual items.
+    /// As a delegate you may provide plugins config for each item of the playlist.
+    /// Also provide a CountdownOptions for individual items.
     weak var delegate: PlaylistControllerDelegate? { get set }
     
     /// Loaded playlist.
