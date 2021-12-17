@@ -11,8 +11,8 @@ import PlayKit
 @objc public protocol PlaylistController {
     
     /// The object that acts as the delegate of the PlaylistController.
-    /// As a delegate you may provide plugins config for each item of the play list.
-    /// Also provide a CountdownOptions for indiwidual items.
+    /// As a delegate you may provide plugins config for each item of the playlist.
+    /// Also provide a CountdownOptions for individual items.
     weak var delegate: PlaylistControllerDelegate? { get set }
     
     /// Loaded playlist.
@@ -24,15 +24,15 @@ import PlayKit
     /// Will set previous media to players' playback
     func playPrev()
     
-    /// Run Get Playback Context request for next media in a list.
-    /// You are able to call this function with your own business logic
-    /// Or this function will be callen automatically according to preloadTime
+    /// Run Get Playback Context request for next media in the list.
+    /// You are able to call this function with your own business logic.
+    /// Or this function will be called automatically according to preloadTime.
     func preloadNext()
     
     /// Time interval that manage time in seconds when next media will be preloaded before current media ends.
     /// It counts backwards (from the end of media playback), so set the time you need to preload in seconds before current media ends.
-    /// Set it once, it will be applyed to each media.
-    /// Default value is 10 seconds before media playback ended.
+    /// Set it once, it will be applied to each media.
+    /// Default value is 10 seconds before media playback ends.
     var preloadTime: TimeInterval { get set }
     
     /**
@@ -44,14 +44,14 @@ import PlayKit
     func playItem(index: Int)
     
     /**
-     Shows if the media at index contains media sources and ready to be played.
+     Shows if the media at index contains media sources and is ready to be played.
      
      * Parameters:
         * index: The index of media item.
      */
     func isMediaLoaded(index: Int) -> Bool
     
-    /// Reset to default given  configuration
+    /// Reset to default given configuration
     func reset()
     
     /// Start playlist from index 0
@@ -61,7 +61,7 @@ import PlayKit
     /// Default value is false.
     var loop: Bool { get set }
     
-    /// Switch to the next media item after current ends.
+    /// Continue to the next media item after current one ends.
     /// Default value is true.
     var autoContinue: Bool { get set }
     
@@ -75,11 +75,11 @@ import PlayKit
     /// Disables coundown action for current media
     func disableCountdownForCurrentItem()
     
-    /// Checking if the previous item in the list available for playback.
+    /// Checks if the previous item in the list is available for playback.
     /// If loop is true isPreviousItemAvailable() will always return true.
     func isPreviousItemAvailable() -> Bool
     
-    /// Checking if the next item in the list available for playback.
+    /// Checks if the next item in the list is available for playback.
     /// If loop is true isNextItemAvailable() will always return true.
     func isNextItemAvailable() -> Bool
 }
