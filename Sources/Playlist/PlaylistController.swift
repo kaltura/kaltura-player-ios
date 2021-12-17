@@ -84,7 +84,7 @@ import PlayKit
     func isNextItemAvailable() -> Bool
 }
 
-@objc public protocol PlaylistControllerDelegate {
+@objc public protocol PlaylistControllerDelegate: AnyObject {
     
     /**
      Individual media items can opt out of having the dedicated plugin config for each media item.
