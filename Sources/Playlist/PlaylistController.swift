@@ -75,7 +75,7 @@ import PlayKit
     /// Disables coundown action for current media
     func disableCountdownForCurrentItem()
     
-    /// Checking if the previous item in the list available for playback.
+    /// Checks if the previous item in the list is available for playback.
     /// If loop is true isPreviousItemAvailable() will always return true.
     func isPreviousItemAvailable() -> Bool
     
