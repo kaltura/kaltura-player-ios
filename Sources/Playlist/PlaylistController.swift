@@ -44,7 +44,7 @@ import PlayKit
     func playItem(index: Int)
     
     /**
-     Shows if the media at index contains media sources and ready to be played.
+     Shows if the media at index contains media sources and is ready to be played.
      
      * Parameters:
         * index: The index of media item.
