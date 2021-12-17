@@ -221,14 +221,13 @@ extension KalturaOVPPlayer {
         let ovpPlaylistProvider = OVPPlaylistProvider()
         ovpPlaylistProvider.set(referrer: KalturaOVPPlayerManager.shared.referrer)
         ovpPlaylistProvider.set(sessionProvider: sessionProvider)
-        //ovpPlaylistProvider.set(uiconfId: uiconfId)
         ovpPlaylistProvider.set(mediaAssets: assets)
         
         ovpPlaylistProvider.loadPlaylist { [weak self] (playList: PKPlaylist?, error: Error?) in
             guard let self = self else { return }
             guard let playList = playList else {
-                if let error = error {
-                    callback(KalturaPlayerError.mediaProviderError(code: "TBD Code", message: "TBD Message").asNSError)
+                if let error = error as? PKError {
+                    callback(KalturaPlayerError.mediaProviderError(code: "\(error.code)", message: error.errorDescription).asNSError)
                 }
                 return
             }
@@ -249,7 +248,7 @@ extension KalturaOVPPlayer: EntryLoader {
     
     internal func loadMedia(options: MediaOptions, callback: @escaping (_ entry: PKMediaEntry?, _ error: NSError?) -> Void) {
         guard let options = options as? OVPMediaOptions else {
-            callback(nil, KalturaPlayerError.configurationMissing.asNSError)
+            callback(nil, KalturaPlayerError.invalidMediaOptions.asNSError)
             return
         }
         

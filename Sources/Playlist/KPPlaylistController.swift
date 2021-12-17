@@ -10,11 +10,10 @@ import PlayKit
 
 @objc public class KPPlaylistController: NSObject, PlaylistController {
     
-    public var playlist: PKPlaylist
-    private var entries: [PKMediaEntry]
-    
     public weak var delegate: PlaylistControllerDelegate?
     
+    public var playlist: PKPlaylist
+    public var recoverOnError: Bool = true
     public var preloadTime: TimeInterval = 10
     public var currentMediaIndex: Int {
         return currentPlayingIndex
@@ -30,15 +29,12 @@ import PlayKit
         }
     }
     
-    private var currentPlayingIndex: Int = -1
-    public var recoverOnError: Bool = true
     internal weak var player: KalturaPlayer?
+    private var entries: [PKMediaEntry]
+    private var currentPlayingIndex: Int = -1
     private var messageBus: MessageBus?
-    
     private var currentItemCoundownOptions: CountdownOptions?
-    
     private var preloadingInProgressForMediasId: [String] = []
-    
     private var shuffled: Bool = false
     private var shuffledOrder: [Int] = []
     

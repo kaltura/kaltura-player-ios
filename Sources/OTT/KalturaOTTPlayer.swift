@@ -172,22 +172,15 @@ import PlayKitKava
             
             guard let mediaEntry = pkMediaEntry else {
                 if let error = error {
-                    switch error {
-                    case let pkError as PKError:
-                        callback(KalturaPlayerError.mediaProviderError(code: String(pkError.code), message: pkError.errorDescription).asNSError)
-                    case let nsError as NSError:
-                        var code = String(nsError.code)
-                        if let serverErrorCode = nsError.userInfo[ProviderServerErrorCodeKey] as? String, !serverErrorCode.isEmpty {
-                            code = serverErrorCode
-                        }
-                        var message = nsError.description
-                        if let serverErrorMessage = nsError.userInfo[ProviderServerErrorMessageKey] as? String, !serverErrorMessage.isEmpty {
-                            message = serverErrorMessage
-                        }
-                        callback(KalturaPlayerError.mediaProviderError(code: code, message: message).asNSError)
-                    default:
-                        callback(KalturaPlayerError.mediaProviderError(code: "LoadMediaError", message: error.localizedDescription).asNSError)
+                    var code = String(error.code)
+                    if let serverErrorCode = error.userInfo[ProviderServerErrorCodeKey] as? String, !serverErrorCode.isEmpty {
+                        code = serverErrorCode
                     }
+                    var message = error.description
+                    if let serverErrorMessage = error.userInfo[ProviderServerErrorMessageKey] as? String, !serverErrorMessage.isEmpty {
+                        message = serverErrorMessage
+                    }
+                    callback(KalturaPlayerError.mediaProviderError(code: code, message: message).asNSError)
                 } else {
                     callback(KalturaPlayerError.invalidPKMediaEntry.asNSError)
                 }
@@ -273,7 +266,7 @@ extension KalturaOTTPlayer: EntryLoader {
     
     internal func loadMedia(options: MediaOptions, callback: @escaping (_ entry: PKMediaEntry?, _ error: NSError?) -> Void) {
         guard let options = options as? OTTMediaOptions else {
-            callback(nil, KalturaPlayerError.configurationMissing.asNSError)
+            callback(nil, KalturaPlayerError.invalidMediaOptions.asNSError)
             return
         }
         
