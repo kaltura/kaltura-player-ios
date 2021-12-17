@@ -79,7 +79,7 @@ import PlayKit
     /// If loop is true isPreviousItemAvailable() will always return true.
     func isPreviousItemAvailable() -> Bool
     
-    /// Checking if the next item in the list available for playback.
+    /// Checks if the next item in the list is available for playback.
     /// If loop is true isNextItemAvailable() will always return true.
     func isNextItemAvailable() -> Bool
 }
