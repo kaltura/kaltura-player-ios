@@ -61,7 +61,7 @@ import PlayKit
     /// Default value is false.
     var loop: Bool { get set }
     
-    /// Switch to the next media item after current ends.
+    /// Continue to the next media item after current one ends.
     /// Default value is true.
     var autoContinue: Bool { get set }
     
