@@ -32,7 +32,7 @@ public enum KalturaPlayerError: PKError {
         case .configurationMissing: return "The Configuration has not been retrieved yet."
         case .mediaProviderError(let code, let message): return "Media Provider Error, code: \(code), \n message: \(message)"
         case .invalidPKMediaEntry: return "Load media on the provider returned with an empty PKMediaEntry."
-        case .playlistProviderError: return "loading playlist on the Playlist Provider returned with an error"
+        case .playlistProviderError: return "Loading playlist on the Playlist Provider returned with an error"
         }
     }
     
@@ -417,12 +417,13 @@ public enum KalturaPlayerError: PKError {
     }
     
     /**
-     Set current media and update plugins if needs.
+     Set current media and update plugins if needed.
      Must be overridden in subclass.
 
        * Parameters:
            * mediaEntry: Media entry to play.
-           * options: The Plugin configuration object.
+           * mediaOptions: Additional media options. See `MediaOptions`.
+           * pluginConfig: The Plugin configuration object.
            * callback: Error handler callback.
     */
     internal func setMediaAndUpdatePlugins(mediaEntry: PKMediaEntry,

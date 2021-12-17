@@ -227,9 +227,8 @@ extension KalturaOVPPlayer {
             guard let self = self else { return }
             guard let playList = playList else {
                 if let error = error {
-                    
+                    callback(KalturaPlayerError.mediaProviderError(code: "TBD Code", message: "TBD Message").asNSError)
                 }
-                callback(KalturaPlayerError.mediaProviderError(code: "TBD Code", message: "TBD Message").asNSError)
                 return
             }
             

@@ -124,14 +124,7 @@ import PlayKit
                     }
                     
                     if self.recoverOnError {
-                        switch self.navigationDirection {
-                        case .backward:
-                            PKLog.error("Trying to play previous media")
-                            self.playPrev()
-                        default:
-                            PKLog.error("Trying to play next media")
-                            self.playNext()
-                        }
+                        self.recoverPlayback()
                     }
                 default: break
                     
@@ -139,18 +132,20 @@ import PlayKit
             }
         }
         
+        /*
+        // Post-roll Ad playback not implemented yet.
         self.player?.addObserver(self, events: [AdEvent.allAdsCompleted, AdEvent.adLoaded], block: { [weak self] event in
             guard let self = self else { return }
             
             DispatchQueue.main.async {
                 switch event {
-                case is AdEvent.AllAdsCompleted: print("All Ads ended!")
-                case is AdEvent.AdLoaded: print("AD LOADED")
+                case is AdEvent.AllAdsCompleted:
+                case is AdEvent.AdLoaded:
                 default: break
                 }
-                
             }
         })
+        */
     }
     
     // MARK: - PlaylistController. Public
@@ -159,22 +154,22 @@ import PlayKit
         if currentPlayingIndex == -1 {
             currentPlayingIndex = 0
         } else {
-            if self.entries.count >= currentPlayingIndex + 1 {
+            if self.entries.indices.contains(currentPlayingIndex + 1) {
                 currentPlayingIndex += 1
             } else {
                 PKLog.error("Next item is out of range")
+                
+                // Try to replay playlist or show ended event if next item index higher or equal to number of entries.
+                if isNextItemAvailable() {
+                    replay()
+                } else {
+                    self.messageBus?.post(PlaylistEvent.PlaylistEnded())
+                }
+                return
             }
-        }
-        
-        guard currentPlayingIndex < self.entries.count else {
-            if isNextItemAvailable() {
-                replay()
-            }
-            return
         }
         
         self.navigationDirection = .forward
-        
         self.playItem(index: currentPlayingIndex)
     }
     
@@ -189,17 +184,12 @@ import PlayKit
                     currentPlayingIndex = self.entries.endIndex - 1
                 } else {
                     PKLog.error("Previous item should be 0 or higher")
+                    return
                 }
             }
         }
         
-        guard self.entries.indices.contains(currentPlayingIndex) else {
-            PKLog.error("playItem index is out of range.")
-            return
-        }
-        
         self.navigationDirection = .backward
-        
         self.playItem(index: currentPlayingIndex)
     }
     
@@ -261,20 +251,18 @@ import PlayKit
     }
     
     public func playItem(index: Int) {
-        PKLog.debug("Play Item with index = \(index)")
-        
-        self.player?.stop()
-        
-        self.resetCountdown()
-        
         guard self.entries.indices.contains(index) else {
             PKLog.error("playItem index is out of range.")
             return
         }
         
+        PKLog.debug("Play Item with index = \(index)")
+        
+        self.player?.stop()
+        self.resetCountdown()
+        
         currentPlayingIndex = index
         let currentEntry = self.entries[currentPlayingIndex]
-        self.messageBus?.post(PlaylistEvent.PlaylistCurrentPlayingItemChanged())
         
         if let sources = currentEntry.sources, !sources.isEmpty {
             var pluginConfig: PluginConfig? = nil
@@ -292,7 +280,7 @@ import PlayKit
             }
             
             self.player?.setMediaAndUpdatePlugins(mediaEntry: currentEntry, mediaOptions: nil, pluginConfig: pluginConfig, callback: { error in
-                
+                self.messageBus?.post(PlaylistEvent.PlaylistCurrentPlayingItemChanged())
             })
         } else {
             // Entry is not loaded.
@@ -300,6 +288,9 @@ import PlayKit
             
             guard let options = self.prepareMediaOptions(forMediaEntry: currentEntry) else {
                 PKLog.error("Cannot create proper options to load media: \(currentEntry.description)")
+                if self.recoverOnError {
+                    self.recoverPlayback()
+                }
                 return
             }
             
@@ -312,14 +303,7 @@ import PlayKit
                     self.messageBus?.post(PlaylistEvent.PlaylistLoadMediaError(entryId: currentEntry.id, nsError: error))
                     
                     if self.recoverOnError {
-                        switch self.navigationDirection {
-                        case .backward:
-                            PKLog.error("Trying to play previous media")
-                            self.playPrev()
-                        default:
-                            PKLog.error("Trying to play next media")
-                            self.playNext()
-                        }
+                        self.recoverPlayback()
                     }
                     return
                 }
@@ -341,7 +325,7 @@ import PlayKit
                 }
                 
                 self.player?.setMediaAndUpdatePlugins(mediaEntry: currentEntry, mediaOptions: nil, pluginConfig: pluginConfig, callback: { error in
-                    
+                    self.messageBus?.post(PlaylistEvent.PlaylistCurrentPlayingItemChanged())
                 })
             }
         }
@@ -393,6 +377,11 @@ import PlayKit
             loader.loadMedia(options: options) { [weak self] (loadedEntry: PKMediaEntry?, error: NSError?) in
                 guard let self = self else { return }
                 
+                if let error = error {
+                    PKLog.error("Media entry preloading failed with Error: \(error.localizedDescription)")
+                    return
+                }
+                
                 self.preloadingInProgressForMediasId.removeAll { $0 == entry.id }
                 entry.sources = loadedEntry?.sources
             }
@@ -433,16 +422,18 @@ import PlayKit
         
         if let countDownOptions = self.currentItemCoundownOptions {
             
-            if self.seeking == true {
+            // Countdown should work only with enabled autocontinue.
+            if !self.autoContinue {
+                return
+            }
+            
+            // Countdown Events disabled while seeking.
+            if self.seeking {
                 return
             }
             
             // Countdown event start time should be less then playback time.
             if countDownOptions.timeToShow >= player.duration {
-                self.resetCountdown()
-            }
-            
-            if player.duration <= countDownOptions.timeToShow {
                 self.resetCountdown()
                 return
             }
@@ -459,18 +450,7 @@ import PlayKit
                     self.messageBus?.post(PlaylistEvent.PlaylistCountDownEnd())
                     
                     self.resetCountdown()
-                    
-                    if self.autoContinue {
-                        if self.isNextItemAvailable() {
-                            self.playNext()
-                        } else {
-                            if self.loop == true {
-                                self.replay()
-                            } else {
-                                self.messageBus?.post(PlaylistEvent.PlaylistEnded())
-                            }
-                        }
-                    }
+                    self.playNext()
                 }
             }
             
@@ -481,4 +461,14 @@ import PlayKit
         }
     }
     
+    private func recoverPlayback() {
+        switch self.navigationDirection {
+        case .backward:
+            PKLog.error("Trying to play previous media")
+            self.playPrev()
+        default:
+            PKLog.error("Trying to play next media")
+            self.playNext()
+        }
+    }
 }
