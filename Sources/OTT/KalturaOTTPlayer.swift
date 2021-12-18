@@ -234,9 +234,8 @@ extension KalturaOTTPlayer {
                                                                         assetReferenceType: $0.assetReferenceType) }
         
         let phoenixPlaylistProvider = PhoenixPlaylistProvider()
-        phoenixPlaylistProvider.set(referrer: KalturaOVPPlayerManager.shared.referrer)
+        phoenixPlaylistProvider.set(referrer: KalturaOTTPlayerManager.shared.referrer)
         phoenixPlaylistProvider.set(sessionProvider: sessionProvider)
-        //phoenixPlaylistProvider.set(uiconfId: uiconfId)
         phoenixPlaylistProvider.set(mediaAssets: assets)
         
         phoenixPlaylistProvider.loadPlaylist { [weak self] (playList: PKPlaylist?, error: Error?) in
