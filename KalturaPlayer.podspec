@@ -110,6 +110,20 @@ Pod::Spec.new do |s|
   end
   
 ################################################################
+###                        UI for iOS                        ###
+################################################################
+  
+  s.subspec 'UI' do |sp|
+    sp.ios.deployment_target = '10.0'
+    
+    sp.source_files = 'Sources/UI/*'
+    sp.resources = [ 'Sources/UI/Assets/*']
+    
+    sp.dependency 'KalturaPlayer/Core'
+    
+  end
+
+################################################################
 
   s.default_subspec = 'Core'
 end
