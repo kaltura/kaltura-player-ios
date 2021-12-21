@@ -49,9 +49,6 @@ public class KPMediaPlayer: UIView {
             registerPlayerEvents()
             registerAdEvents()
             
-            player.addObserver(self, forKeyPath: "playerOptions", options: .new, context: nil)
-            player.addObserver(self, forKeyPath: "mediaOptions", options: .new, context: nil)
-            
             player.view = kalturaPlayerView
             
             if player.playerOptions.autoPlay {
@@ -143,12 +140,30 @@ public class KPMediaPlayer: UIView {
     private var mediaEnded: Bool = false
     private var adsLoaded: Bool = false
     private var allAdsCompleted: Bool = false
+    private var adIsPlaying: Bool = false
+    
+    private var preferredPlaybackRate: Float = 1.0 {
+        didSet {
+            guard let player = player else { return }
+            if player.isPlaying, !adIsPlaying {
+                player.rate = preferredPlaybackRate
+            }
+        }
+    }
     
     private func addConstraints() {
         NSLayoutConstraint.activate([self.topAnchor.constraint(equalTo: contentView.topAnchor),
                                      self.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
                                      self.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
                                      self.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)])
+    }
+    
+    private func resetStates() {
+        mediaEnded = false
+        adsLoaded = false
+        allAdsCompleted = false
+        adIsPlaying = false
+        preferredPlaybackRate = 1.0
     }
     
     @objc private func controllersInteractiveViewTapped() {
@@ -205,11 +220,12 @@ extension KPMediaPlayer {
         player?.addObserver(self, events: [KPPlayerEvent.sourceSelected, KPPlayerEvent.loadedMetadata, KPPlayerEvent.ended, KPPlayerEvent.play, KPPlayerEvent.playing, KPPlayerEvent.pause, KPPlayerEvent.canPlay, KPPlayerEvent.seeking, KPPlayerEvent.seeked, KPPlayerEvent.playbackStalled, KPPlayerEvent.stateChanged, KPPlayerEvent.playbackRate, KPPlayerEvent.stopped]) { [weak self] event in
             guard let self = self, let player = self.player else { return }
             
-            NSLog("Event triggered: " + event.description)
+            PKLog.info("Event triggered: " + event.description)
             
             DispatchQueue.main.async {
                 switch event {
                 case is KPPlayerEvent.SourceSelected:
+                    self.resetStates()
                     self.activityIndicator.startAnimating()
                     
                     if player.playerOptions.autoPlay {
@@ -282,9 +298,7 @@ extension KPMediaPlayer {
                     self.durationLabel.text = "00:00:00"
                     self.audioTracks = nil
                     self.textTracks = nil
-                    self.mediaEnded = false
-                    self.adsLoaded = false
-                    self.allAdsCompleted = false
+                    self.resetStates()
                 default:
                     break
                 }
@@ -296,7 +310,7 @@ extension KPMediaPlayer {
         player?.addObserver(self, events: [KPPlayerEvent.tracksAvailable]) { [weak self] event in
             guard let self = self else { return }
             guard let tracks = event.tracks else {
-                NSLog("No Tracks Available")
+                PKLog.debug("No Tracks Available")
                 return
             }
             
@@ -358,10 +372,10 @@ extension KPMediaPlayer {
     // MARK: - IMA Events
     
     private func registerAdEvents() {
-        player?.addObserver(self, events: [KPAdEvent.adLoaded, KPAdEvent.adPaused, KPAdEvent.adResumed, KPAdEvent.adStartedBuffering, KPAdEvent.adPlaybackReady, KPAdEvent.adStarted, KPAdEvent.adComplete, KPAdEvent.adSkipped, KPAdEvent.allAdsCompleted]) { [weak self] adEvent in
+        player?.addObserver(self, events: [KPAdEvent.adLoaded, KPAdEvent.adPaused, KPAdEvent.adResumed, KPAdEvent.adStartedBuffering, KPAdEvent.adPlaybackReady, KPAdEvent.adStarted, KPAdEvent.adComplete, KPAdEvent.adSkipped, KPAdEvent.allAdsCompleted, KPAdEvent.adDidRequestContentPause, KPAdEvent.adDidRequestContentResume]) { [weak self] adEvent in
             guard let self = self, let player = self.player else { return }
             
-            NSLog("Event triggered: " + adEvent.description)
+            PKLog.info("Event triggered: " + adEvent.description)
             
             DispatchQueue.main.async {
                 switch adEvent {
@@ -393,6 +407,11 @@ extension KPMediaPlayer {
                         self.playPauseButton.displayState = .replay
                         self.showPlayerControllers(true)
                     }
+                case is KPAdEvent.AdDidRequestContentPause:
+                    self.adIsPlaying = true
+                case is KPAdEvent.AdDidRequestContentResume:
+                    self.adIsPlaying = false
+                    player.rate = self.preferredPlaybackRate
                 default:
                     break
                 }
@@ -463,13 +482,13 @@ extension KPMediaPlayer {
     @IBAction private func speedRateTouched(_ button: UIButton) {
         let alertController = UIAlertController(title: "Select Speed Rate", message: nil, preferredStyle: UIAlertController.Style.actionSheet)
         alertController.addAction(UIAlertAction(title: "Normal", style: UIAlertAction.Style.default, handler: { (alertAction) in
-            self.player?.rate = 1
+            self.preferredPlaybackRate = 1
+        }))
+        alertController.addAction(UIAlertAction(title: "x1.5", style: UIAlertAction.Style.default, handler: { (alertAction) in
+            self.preferredPlaybackRate = 1.5
         }))
         alertController.addAction(UIAlertAction(title: "x2", style: UIAlertAction.Style.default, handler: { (alertAction) in
-            self.player?.rate = 2
-        }))
-        alertController.addAction(UIAlertAction(title: "x3", style: UIAlertAction.Style.default, handler: { (alertAction) in
-            self.player?.rate = 3
+            self.preferredPlaybackRate = 2
         }))
         
         if let popoverController = alertController.popoverPresentationController {
@@ -512,6 +531,9 @@ extension KPMediaPlayer {
         } else {
             player.play()
             showPlayerControllers(false)
+            if !adIsPlaying {
+                player.rate = preferredPlaybackRate
+            }
         }
     }
 }
