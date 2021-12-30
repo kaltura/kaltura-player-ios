@@ -33,7 +33,7 @@ import PlayKit
     private var entries: [PKMediaEntry]
     private var currentPlayingIndex: Int = -1
     private var messageBus: MessageBus?
-    private var currentItemCoundownOptions: CountdownOptions?
+    private var currentItemCountdownOptions: CountdownOptions?
     private var preloadingInProgressForMediasId: [String] = []
     private var shuffled: Bool = false
     private var shuffledOrder: [Int] = []
@@ -93,11 +93,12 @@ import PlayKit
                     }
                 case is KPPlayerEvent.Seeking:
                     self.seeking = true
-                    
                     if let seekingTime = event.targetSeekPosition?.doubleValue {
-                        if let countDownOptions = self.currentItemCoundownOptions {
-                            if seekingTime > (player.duration - countDownOptions.timeToShow) {
+                        if let countdownOptions = self.currentItemCountdownOptions {
+                            if seekingTime > (player.duration - countdownOptions.timeToShow) {
                                 self.resetCountdown()
+                            } else {
+                                self.cancelCountdownIfNeeded()
                             }
                         }
                     }
@@ -216,7 +217,7 @@ import PlayKit
         
         let preloadMediaIndex = currentPlayingIndex + 1
         guard self.entries.indices.contains(preloadMediaIndex) else {
-            PKLog.error("Trere is no next media to preload.")
+            PKLog.error("There is no next media to preload.")
             return
         }
         
@@ -263,13 +264,13 @@ import PlayKit
             
             if let delegate = self.delegate {
                
-                if delegate.playlistController(self, updatePluginConfigForMediaItemAtIndex: self.currentPlayingIndex) == true {
-                    pluginConfig = delegate.playlistController(self, pluginConfigForMediaItemAtIndex: self.currentPlayingIndex)
+                if delegate.playlistController(self, updatePluginConfigForMediaEntry: currentEntry, atIndex: self.currentPlayingIndex) == true {
+                    pluginConfig = delegate.playlistController(self, pluginConfigForMediaEntry: currentEntry, atIndex: self.currentPlayingIndex)
                 }
-            
-                if delegate.playlistController(self, enableCountdownForMediaItemAtIndex: self.currentPlayingIndex) == true {
-                    let countdown = delegate.playlistController(self, countdownOptionsForMediaItemAtIndex: self.currentPlayingIndex)
-                    self.currentItemCoundownOptions = countdown
+                
+                if delegate.playlistController(self, enableCountdownForMediaEntry: currentEntry, atIndex: self.currentPlayingIndex) == true {
+                    let countdown = delegate.playlistController(self, countdownOptionsForMediaEntry: currentEntry, atIndex: self.currentPlayingIndex)
+                    self.currentItemCountdownOptions = countdown
                 }
             }
             
@@ -308,13 +309,13 @@ import PlayKit
                 
                 if let delegate = self.delegate {
                     
-                    if delegate.playlistController(self, updatePluginConfigForMediaItemAtIndex: self.currentPlayingIndex) == true {
-                        pluginConfig = delegate.playlistController(self, pluginConfigForMediaItemAtIndex: self.currentPlayingIndex)
+                    if delegate.playlistController(self, updatePluginConfigForMediaEntry: currentEntry, atIndex: self.currentPlayingIndex) == true {
+                        pluginConfig = delegate.playlistController(self, pluginConfigForMediaEntry: currentEntry, atIndex: self.currentPlayingIndex)
                     }
                     
-                    if delegate.playlistController(self, enableCountdownForMediaItemAtIndex: self.currentPlayingIndex) == true {
-                        let countdown = delegate.playlistController(self, countdownOptionsForMediaItemAtIndex: self.currentPlayingIndex)
-                        self.currentItemCoundownOptions = countdown
+                    if delegate.playlistController(self, enableCountdownForMediaEntry: currentEntry, atIndex: self.currentPlayingIndex) == true {
+                        let countdown = delegate.playlistController(self, countdownOptionsForMediaEntry: currentEntry, atIndex: self.currentPlayingIndex)
+                        self.currentItemCountdownOptions = countdown
                     }
                 }
                 
@@ -387,7 +388,17 @@ import PlayKit
     }
     
     private func resetCountdown() {
-        self.currentItemCoundownOptions = nil
+        cancelCountdownIfNeeded()
+        self.currentItemCountdownOptions = nil
+    }
+    
+    private func cancelCountdownIfNeeded() {
+        guard let countdownOptions = currentItemCountdownOptions else { return }
+        if countdownOptions.startEventSent.0 {
+            PKLog.debug("Send PlaylistCountdownEnd event, canceled");
+            messageBus?.post(PlaylistEvent.PlaylistCountdownEnd())
+            countdownOptions.startEventSent = (false, nil)
+        }
     }
     
     var seeking = false
@@ -396,10 +407,11 @@ import PlayKit
         guard let currentTime = event.currentTime,
               let player = self.player else { return }
         
-        if let countDownOptions = self.currentItemCoundownOptions {
+        if let countdownOptions = self.currentItemCountdownOptions {
             
-            // Countdown should work only with enabled autocontinue.
+            // Countdown should work only with autoContinue enabled.
             if !self.autoContinue {
+                cancelCountdownIfNeeded()
                 return
             }
             
@@ -409,27 +421,29 @@ import PlayKit
             }
             
             // Countdown event start time should be less then playback time.
-            if countDownOptions.timeToShow >= player.duration {
+            if countdownOptions.timeToShow >= player.duration {
                 self.resetCountdown()
                 return
             }
             
-            if (player.duration - currentTime.doubleValue) < countDownOptions.timeToShow {
-                if countDownOptions.eventSent != true {
-                    PKLog.debug("send count down event position = \(currentTime)")
-                    self.messageBus?.post(PlaylistEvent.PlaylistCountDownStart())
-                    countDownOptions.eventSent = true
-                    self.preloadNext()
-                    
-                } else if (player.duration - currentTime.doubleValue) < (countDownOptions.timeToShow - countDownOptions.duration) {
-                    PKLog.debug("playhead updated handlePlaylistMediaEnded");
-                    self.messageBus?.post(PlaylistEvent.PlaylistCountDownEnd())
-                    
+            let timeLeft = player.duration - currentTime.doubleValue
+            if timeLeft <= countdownOptions.timeToShow {
+                if countdownOptions.startEventSent.0 == false {
+                    if timeLeft >= countdownOptions.duration {
+                        PKLog.debug("Send PlaylistCountdownStart event, position = \(currentTime)")
+                        self.messageBus?.post(PlaylistEvent.PlaylistCountdownStart(countDownDuration: countdownOptions.duration))
+                        countdownOptions.startEventSent = (true, currentTime)
+                        self.preloadNext()
+                    }
+                } else if let startEventSentAtTime = countdownOptions.startEventSent.atTime,
+                            (currentTime.doubleValue - startEventSentAtTime.doubleValue) >= countdownOptions.duration {
+                    PKLog.debug("Send PlaylistCountdownEnd event, position = \(currentTime)");
+                    self.messageBus?.post(PlaylistEvent.PlaylistCountdownEnd())
+                    countdownOptions.startEventSent = (false, nil)
                     self.resetCountdown()
                     self.playNext()
                 }
             }
-            
         } else {
             if (player.duration - currentTime.doubleValue) < self.preloadTime {
                 self.preloadNext()

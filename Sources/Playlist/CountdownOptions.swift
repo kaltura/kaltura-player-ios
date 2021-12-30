@@ -12,7 +12,7 @@ import Foundation
     public var timeToShow: TimeInterval = 20.0
     public var duration: TimeInterval = 10.0
     
-    internal var eventSent: Bool = false
+    internal var startEventSent: (Bool, atTime: NSNumber?) = (false, nil)
     
     @objc public override init() {
         super.init()
