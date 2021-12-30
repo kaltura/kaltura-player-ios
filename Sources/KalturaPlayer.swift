@@ -477,7 +477,7 @@ extension KalturaPlayer {
 extension KalturaPlayer {
     
     func getMessageBus() -> MessageBus? {
-        let player = self.pkPlayer as? PublicMessageBus
+        let player = self.pkPlayer as? PKMessageBus
         return player?.getMessageBus()
     }
 }
