@@ -6,11 +6,14 @@ import PlayKit
 public typealias KPPlayerEvent = PlayerEvent
 public typealias KPTrack = Track
 public typealias KPAdEvent = AdEvent
+public typealias KPPlaylistEvent = PlaylistEvent
 
 public enum KalturaPlayerError: PKError {
     case configurationMissing
-    case mediaProviderError(code:String, message:String)
+    case mediaProviderError(code: String, message: String)
     case invalidPKMediaEntry
+    case playlistProviderError
+    case invalidMediaOptions
     
     public static let domain = "com.kaltura.player.error"
     public static let serverErrorCodeKey = "code"
@@ -21,6 +24,8 @@ public enum KalturaPlayerError: PKError {
         case .configurationMissing: return 8001
         case .mediaProviderError: return 8002
         case .invalidPKMediaEntry: return 8003
+        case .playlistProviderError: return 8004
+        case .invalidMediaOptions: return 8004
         }
     }
     
@@ -29,6 +34,8 @@ public enum KalturaPlayerError: PKError {
         case .configurationMissing: return "The Configuration has not been retrieved yet."
         case .mediaProviderError(let code, let message): return "Media Provider Error, code: \(code), \n message: \(message)"
         case .invalidPKMediaEntry: return "Load media on the provider returned with an empty PKMediaEntry."
+        case .playlistProviderError: return "Loading playlist on the Playlist Provider returned with an error"
+        case .invalidMediaOptions: return "Unexpected MediaOptions format"
         }
     }
     
@@ -75,6 +82,31 @@ public enum KalturaPlayerError: PKError {
         self.playerOptions = playerOptions
         pkPlayer = PlayKitManager.shared.loadPlayer(pluginConfig: self.playerOptions.pluginConfig)
         super.init()
+    }
+    
+    /**
+     Set current media and update plugins if needed.
+     Must be overridden in subclass.
+
+       * Parameters:
+           * mediaEntry: Media entry to play.
+           * mediaOptions: Additional media options. See `MediaOptions`.
+           * pluginConfig: The Plugin configuration object.
+           * callback: Error handler callback.
+    */
+    internal func setMediaAndUpdatePlugins(mediaEntry: PKMediaEntry,
+                                           mediaOptions: MediaOptions?,
+                                           pluginConfig: PluginConfig?,
+                                           callback: @escaping (_ error: NSError?) -> Void) {
+        
+        if let pluginConfig = pluginConfig {
+            let playerOptions = self.playerOptions
+            playerOptions.pluginConfig = pluginConfig
+            self.updatePlayerOptions(playerOptions)
+        }
+        
+        self.mediaEntry = mediaEntry
+        callback(nil)
     }
     
     // MARK: - Public Methods
@@ -133,6 +165,19 @@ public enum KalturaPlayerError: PKError {
         }
     }
     
+    /**
+       Set the player's Playlist.
+    
+       * Parameters:
+           * playlist: Playlist to play.
+           * playlistConfig: PlaylistController configuration.
+    */
+    @objc public func setPlaylist(_ playlist: PKPlaylist, playlistConfig: Any? = nil) {
+        playlistController = KPPlaylistController(playlistConfig: playlistConfig,
+                                                  playlist: playlist,
+                                                  player: self)
+    }
+    
     // MARK: - Player
     
     /**
@@ -170,6 +215,9 @@ public enum KalturaPlayerError: PKError {
             return pkPlayer.sessionId
         }
     }
+    
+    /// Playlist controller
+    @objc public var playlistController: PlaylistController?
     
     /**
         Add an observation to a relevant event.
@@ -424,4 +472,12 @@ extension KalturaPlayer {
         update(entry: mediaEntry, withInterceptor: interceptors.removeFirst())
     }
     
+}
+
+extension KalturaPlayer {
+    
+    func getMessageBus() -> MessageBus? {
+        let player = self.pkPlayer as? PKMessageBus
+        return player?.getMessageBus()
+    }
 }

@@ -10,7 +10,6 @@ import PlayKitProviders
 
 @objc public class OTTMediaOptions: MediaOptions {
     
-    @objc public var ks: String?
     @objc public var assetId: String?
     @objc public var assetType: AssetType = .unset
     @objc public var assetReferenceType: AssetReferenceType = .unset
@@ -40,4 +39,29 @@ import PlayKitProviders
         
         return phoenixMediaProvider
     }
+    
+    @discardableResult
+    @nonobjc public func set(assetId: String?) -> Self {
+        self.assetId = assetId
+        return self
+    }
+    
+    @discardableResult
+    @nonobjc public func set(assetType: AssetType) -> Self {
+        self.assetType = assetType
+        return self
+    }
+    
+    @discardableResult
+    @nonobjc public func set(assetReferenceType: AssetReferenceType) -> Self {
+        self.assetReferenceType = assetReferenceType
+        return self
+    }
+    
+    @discardableResult
+    @nonobjc public func set(networkProtocol: String) -> Self {
+        self.networkProtocol = networkProtocol
+        return self
+    }
+    
 }

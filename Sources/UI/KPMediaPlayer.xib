@@ -39,7 +39,7 @@
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LQJ-q3-jSy">
-                            <rect key="frame" x="0.0" y="70.5" width="414" height="677"/>
+                            <rect key="frame" x="0.0" y="122" width="414" height="574"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
                         <activityIndicatorView hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="86t-CF-IC3">
@@ -295,7 +295,7 @@
                         <constraint firstItem="KcF-lL-Tj7" firstAttribute="centerY" secondItem="TAi-S1-QZi" secondAttribute="centerY" id="1mq-eT-nZK"/>
                         <constraint firstItem="LQJ-q3-jSy" firstAttribute="centerY" secondItem="KHZ-39-Cm7" secondAttribute="centerY" id="2Ba-Yl-EAX"/>
                         <constraint firstItem="86t-CF-IC3" firstAttribute="centerX" secondItem="TAi-S1-QZi" secondAttribute="centerX" id="4GD-UO-0Gn"/>
-                        <constraint firstItem="LQJ-q3-jSy" firstAttribute="height" secondItem="KHZ-39-Cm7" secondAttribute="height" multiplier="0.705786" constant="100" id="4O9-lZ-E9x"/>
+                        <constraint firstItem="LQJ-q3-jSy" firstAttribute="height" secondItem="KHZ-39-Cm7" secondAttribute="height" multiplier="0.7" constant="1" id="4O9-lZ-E9x"/>
                         <constraint firstAttribute="trailing" secondItem="KHZ-39-Cm7" secondAttribute="trailing" id="6mJ-HC-FcA"/>
                         <constraint firstItem="86t-CF-IC3" firstAttribute="centerY" secondItem="TAi-S1-QZi" secondAttribute="centerY" id="7T6-44-f0r"/>
                         <constraint firstItem="t8S-Sb-zc0" firstAttribute="leading" secondItem="TAi-S1-QZi" secondAttribute="leading" id="FPM-IY-O45"/>
