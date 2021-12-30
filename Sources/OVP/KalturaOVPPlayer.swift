@@ -89,7 +89,7 @@ import PlayKitProviders
             return
         }
         
-        self.updateKavaPlugin(partnerId: ovpPartnerId, entryId: mediaEntry.id, mediaOptions: mediaOptions)
+        self.updateKavaPlugin(partnerId: ovpPartnerId, entryId: mediaEntry.id, mediaOptions: mediaOptions as? OVPMediaOptions)
         
         if let pluginConfig = pluginConfig {
             let playerOptions = self.playerOptions
@@ -101,7 +101,7 @@ import PlayKitProviders
         callback(nil)
     }
     
-    func updateKavaPlugin(partnerId: Int64, entryId: String, mediaOptions: MediaOptions?) {
+    func updateKavaPlugin(partnerId: Int64, entryId: String, mediaOptions: OVPMediaOptions?) {
         let kavaPluginConfig = KavaHelper.getPluginConfig(ovpPartnerId: partnerId,
                                                           ovpEntryId: entryId,
                                                           ks: mediaOptions?.ks ?? playerOptions.ks,
