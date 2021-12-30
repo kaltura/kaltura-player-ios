@@ -279,7 +279,7 @@ extension KalturaOTTPlayer: EntryLoader {
         phoenixMediaProvider.set(referrer: KalturaOTTPlayerManager.shared.referrer)
         phoenixMediaProvider.set(sessionProvider: sessionProvider)
         
-        phoenixMediaProvider.loadMedia { [weak self] (pkMediaEntry, error) in
+        phoenixMediaProvider.loadMedia { (pkMediaEntry, error) in
             guard let mediaEntry = pkMediaEntry else {
                 if let error = error {
                     switch error {

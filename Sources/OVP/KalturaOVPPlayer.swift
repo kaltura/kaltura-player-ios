@@ -262,7 +262,7 @@ extension KalturaOVPPlayer: EntryLoader {
         ovpMediaProvider.set(referrer: KalturaOVPPlayerManager.shared.referrer)
         ovpMediaProvider.set(sessionProvider: sessionProvider)
         
-        ovpMediaProvider.loadMedia { [weak self] (pkMediaEntry, error) in
+        ovpMediaProvider.loadMedia { (pkMediaEntry, error) in
             guard let mediaEntry = pkMediaEntry else {
                 if let error = error {
                     switch error {
