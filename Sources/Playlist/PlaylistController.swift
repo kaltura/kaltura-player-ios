@@ -91,10 +91,11 @@ import PlayKit
      
      * Parameters:
         * controller: The PlaylistController which is managing current medias list playback.
+        * mediaEntry: The PKMediaEntry.
         * mediaItemIndex: The index of media item.
      * Returns: A flag if it is needed to set dedicated plugins config to item with requested index.
      */
-    func playlistController(_ controller: PlaylistController, updatePluginConfigForMediaItemAtIndex mediaItemIndex: Int) -> Bool
+    func playlistController(_ controller: PlaylistController, updatePluginConfigForMediaEntry mediaEntry: PKMediaEntry, atIndex mediaItemIndex: Int) -> Bool
     
     /**
      Individual media items can opt out of having the dedicated plugin config for each media item.
@@ -102,21 +103,23 @@ import PlayKit
      
      * Parameters:
         * controller: The PlaylistController which is managing current medias list playback.
+        * mediaEntry: The PKMediaEntry.
         * mediaItemIndex: The index of media item.
      * Returns: A plugins config which will be applied to item with requested index.
      In case it returns nil default plugins config will be applied for the media at requested index.
      */
-    func playlistController(_ controller: PlaylistController, pluginConfigForMediaItemAtIndex mediaItemIndex: Int) -> PluginConfig?
+    func playlistController(_ controller: PlaylistController, pluginConfigForMediaEntry mediaEntry: PKMediaEntry, atIndex mediaItemIndex: Int) -> PluginConfig?
     
     /**
      Individual media items can opt out of having the countdown options applied to their playback.
      
      * Parameters:
         * controller: The PlaylistController which is managing current medias list playback.
+        * mediaEntry: The PKMediaEntry.
         * mediaItemIndex: The index of media item.
      * Returns: A flag if it is needed to apply countdown options to item with requested index.
      */
-    func playlistController(_ controller: PlaylistController, enableCountdownForMediaItemAtIndex mediaItemIndex: Int) -> Bool
+    func playlistController(_ controller: PlaylistController, enableCountdownForMediaEntry mediaEntry: PKMediaEntry, atIndex mediaItemIndex: Int) -> Bool
     
     /**
      Individual media items can opt out of having the countdown options applied to their playback.
@@ -124,11 +127,12 @@ import PlayKit
      
      * Parameters:
         * controller: The PlaylistController which is managing current medias list playback.
+        * mediaEntry: The PKMediaEntry.
         * mediaItemIndex: The index of media item.
      * Returns: A specific countdown options which will be applied to item with requested index.
      Set nil to skip countdown options for the media at requested index.
      */
-    func playlistController(_ controller: PlaylistController, countdownOptionsForMediaItemAtIndex mediaItemIndex: Int) -> CountdownOptions?
+    func playlistController(_ controller: PlaylistController, countdownOptionsForMediaEntry mediaEntry: PKMediaEntry, atIndex mediaItemIndex: Int) -> CountdownOptions?
 }
 
 internal protocol EntryLoader {
