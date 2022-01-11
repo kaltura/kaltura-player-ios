@@ -32,10 +32,13 @@ import PlayKitProviders
         phoenixMediaProvider.set(formats: formats)
         phoenixMediaProvider.set(fileIds: fileIds)
         phoenixMediaProvider.set(playbackContextType: playbackContextType)
-        phoenixMediaProvider.set(networkProtocol: networkProtocol)
         phoenixMediaProvider.set(urlType: urlType)
         phoenixMediaProvider.set(streamerType: streamerType)
         phoenixMediaProvider.set(adapterData: adapterData)
+        
+        if let networkProtocol = networkProtocol {
+            phoenixMediaProvider.set(networkProtocol: networkProtocol)
+        }
         
         return phoenixMediaProvider
     }
