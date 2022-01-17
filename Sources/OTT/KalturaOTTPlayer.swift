@@ -105,7 +105,11 @@ import PlayKitKava
         }
         
         self.updateKavaPlugin(ovpPartnerId: ovpPartnerId, ovpEntryId: ovpEntryId, mediaOptions: mediaOptions as? OTTMediaOptions)
-        self.updatePhoenixAnalyticsPlugin()
+        
+        if let config = pluginConfig?.config,
+           !config.keys.contains(PhoenixAnalyticsPlugin.pluginName) {
+            self.updatePhoenixAnalyticsPlugin()
+        }
         
         if let pluginConfig = pluginConfig {
             let playerOptions = self.playerOptions
