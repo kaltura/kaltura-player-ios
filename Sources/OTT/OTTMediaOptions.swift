@@ -23,6 +23,7 @@ import PlayKitProviders
     
     @objc public var disableMediaHit: Bool = false
     @objc public var disableMediaMark: Bool = false
+    @objc public var isExperimentalLiveMediaHit: Bool = false
     
     internal func mediaProvider() -> PhoenixMediaProvider {
         let phoenixMediaProvider = PhoenixMediaProvider()
