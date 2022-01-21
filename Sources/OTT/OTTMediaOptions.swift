@@ -16,7 +16,7 @@ import PlayKitProviders
     @objc public var formats: [String]?
     @objc public var fileIds: [String]?
     @objc public var playbackContextType: PlaybackContextType = .unset
-    @objc public var networkProtocol: String?
+    @objc public var networkProtocol: String = "https"
     @objc public var urlType: String?
     @objc public var streamerType: String?
     @objc public var adapterData: [String: String]?
@@ -35,10 +35,7 @@ import PlayKitProviders
         phoenixMediaProvider.set(urlType: urlType)
         phoenixMediaProvider.set(streamerType: streamerType)
         phoenixMediaProvider.set(adapterData: adapterData)
-        
-        if let networkProtocol = networkProtocol {
-            phoenixMediaProvider.set(networkProtocol: networkProtocol)
-        }
+        phoenixMediaProvider.set(networkProtocol: networkProtocol)
         
         return phoenixMediaProvider
     }
