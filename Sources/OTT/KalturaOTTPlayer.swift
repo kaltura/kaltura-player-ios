@@ -72,13 +72,15 @@ import PlayKitKava
         let partnerId = KalturaOTTPlayerManager.shared.cachedConfigData?.ovpPartnerId ?? KalturaOTTPlayerManager.shared.partnerId
         options.pluginConfig.config[KavaPlugin.pluginName] = KavaPluginConfig(partnerId: Int(partnerId))
         
-        // Have to set the PhoenixAnalyticsPlugin even if the player KS is empty, cause an update is performed upon loadMedia without validating if the plugin was set. The request will not be sent upon an empty KS.
-        let phoenixAnalyticsPluginConfig = PhoenixAnalyticsPluginConfig(baseUrl: KalturaOTTPlayerManager.shared.serverURL,
-                                                                        timerInterval: PhoenixAnalyticsTimerInterval,
-                                                                        ks: options.ks ?? "",
-                                                                        partnerId: Int(KalturaOTTPlayerManager.shared.partnerId))
-        
-        options.pluginConfig.config[PhoenixAnalyticsPlugin.pluginName] = phoenixAnalyticsPluginConfig
+        if (options.pluginConfig.config[PhoenixAnalyticsPlugin.pluginName] == nil) {
+            // Have to set the PhoenixAnalyticsPlugin even if the player KS is empty, cause an update is performed upon loadMedia without validating if the plugin was set. The request will not be sent upon an empty KS.
+            let phoenixAnalyticsPluginConfig = PhoenixAnalyticsPluginConfig(baseUrl: KalturaOTTPlayerManager.shared.serverURL,
+                                                                            timerInterval: PhoenixAnalyticsTimerInterval,
+                                                                            ks: options.ks ?? "",
+                                                                            partnerId: Int(KalturaOTTPlayerManager.shared.partnerId))
+            
+            options.pluginConfig.config[PhoenixAnalyticsPlugin.pluginName] = phoenixAnalyticsPluginConfig
+        }
         
         super.init(playerOptions: options)
     }
@@ -106,8 +108,10 @@ import PlayKitKava
         
         self.updateKavaPlugin(ovpPartnerId: ovpPartnerId, ovpEntryId: ovpEntryId, mediaOptions: mediaOptions as? OTTMediaOptions)
         
-        if let config = pluginConfig?.config,
-           !config.keys.contains(PhoenixAnalyticsPlugin.pluginName) {
+        let playerKSNotSet = playerOptions.ks?.isEmpty ?? true
+        let mediaKSAvailable = !(mediaOptions?.ks?.isEmpty ?? true)
+        let shouldUpdatePhoenixAnalytics = playerKSNotSet && mediaKSAvailable
+        if let config = pluginConfig?.config, !config.keys.contains(PhoenixAnalyticsPlugin.pluginName) || shouldUpdatePhoenixAnalytics {
             self.updatePhoenixAnalyticsPlugin()
         }
         
