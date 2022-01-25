@@ -196,7 +196,7 @@ import PlayKitKava
                 return
             }
             
-            self.setMediaAndUpdatePlugins(mediaEntry: mediaEntry, mediaOptions: options, pluginConfig: nil, callback: callback)
+            self.setMediaAndUpdatePlugins(mediaEntry: mediaEntry, mediaOptions: options, pluginConfig: self.playerOptions.pluginConfig, callback: callback)
         }
     }
     
