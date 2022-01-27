@@ -126,6 +126,16 @@ public enum KalturaPlayerError: PKError {
     }
     
     /**
+        Update the player's ks
+     
+        * Parameters:
+            * playerKS: A new player ks.
+     */
+    @objc public func updatePlayerOptionsKS(_ playerKS: String) {
+        self.playerOptions.ks = playerKS
+    }
+    
+    /**
        Set the player's MediaEntry.
     
        * Parameters:

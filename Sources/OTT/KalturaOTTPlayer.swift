@@ -132,7 +132,7 @@ import PlayKitKava
     func updateKavaPlugin(ovpPartnerId: Int64, ovpEntryId: String, mediaOptions: OTTMediaOptions?) {
         let kavaPluginConfig = KavaHelper.getPluginConfig(ovpPartnerId: ovpPartnerId,
                                                           ovpEntryId: ovpEntryId,
-                                                          ks: mediaOptions?.ks ?? playerOptions.ks,
+                                                          ks: playerOptions.ks,
                                                           referrer: KalturaOTTPlayerManager.shared.referrer,
                                                           playbackContext: mediaOptions?.playbackContextType.description,
                                                           analyticsUrl: KalturaOTTPlayerManager.shared.cachedConfigData?.analyticsUrl,
@@ -142,16 +142,9 @@ import PlayKitKava
     }
     
     func updatePhoenixAnalyticsPlugin() {
-        var ks = ""
-        if let mediaKS = ottMediaOptions?.ks {
-            ks = mediaKS
-        } else if let playerKS = playerOptions.ks {
-            ks = playerKS
-        }
-        
         let phoenixAnalyticsPluginConfig = PhoenixAnalyticsPluginConfig(baseUrl: KalturaOTTPlayerManager.shared.serverURL,
                                                                         timerInterval: PhoenixAnalyticsTimerInterval,
-                                                                        ks: ks,
+                                                                        ks: playerOptions.ks ?? "",
                                                                         partnerId: Int(KalturaOTTPlayerManager.shared.partnerId),
                                                                         disableMediaHit: ottMediaOptions?.disableMediaHit ?? false,
                                                                         disableMediaMark: ottMediaOptions?.disableMediaMark ?? false)
@@ -233,12 +226,19 @@ extension KalturaOTTPlayer {
     @objc public func loadPlaylist(options: [OTTMediaOptions], callback: @escaping (_ error: NSError?) -> Void) {
         self.playlistController = nil
         
-        if options.first?.ks?.isEmpty == false {
-            // TODO: change this logic!
-            sessionProvider.ks = options.first?.ks
-        } else {
-            sessionProvider.ks = playerOptions.ks
+        // Fetch for first available media ks
+        let mediaOptions = options.first { mediaOptions in
+            if let ks = mediaOptions.ks, !ks.isEmpty {
+                return true
+            }
+            return false
         }
+        
+        if let newKS = mediaOptions?.ks, !newKS.isEmpty {
+            updatePlayerOptionsKS(newKS)
+        }
+        
+        sessionProvider.ks = playerOptions.ks
         
         let assets: [OTTPlaylistAsset] = options.map { OTTPlaylistAsset(id: $0.assetId,
                                                                         assetReferenceType: $0.assetReferenceType) }
@@ -274,18 +274,18 @@ extension KalturaOTTPlayer {
 extension KalturaOTTPlayer: EntryLoader {
     
     internal func loadMedia(options: MediaOptions, callback: @escaping (_ entry: PKMediaEntry?, _ error: NSError?) -> Void) {
-        guard let options = options as? OTTMediaOptions else {
+        guard let mediaOptions = options as? OTTMediaOptions else {
             callback(nil, KalturaPlayerError.invalidMediaOptions.asNSError)
             return
         }
         
-        if options.ks?.isEmpty == false {
-            sessionProvider.ks = options.ks
-        } else {
-            sessionProvider.ks = playerOptions.ks
+        if let newKS = mediaOptions.ks, !newKS.isEmpty {
+            updatePlayerOptionsKS(newKS)
         }
+            
+        sessionProvider.ks = playerOptions.ks
         
-        let phoenixMediaProvider = options.mediaProvider()
+        let phoenixMediaProvider = mediaOptions.mediaProvider()
         phoenixMediaProvider.set(referrer: KalturaOTTPlayerManager.shared.referrer)
         phoenixMediaProvider.set(sessionProvider: sessionProvider)
         
