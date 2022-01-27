@@ -68,9 +68,11 @@ import PlayKitKava
                                                 partnerId: KalturaOTTPlayerManager.shared.partnerId,
                                                 ks: options.ks)
         
-        // In case the DMS Configuration won't be available yet, setting the KavaPluginConfig with a placeholder cause an update is performed upon loadMedia without validating if the plugin was set.
-        let partnerId = KalturaOTTPlayerManager.shared.cachedConfigData?.ovpPartnerId ?? KalturaOTTPlayerManager.shared.partnerId
-        options.pluginConfig.config[KavaPlugin.pluginName] = KavaPluginConfig(partnerId: Int(partnerId))
+        if (options.pluginConfig.config[KavaPlugin.pluginName] == nil) {
+            // In case the DMS Configuration won't be available yet, setting the KavaPluginConfig with a placeholder cause an update is performed upon loadMedia without validating if the plugin was set.
+            let partnerId = KalturaOTTPlayerManager.shared.cachedConfigData?.ovpPartnerId ?? KalturaOTTPlayerManager.shared.partnerId
+            options.pluginConfig.config[KavaPlugin.pluginName] = KavaPluginConfig(partnerId: Int(partnerId))
+        }
         
         if (options.pluginConfig.config[PhoenixAnalyticsPlugin.pluginName] == nil) {
             // Have to set the PhoenixAnalyticsPlugin even if the player KS is empty, cause an update is performed upon loadMedia without validating if the plugin was set. The request will not be sent upon an empty KS.
