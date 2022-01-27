@@ -293,10 +293,12 @@ import PlayKit
             loader.loadMedia(options: options) { [weak self] (entry: PKMediaEntry?, error: NSError?) in
                 guard let self = self else { return }
                 
-                if let error = error {
-                    PKLog.error("Failed with playing playlist item: \(self.currentPlayingIndex)")
-                    PKLog.error(error.description)
-                    self.messageBus?.post(PlaylistEvent.PlaylistLoadMediaError(entryId: currentEntry.id, nsError: error))
+                guard let mediaEntry = entry, error == nil else {
+                    let message = "Failed with playing playlist item: \(self.currentPlayingIndex)"
+                    PKLog.error(message)
+                    let nsError = error ?? NSError(domain: Self.description(), code: -1, userInfo: [NSLocalizedDescriptionKey : message])
+                    PKLog.error(nsError.description)
+                    self.messageBus?.post(PlaylistEvent.PlaylistLoadMediaError(entryId: currentEntry.id, nsError: nsError))
                     
                     if self.recoverOnError {
                         self.recoverPlayback()
@@ -304,7 +306,8 @@ import PlayKit
                     return
                 }
                 
-                currentEntry.sources = entry?.sources
+                // Update the entry we got back from the provider
+                self.entries[self.currentPlayingIndex] = mediaEntry
                 
                 var pluginConfig: PluginConfig? = nil
                 
@@ -374,13 +377,19 @@ import PlayKit
             loader.loadMedia(options: options) { [weak self] (loadedEntry: PKMediaEntry?, error: NSError?) in
                 guard let self = self else { return }
                 
-                if let error = error {
-                    PKLog.error("Media entry preloading failed with Error: \(error.localizedDescription)")
+                // Remove entry id
+                self.preloadingInProgressForMediasId.removeAll { $0 == entry.id }
+                
+                guard let mediaEntry = loadedEntry, error == nil else {
+                    let errorMessage = error?.localizedDescription ?? "[Error missing]"
+                    PKLog.error("Media entry preloading failed with Error: \(errorMessage)")
                     return
                 }
                 
-                self.preloadingInProgressForMediasId.removeAll { $0 == entry.id }
-                entry.sources = loadedEntry?.sources
+                // Update the entry we got back from the provider
+                if let entryIndex = self.entries.firstIndex(of: entry) {
+                    self.entries[entryIndex] = mediaEntry
+                }
             }
         }
     }
