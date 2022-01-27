@@ -113,19 +113,15 @@ import PlayKitKava
             ovpEntryId = entryId
         }
         
+        // Update KavaPlugin for specific Media
         self.updateKavaPlugin(ovpPartnerId: ovpPartnerId, ovpEntryId: ovpEntryId, mediaOptions: mediaOptions as? OTTMediaOptions)
-        
-        let playerKSNotSet = playerOptions.ks?.isEmpty ?? true
-        let mediaKSAvailable = !(mediaOptions?.ks?.isEmpty ?? true)
-        let shouldUpdatePhoenixAnalytics = playerKSNotSet && mediaKSAvailable
-        if let config = pluginConfig?.config, !config.keys.contains(PhoenixAnalyticsPlugin.pluginName) || shouldUpdatePhoenixAnalytics {
-            self.updatePhoenixAnalyticsPlugin()
-        }
-        
+        // Update PhoenixAnalyticsPlugin for specific Media
+        self.updatePhoenixAnalyticsPlugin()
+        // If any custom plugin config has been sent use it instead.
         if let pluginConfig = pluginConfig {
-            let playerOptions = self.playerOptions
-            playerOptions.pluginConfig = pluginConfig
-            self.updatePlayerOptions(playerOptions)
+            pluginConfig.config.forEach { (name, config) in
+                updatePluginConfig(pluginName: name, config: config)
+            }
         }
         
         self.updateMediaEntryWithLoadedInterceptors(mediaEntry) {
