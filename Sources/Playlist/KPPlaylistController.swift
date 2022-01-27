@@ -274,7 +274,8 @@ import PlayKit
                 }
             }
             
-            self.player?.setMediaAndUpdatePlugins(mediaEntry: currentEntry, mediaOptions: nil, pluginConfig: pluginConfig, callback: { error in
+            let mediaOptions = self.prepareMediaOptions(forMediaEntry: currentEntry)
+            self.player?.setMediaAndUpdatePlugins(mediaEntry: currentEntry, mediaOptions: mediaOptions, pluginConfig: pluginConfig, callback: { error in
                 self.messageBus?.post(PlaylistEvent.PlaylistCurrentPlayingItemChanged())
             })
         } else {
@@ -319,7 +320,8 @@ import PlayKit
                     }
                 }
                 
-                self.player?.setMediaAndUpdatePlugins(mediaEntry: currentEntry, mediaOptions: nil, pluginConfig: pluginConfig, callback: { error in
+                let mediaOptions = self.prepareMediaOptions(forMediaEntry: mediaEntry)
+                self.player?.setMediaAndUpdatePlugins(mediaEntry: mediaEntry, mediaOptions: mediaOptions, pluginConfig: pluginConfig, callback: { error in
                     self.messageBus?.post(PlaylistEvent.PlaylistCurrentPlayingItemChanged())
                 })
             }
