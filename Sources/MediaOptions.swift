@@ -25,4 +25,11 @@ import Foundation
         self.ks = ks
         return self
     }
+    
+    @discardableResult
+    @nonobjc public func set(startTime: TimeInterval) -> Self {
+        self.startTime = startTime
+        return self
+    }
+    
 }
