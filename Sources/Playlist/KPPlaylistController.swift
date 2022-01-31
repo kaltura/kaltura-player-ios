@@ -307,7 +307,8 @@ import PlayKit
                 }
                 
                 // Update the entry we got back from the provider
-                self.entries[self.currentPlayingIndex] = mediaEntry
+                let currentEntry = self.entries[self.currentPlayingIndex]
+                currentEntry.update(fromMediaEntry: mediaEntry)
                 
                 var pluginConfig: PluginConfig? = nil
                 
@@ -388,7 +389,8 @@ import PlayKit
                 
                 // Update the entry we got back from the provider
                 if let entryIndex = self.entries.firstIndex(of: entry) {
-                    self.entries[entryIndex] = mediaEntry
+                    let entry = self.entries[entryIndex]
+                    entry.update(fromMediaEntry: mediaEntry)
                 }
             }
         }
@@ -470,6 +472,39 @@ import PlayKit
         default:
             PKLog.error("Trying to play next media")
             self.playNext()
+        }
+    }
+}
+
+extension PKMediaEntry {
+    public func update(fromMediaEntry newMediaEntry: PKMediaEntry) {
+        if id != newMediaEntry.id { return }
+        
+        // Update values only if we got new valid values.
+        // We don't want to override values if the new entry doesn't have it.
+        if let newSources = newMediaEntry.sources, !newSources.isEmpty {
+            sources = newSources
+        }
+        if newMediaEntry.duration > 0 {
+            duration = newMediaEntry.duration
+        }
+        if newMediaEntry.mediaType != .unknown {
+            mediaType = newMediaEntry.mediaType
+        }
+        if let newMetadata = newMediaEntry.metadata, !newMetadata.isEmpty {
+            metadata = newMetadata
+        }
+        if let newName = newMediaEntry.name, !newName.isEmpty {
+            name = newName
+        }
+        if let newExternalSubtitles = newMediaEntry.externalSubtitles, !newExternalSubtitles.isEmpty {
+            externalSubtitles = newExternalSubtitles
+        }
+        if let newThumbnailUrl = newMediaEntry.thumbnailUrl, !newThumbnailUrl.isEmpty {
+            thumbnailUrl = newThumbnailUrl
+        }
+        if let newTags = newMediaEntry.tags, !newTags.isEmpty {
+            tags = newTags
         }
     }
 }
