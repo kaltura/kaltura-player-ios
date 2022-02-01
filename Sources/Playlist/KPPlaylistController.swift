@@ -274,7 +274,8 @@ import PlayKit
                 }
             }
             
-            self.player?.setMediaAndUpdatePlugins(mediaEntry: currentEntry, mediaOptions: nil, pluginConfig: pluginConfig, callback: { error in
+            let mediaOptions = self.prepareMediaOptions(forMediaEntry: currentEntry)
+            self.player?.setMediaAndUpdatePlugins(mediaEntry: currentEntry, mediaOptions: mediaOptions, pluginConfig: pluginConfig, callback: { error in
                 self.messageBus?.post(PlaylistEvent.PlaylistCurrentPlayingItemChanged())
             })
         } else {
@@ -292,10 +293,12 @@ import PlayKit
             loader.loadMedia(options: options) { [weak self] (entry: PKMediaEntry?, error: NSError?) in
                 guard let self = self else { return }
                 
-                if let error = error {
-                    PKLog.error("Failed with playing playlist item: \(self.currentPlayingIndex)")
-                    PKLog.error(error.description)
-                    self.messageBus?.post(PlaylistEvent.PlaylistLoadMediaError(entryId: currentEntry.id, nsError: error))
+                guard let mediaEntry = entry, error == nil else {
+                    let message = "Failed with playing playlist item: \(self.currentPlayingIndex)"
+                    PKLog.error(message)
+                    let nsError = error ?? NSError(domain: Self.description(), code: -1, userInfo: [NSLocalizedDescriptionKey : message])
+                    PKLog.error(nsError.description)
+                    self.messageBus?.post(PlaylistEvent.PlaylistLoadMediaError(entryId: currentEntry.id, nsError: nsError))
                     
                     if self.recoverOnError {
                         self.recoverPlayback()
@@ -303,7 +306,9 @@ import PlayKit
                     return
                 }
                 
-                currentEntry.sources = entry?.sources
+                // Update the entry we got back from the provider
+                let currentEntry = self.entries[self.currentPlayingIndex]
+                currentEntry.update(fromMediaEntry: mediaEntry)
                 
                 var pluginConfig: PluginConfig? = nil
                 
@@ -319,7 +324,8 @@ import PlayKit
                     }
                 }
                 
-                self.player?.setMediaAndUpdatePlugins(mediaEntry: currentEntry, mediaOptions: nil, pluginConfig: pluginConfig, callback: { error in
+                let mediaOptions = self.prepareMediaOptions(forMediaEntry: mediaEntry)
+                self.player?.setMediaAndUpdatePlugins(mediaEntry: mediaEntry, mediaOptions: mediaOptions, pluginConfig: pluginConfig, callback: { error in
                     self.messageBus?.post(PlaylistEvent.PlaylistCurrentPlayingItemChanged())
                 })
             }
@@ -372,13 +378,20 @@ import PlayKit
             loader.loadMedia(options: options) { [weak self] (loadedEntry: PKMediaEntry?, error: NSError?) in
                 guard let self = self else { return }
                 
-                if let error = error {
-                    PKLog.error("Media entry preloading failed with Error: \(error.localizedDescription)")
+                // Remove entry id
+                self.preloadingInProgressForMediasId.removeAll { $0 == entry.id }
+                
+                guard let mediaEntry = loadedEntry, error == nil else {
+                    let errorMessage = error?.localizedDescription ?? "[Error missing]"
+                    PKLog.error("Media entry preloading failed with Error: \(errorMessage)")
                     return
                 }
                 
-                self.preloadingInProgressForMediasId.removeAll { $0 == entry.id }
-                entry.sources = loadedEntry?.sources
+                // Update the entry we got back from the provider
+                if let entryIndex = self.entries.firstIndex(of: entry) {
+                    let entry = self.entries[entryIndex]
+                    entry.update(fromMediaEntry: mediaEntry)
+                }
             }
         }
     }
@@ -459,6 +472,39 @@ import PlayKit
         default:
             PKLog.error("Trying to play next media")
             self.playNext()
+        }
+    }
+}
+
+extension PKMediaEntry {
+    public func update(fromMediaEntry newMediaEntry: PKMediaEntry) {
+        if id != newMediaEntry.id { return }
+        
+        // Update values only if we got new valid values.
+        // We don't want to override values if the new entry doesn't have it.
+        if let newSources = newMediaEntry.sources, !newSources.isEmpty {
+            sources = newSources
+        }
+        if newMediaEntry.duration > 0 {
+            duration = newMediaEntry.duration
+        }
+        if newMediaEntry.mediaType != .unknown {
+            mediaType = newMediaEntry.mediaType
+        }
+        if let newMetadata = newMediaEntry.metadata, !newMetadata.isEmpty {
+            metadata = newMetadata
+        }
+        if let newName = newMediaEntry.name, !newName.isEmpty {
+            name = newName
+        }
+        if let newExternalSubtitles = newMediaEntry.externalSubtitles, !newExternalSubtitles.isEmpty {
+            externalSubtitles = newExternalSubtitles
+        }
+        if let newThumbnailUrl = newMediaEntry.thumbnailUrl, !newThumbnailUrl.isEmpty {
+            thumbnailUrl = newThumbnailUrl
+        }
+        if let newTags = newMediaEntry.tags, !newTags.isEmpty {
+            tags = newTags
         }
     }
 }
