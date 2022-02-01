@@ -84,6 +84,10 @@ public enum KalturaPlayerError: PKError {
         super.init()
     }
     
+    deinit {
+        self.stop()
+    }
+    
     /**
      Set current media and update plugins if needed.
      Must be overridden in subclass.
