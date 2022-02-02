@@ -285,7 +285,7 @@ import PlayKit
             // Entry is not loaded.
             guard let loader = self.player as? EntryLoader else { return }
             
-            guard let options = self.prepareMediaOptions(forMediaEntry: currentEntry) else {
+            guard let mediaOptions = self.prepareMediaOptions(forMediaEntry: currentEntry) else {
                 PKLog.error("Cannot create proper options to load media: \(currentEntry.description)")
                 if self.recoverOnError {
                     self.recoverPlayback()
