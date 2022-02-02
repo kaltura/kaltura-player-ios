@@ -16,8 +16,8 @@ import PlayKit
         
         let options: MediaOptions
         
-        if let ottOptions = self.originalOVPMediaOptions?.first(where: { $0.entryId == entry.id }) {
-            options = ottOptions
+        if let ovpOptions = self.originalOVPMediaOptions?.first(where: { $0.entryId == entry.id }) {
+            options = ovpOptions
         } else {
             PKLog.error("Media :\(entry.id) is missing in playlist OVP media options.")
             return nil
