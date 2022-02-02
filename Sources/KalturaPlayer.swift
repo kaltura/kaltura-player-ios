@@ -100,9 +100,9 @@ public enum KalturaPlayerError: PKError {
                                            callback: @escaping (_ error: NSError?) -> Void) {
         
         if let pluginConfig = pluginConfig {
-            let playerOptions = self.playerOptions
-            playerOptions.pluginConfig = pluginConfig
-            self.updatePlayerOptions(playerOptions)
+            pluginConfig.config.forEach { (name, config) in
+                updatePluginConfig(pluginName: name, config: config)
+            }
         }
         
         self.mediaEntry = mediaEntry
@@ -120,9 +120,20 @@ public enum KalturaPlayerError: PKError {
     @objc public func updatePlayerOptions(_ playerOptions: PlayerOptions) {
         self.playerOptions = playerOptions
         
+        // If the player options was updated, update the player with the new plugin config
         self.playerOptions.pluginConfig.config.forEach { (name, config) in
             pkPlayer.updatePluginConfig(pluginName: name, config: config)
         }
+    }
+    
+    /**
+        Update the player's ks
+     
+        * Parameters:
+            * playerKS: A new player ks.
+     */
+    @objc public func updatePlayerOptionsKS(_ playerKS: String) {
+        self.playerOptions.ks = playerKS
     }
     
     /**

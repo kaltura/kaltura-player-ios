@@ -16,7 +16,22 @@ class KalturaOTTPlayerManager: KalturaPlayerManager {
     internal static let shared = KalturaOTTPlayerManager()
     
     var partnerId: Int64
-    var serverURL: String
+    var serverURL: String {
+        didSet {
+            if serverURL.isEmpty { return }
+            
+            // Fix the serverURL provided if needed, for the requests.
+            if serverURL.hasSuffix("/api_v3/") {
+                // Nothing to change
+            } else if serverURL.hasSuffix("/api_v3") {
+                serverURL += "/"
+            } else if serverURL.hasSuffix("/") {
+                serverURL += "api_v3/"
+            } else {
+                serverURL += "/api_v3/"
+            }
+        }
+    }
     
     private override init() {
         partnerId = 0
@@ -38,19 +53,7 @@ class KalturaOTTPlayerManager: KalturaPlayerManager {
     
     override internal func requestConfigData(callback: @escaping (ConfigData?, Error?) -> Void) {
         
-        // Fix the serverURL provided if needed, for the request.
-        var url = serverURL
-        if serverURL.hasSuffix("/api_v3/") {
-            // Nothing to change
-        } else if serverURL.hasSuffix("/api_v3") {
-            url += "/"
-        } else if serverURL.hasSuffix("/") {
-            url += "api_v3/"
-        } else {
-            url += "/api_v3/"
-        }
-        
-        guard let request = KalturaRequestBuilder(url: url, service: "Configurations", action: "serveByDevice") else { return }
+        guard let request = KalturaRequestBuilder(url: serverURL, service: "Configurations", action: "serveByDevice") else { return }
         
         request.set(method: .get)
         

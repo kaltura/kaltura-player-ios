@@ -13,7 +13,7 @@ import PlayKit
     internal var originalOTTMediaOptions: [OTTMediaOptions]?
     
     override internal func prepareMediaOptions(forMediaEntry entry: PKMediaEntry) -> MediaOptions? {
-        let options: MediaOptions
+        let options: OTTMediaOptions
         
         if let ottOptions = self.originalOTTMediaOptions?.first(where: { $0.assetId == entry.id }) {
             options = ottOptions
