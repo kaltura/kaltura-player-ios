@@ -293,7 +293,7 @@ import PlayKit
                 return
             }
             
-            loader.loadMedia(options: options) { [weak self] (entry: PKMediaEntry?, error: NSError?) in
+            loader.loadMedia(options: mediaOptions) { [weak self] (entry: PKMediaEntry?, error: NSError?) in
                 guard let self = self else { return }
                 
                 guard let mediaEntry = entry, error == nil else {
@@ -310,7 +310,6 @@ import PlayKit
                 }
                 
                 // Update the entry we got back from the provider
-                let currentEntry = self.entries[self.currentPlayingIndex]
                 currentEntry.update(fromMediaEntry: mediaEntry)
                 
                 var pluginConfig: PluginConfig? = nil
@@ -327,15 +326,11 @@ import PlayKit
                     }
                 }
                 
-                let mediaOptions = self.prepareMediaOptions(forMediaEntry: mediaEntry)
-                
                 self.player?.setMediaAndUpdatePlugins(mediaEntry: currentEntry,
-               
-                self.player?.setMediaAndUpdatePlugins(mediaEntry: mediaEntry, mediaOptions: mediaOptions, pluginConfig: pluginConfig, callback: { error in
-                self.player?.setMediaAndUpdatePlugins(mediaEntry: currentEntry,
-                                                      mediaOptions: options,
+                                                      mediaOptions: mediaOptions,
                                                       pluginConfig: pluginConfig,
                                                       callback: { error in
+                    self.messageBus?.post(PlaylistEvent.PlaylistCurrentPlayingItemChanged())
                 })
             }
         }

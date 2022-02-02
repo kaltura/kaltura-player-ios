@@ -272,7 +272,7 @@ extension KalturaOVPPlayer: EntryLoader {
             return
         }
         
-        ovpMediaOptions = options
+        ovpMediaOptions = mediaOptions
         
         if let newKS = mediaOptions.ks, !newKS.isEmpty {
             updatePlayerOptionsKS(newKS)

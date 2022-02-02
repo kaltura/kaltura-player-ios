@@ -283,7 +283,7 @@ extension KalturaOTTPlayer: EntryLoader {
             return
         }
         
-        ottMediaOptions = options
+        ottMediaOptions = mediaOptions
         
         if let newKS = mediaOptions.ks, !newKS.isEmpty {
             updatePlayerOptionsKS(newKS)
