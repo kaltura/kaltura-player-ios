@@ -278,8 +278,8 @@ import PlayKit
             self.player?.setMediaAndUpdatePlugins(mediaEntry: currentEntry,
                                                   mediaOptions: mediaOptions,
                                                   pluginConfig: pluginConfig,
-                                                  callback: { error in
-                self.messageBus?.post(PlaylistEvent.PlaylistCurrentPlayingItemChanged())
+                                                  callback: { [weak self] error in
+                self?.messageBus?.post(PlaylistEvent.PlaylistCurrentPlayingItemChanged())
             })
         } else {
             // Entry is not loaded.
@@ -329,8 +329,8 @@ import PlayKit
                 self.player?.setMediaAndUpdatePlugins(mediaEntry: currentEntry,
                                                       mediaOptions: mediaOptions,
                                                       pluginConfig: pluginConfig,
-                                                      callback: { error in
-                    self.messageBus?.post(PlaylistEvent.PlaylistCurrentPlayingItemChanged())
+                                                      callback: { [weak self] error in
+                    self?.messageBus?.post(PlaylistEvent.PlaylistCurrentPlayingItemChanged())
                 })
             }
         }
