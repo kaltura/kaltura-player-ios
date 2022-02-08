@@ -284,11 +284,6 @@ extension KalturaOTTPlayer: EntryLoader {
         }
         
         ottMediaOptions = mediaOptions
-        
-        if let newKS = mediaOptions.ks, !newKS.isEmpty {
-            updatePlayerOptionsKS(newKS)
-        }
-        
         sessionProvider.ks = playerOptions.ks
         
         let phoenixMediaProvider = mediaOptions.mediaProvider()
