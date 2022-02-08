@@ -63,7 +63,25 @@ import PlayKit
         self.player?.removeObserver(self, events: KPPlayerEvent.allEventTypes)
     }
     
+    private var allAdsFinished: Bool = true
+    private var playbackEnded: Bool = false
+    
     func subscribeToPlayerEvents() {
+        
+        func continueWithNextMediaIfNeeded() {
+            
+            if self.autoContinue && self.allAdsFinished {
+                if self.isNextItemAvailable() {
+                    self.playNext()
+                } else {
+                    if self.loop == true {
+                        self.replay()
+                    } else {
+                        self.messageBus?.post(PlaylistEvent.PlaylistEnded())
+                    }
+                }
+            }
+        }
         
         let playerEvents = [KPPlayerEvent.ended,
                             KPPlayerEvent.playheadUpdate,
@@ -79,18 +97,8 @@ import PlayKit
                 switch event {
                 case is KPPlayerEvent.Ended:
                     self.resetCountdown()
-                    
-                    if self.autoContinue {
-                        if self.isNextItemAvailable() {
-                            self.playNext()
-                        } else {
-                            if self.loop == true {
-                                self.replay()
-                            } else {
-                                self.messageBus?.post(PlaylistEvent.PlaylistEnded())
-                            }
-                        }
-                    }
+                    self.playbackEnded = true
+                    continueWithNextMediaIfNeeded()
                 case is KPPlayerEvent.Seeking:
                     self.seeking = true
                     if let seekingTime = event.targetSeekPosition?.doubleValue {
@@ -127,20 +135,23 @@ import PlayKit
             }
         }
         
-        /*
-        // Post-roll Ad playback not implemented yet.
         self.player?.addObserver(self, events: [AdEvent.allAdsCompleted, AdEvent.adLoaded], block: { [weak self] event in
             guard let self = self else { return }
             
             DispatchQueue.main.async {
                 switch event {
                 case is AdEvent.AllAdsCompleted:
+                    self.allAdsFinished = true
+                    if self.playbackEnded {
+                        continueWithNextMediaIfNeeded()
+                    }
                 case is AdEvent.AdLoaded:
+                    self.allAdsFinished = false
                 default: break
                 }
             }
         })
-        */
+        
     }
     
     // MARK: - PlaylistController. Public
@@ -255,6 +266,8 @@ import PlayKit
         
         self.player?.stop()
         self.resetCountdown()
+        self.allAdsFinished = true
+        self.playbackEnded = false
         
         currentPlayingIndex = index
         let currentEntry = self.entries[currentPlayingIndex]
