@@ -15,6 +15,8 @@
                 <outlet property="bottomVisualEffectViewHeightConstraint" destination="0i4-2G-UXo" id="YA6-NB-N90"/>
                 <outlet property="contentView" destination="iN0-l3-epB" id="95R-01-J0r"/>
                 <outlet property="controllersInteractiveView" destination="LQJ-q3-jSy" id="JUI-eF-2Vl"/>
+                <outlet property="controllersInteractiveViewBottomConstraint" destination="moh-tv-fUh" id="R0N-Q4-LQT"/>
+                <outlet property="controllersInteractiveViewTopConstraint" destination="gkw-UB-6Xh" id="4oy-nd-S1h"/>
                 <outlet property="currentTimeLabel" destination="x6E-EA-kbe" id="ewI-zA-H9d"/>
                 <outlet property="durationLabel" destination="47I-Xc-nUC" id="mtu-7W-zJO"/>
                 <outlet property="kalturaPlayerView" destination="KHZ-39-Cm7" id="K8x-ne-RJ4"/>
@@ -39,7 +41,7 @@
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LQJ-q3-jSy">
-                            <rect key="frame" x="0.0" y="33" width="414" height="705"/>
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="818"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
                         <activityIndicatorView hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="86t-CF-IC3">
@@ -296,18 +298,18 @@
                         <constraint firstItem="86t-CF-IC3" firstAttribute="centerX" secondItem="TAi-S1-QZi" secondAttribute="centerX" id="4GD-UO-0Gn"/>
                         <constraint firstAttribute="trailing" secondItem="KHZ-39-Cm7" secondAttribute="trailing" id="6mJ-HC-FcA"/>
                         <constraint firstItem="86t-CF-IC3" firstAttribute="centerY" secondItem="TAi-S1-QZi" secondAttribute="centerY" id="7T6-44-f0r"/>
-                        <constraint firstItem="LQJ-q3-jSy" firstAttribute="bottom" secondItem="KHZ-39-Cm7" secondAttribute="bottom" constant="-80" id="Due-9z-TJ4"/>
                         <constraint firstItem="t8S-Sb-zc0" firstAttribute="leading" secondItem="TAi-S1-QZi" secondAttribute="leading" id="FPM-IY-O45"/>
                         <constraint firstItem="Y64-Pv-fCP" firstAttribute="leading" secondItem="TAi-S1-QZi" secondAttribute="leading" id="GL6-mx-tOx"/>
                         <constraint firstAttribute="trailing" secondItem="t8S-Sb-zc0" secondAttribute="trailing" id="P1R-QR-4AF"/>
-                        <constraint firstItem="LQJ-q3-jSy" firstAttribute="top" secondItem="KHZ-39-Cm7" secondAttribute="top" constant="33" id="PlV-4h-wyi"/>
                         <constraint firstItem="KHZ-39-Cm7" firstAttribute="top" secondItem="TAi-S1-QZi" secondAttribute="top" id="Xbb-70-k21"/>
                         <constraint firstItem="KcF-lL-Tj7" firstAttribute="centerX" secondItem="TAi-S1-QZi" secondAttribute="centerX" id="Z4W-e5-zFh"/>
                         <constraint firstItem="aeh-PP-rae" firstAttribute="leading" secondItem="TAi-S1-QZi" secondAttribute="leading" id="aOJ-Ni-S5r"/>
                         <constraint firstAttribute="bottom" secondItem="t8S-Sb-zc0" secondAttribute="bottom" id="aSM-LZ-vaH"/>
                         <constraint firstAttribute="trailing" secondItem="aeh-PP-rae" secondAttribute="trailing" id="cW1-zG-R1M"/>
                         <constraint firstAttribute="bottom" secondItem="Y64-Pv-fCP" secondAttribute="bottom" id="ffP-zc-yAg"/>
+                        <constraint firstItem="LQJ-q3-jSy" firstAttribute="top" secondItem="KHZ-39-Cm7" secondAttribute="top" id="gkw-UB-6Xh"/>
                         <constraint firstItem="Y64-Pv-fCP" firstAttribute="top" secondItem="TAi-S1-QZi" secondAttribute="top" id="k3C-ob-xa7"/>
+                        <constraint firstItem="LQJ-q3-jSy" firstAttribute="bottom" secondItem="KHZ-39-Cm7" secondAttribute="bottom" id="moh-tv-fUh"/>
                         <constraint firstAttribute="bottom" secondItem="KHZ-39-Cm7" secondAttribute="bottom" id="qBS-JV-ce3"/>
                         <constraint firstItem="LQJ-q3-jSy" firstAttribute="leading" secondItem="KHZ-39-Cm7" secondAttribute="leading" id="r6B-lq-m2X"/>
                         <constraint firstItem="LQJ-q3-jSy" firstAttribute="trailing" secondItem="KHZ-39-Cm7" secondAttribute="trailing" id="rYi-5y-Vjn"/>
