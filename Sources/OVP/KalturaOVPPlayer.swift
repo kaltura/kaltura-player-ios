@@ -90,6 +90,10 @@ import PlayKitProviders
                                                     pluginConfig: PluginConfig?,
                                                     callback: @escaping (_ error: NSError?) -> Void) {
         
+        if let options = mediaOptions as? OVPMediaOptions {
+            ovpMediaOptions = options
+        }
+        
         // The Configuration is needed in order to continue.
         guard let ovpPartnerId = KalturaOVPPlayerManager.shared.cachedConfigData?.ovpPartnerId else {
             callback(KalturaPlayerError.configurationMissing.asNSError)
@@ -139,8 +143,6 @@ import PlayKitProviders
             * error: A `KalturaPlayerError` in case of an issue. See `KalturaPlayerError` for more details.
      */
     @objc public func loadMedia(options: OVPMediaOptions, callback: @escaping (_ error: NSError?) -> Void) {
-        ovpMediaOptions = options
-        
         self.loadMedia(options: options) { [weak self] (pkMediaEntry: PKMediaEntry?, error: NSError?) in
             guard let self = self else { return }
             guard let mediaEntry = pkMediaEntry else {
@@ -253,6 +255,7 @@ extension KalturaOVPPlayer {
                                                   playlist: playList,
                                                   player: self)
             
+            controller.originalOVPMediaOptions = options
             self.playlistController = controller
             
             callback(nil)
@@ -269,10 +272,7 @@ extension KalturaOVPPlayer: EntryLoader {
             return
         }
         
-        if let newKS = mediaOptions.ks, !newKS.isEmpty {
-            updatePlayerOptionsKS(newKS)
-        }
-            
+        ovpMediaOptions = mediaOptions
         sessionProvider.ks = playerOptions.ks
         
         let ovpMediaProvider = mediaOptions.mediaProvider()

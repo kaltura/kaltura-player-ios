@@ -99,6 +99,10 @@ import PlayKitKava
                                                     pluginConfig: PluginConfig?,
                                                     callback: @escaping (_ error: NSError?) -> Void) {
         
+        if let options = mediaOptions as? OTTMediaOptions {
+            ottMediaOptions = options
+        }
+        
         // The DMS Configuration is needed in order to continue.
         guard let ovpPartnerId = KalturaOTTPlayerManager.shared.cachedConfigData?.ovpPartnerId else {
             callback(KalturaPlayerError.configurationMissing.asNSError)
@@ -170,7 +174,6 @@ import PlayKitKava
             * error: A `KalturaPlayerError` in case of an issue. See `KalturaPlayerError` for more details.
      */
     @objc public func loadMedia(options: OTTMediaOptions, callback: @escaping (_ error: NSError?) -> Void) {
-        ottMediaOptions = options
         self.loadMedia(options: options) { [weak self] (pkMediaEntry: PKMediaEntry?, error: NSError?) in
             guard let self = self else { return }
             
@@ -280,10 +283,7 @@ extension KalturaOTTPlayer: EntryLoader {
             return
         }
         
-        if let newKS = mediaOptions.ks, !newKS.isEmpty {
-            updatePlayerOptionsKS(newKS)
-        }
-            
+        ottMediaOptions = mediaOptions
         sessionProvider.ks = playerOptions.ks
         
         let phoenixMediaProvider = mediaOptions.mediaProvider()
