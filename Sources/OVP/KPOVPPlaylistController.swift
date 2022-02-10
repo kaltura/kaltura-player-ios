@@ -10,12 +10,20 @@ import PlayKit
 
 @objc public class KPOVPPlaylistController: KPPlaylistController {
     
+    internal var originalOVPMediaOptions: [OVPMediaOptions]?
+    
     override internal func prepareMediaOptions(forMediaEntry entry: PKMediaEntry) -> MediaOptions? {
-        let ovpOptions = OVPMediaOptions()
-        ovpOptions.ks = self.player?.playerOptions.ks
-        ovpOptions.entryId = entry.id
         
-        return ovpOptions
+        let options: MediaOptions
+        
+        if let ovpOptions = self.originalOVPMediaOptions?.first(where: { $0.entryId == entry.id }) {
+            options = ovpOptions
+        } else {
+            PKLog.error("Media :\(entry.id) is missing in playlist OVP media options.")
+            return nil
+        }
+        
+        return options
     }
     
 }

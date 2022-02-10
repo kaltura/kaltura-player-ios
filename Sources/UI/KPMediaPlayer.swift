@@ -113,6 +113,8 @@ public class KPMediaPlayer: UIView {
     
     // We have to have the 'controllersInteractiveView' and set the tap guesture on it and not on the 'kalturaPlayerView' because IMA's ad view is above the player's view.
     @IBOutlet private weak var controllersInteractiveView: UIView!
+    @IBOutlet private weak var controllersInteractiveViewTopConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var controllersInteractiveViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet private weak var topVisualEffectView: UIVisualEffectView!
     @IBOutlet private weak var topVisualEffectViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet private weak var bottomVisualEffectView: UIVisualEffectView!
@@ -140,7 +142,15 @@ public class KPMediaPlayer: UIView {
     private var mediaEnded: Bool = false
     private var adsLoaded: Bool = false
     private var allAdsCompleted: Bool = false
-    private var adIsPlaying: Bool = false
+    private var adIsPlaying: Bool = false {
+        didSet {
+            controllersInteractiveViewTopConstraint.constant = CGFloat(adIsPlaying ? adLearnMoreButtonHeight : 0)
+            controllersInteractiveViewBottomConstraint.constant = CGFloat(adIsPlaying ? -adSkipButtonHeight : 0)
+        }
+    }
+    
+    private let adLearnMoreButtonHeight = 50.0
+    private let adSkipButtonHeight = 75.0
     
     private var preferredPlaybackRate: Float = 1.0 {
         didSet {
