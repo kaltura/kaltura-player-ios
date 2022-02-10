@@ -15,11 +15,6 @@ import PlayKitProviders
     private var ovpMediaOptions: OVPMediaOptions? {
         didSet {
             mediaOptions = ovpMediaOptions
-            
-            // Update player options if we received a ks on the media options
-            if let newKS = mediaOptions?.ks, !newKS.isEmpty {
-                playerOptions.ks = newKS
-            }
         }
     }
     

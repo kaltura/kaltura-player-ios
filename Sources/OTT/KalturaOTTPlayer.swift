@@ -15,11 +15,6 @@ import PlayKitKava
     private var ottMediaOptions: OTTMediaOptions? {
         didSet {
             mediaOptions = ottMediaOptions
-            
-            // Update player options if we received a ks on the media options
-            if let newKS = mediaOptions?.ks, !newKS.isEmpty {
-                playerOptions.ks = newKS
-            }
         }
     }
     

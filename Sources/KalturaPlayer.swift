@@ -53,7 +53,16 @@ public enum KalturaPlayerError: PKError {
 @objc public class KalturaPlayer: NSObject {
     
     internal var playerOptions: PlayerOptions
-    internal var mediaOptions: MediaOptions?
+    internal var mediaOptions: MediaOptions? {
+        didSet {
+            guard let mediaOptions = mediaOptions else { return }
+            guard let ks = mediaOptions.ks else { return }
+            
+            if !ks.isEmpty {
+                updatePlayerOptionsKS(ks)
+            }
+        }
+    }
     
     private var pkPlayer: Player!
     private var shouldPrepare: Bool = true
