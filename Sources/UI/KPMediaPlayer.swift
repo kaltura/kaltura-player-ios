@@ -144,8 +144,8 @@ public class KPMediaPlayer: UIView {
     private var allAdsCompleted: Bool = false
     private var adIsPlaying: Bool = false {
         didSet {
-            controllersInteractiveViewTopConstraint.constant = adIsPlaying ? adLearnMoreButtonHeight : 0
-            controllersInteractiveViewBottomConstraint.constant = adIsPlaying ? -adSkipButtonHeight : 0
+            controllersInteractiveViewTopConstraint.constant = CGFloat(adIsPlaying ? adLearnMoreButtonHeight : 0)
+            controllersInteractiveViewBottomConstraint.constant = CGFloat(adIsPlaying ? -adSkipButtonHeight : 0)
         }
     }
     
