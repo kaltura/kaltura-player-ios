@@ -147,7 +147,8 @@ import PlayKitKava
                                                                         ks: playerOptions.ks ?? "",
                                                                         partnerId: Int(KalturaOTTPlayerManager.shared.partnerId),
                                                                         disableMediaHit: ottMediaOptions?.disableMediaHit ?? false,
-                                                                        disableMediaMark: ottMediaOptions?.disableMediaMark ?? false)
+                                                                        disableMediaMark: ottMediaOptions?.disableMediaMark ?? false,
+                                                                        isExperimentalLiveMediaHit: ottMediaOptions?.isExperimentalLiveMediaHit ?? false)
         
         self.updatePluginConfig(pluginName: PhoenixAnalyticsPlugin.pluginName, config: phoenixAnalyticsPluginConfig)
     }
