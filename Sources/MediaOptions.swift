@@ -17,4 +17,19 @@ import Foundation
         * In case of live, the live edge.
      */
     @objc public var startTime: TimeInterval = .nan
+    
+    @objc public var ks: String?
+    
+    @discardableResult
+    @nonobjc public func set(ks: String?) -> Self {
+        self.ks = ks
+        return self
+    }
+    
+    @discardableResult
+    @nonobjc public func set(startTime: TimeInterval) -> Self {
+        self.startTime = startTime
+        return self
+    }
+    
 }

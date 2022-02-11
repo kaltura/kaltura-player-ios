@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KPMediaPlayer" customModule="KalturaPlayer" customModuleProvider="target">
+            <connections>
+                <outlet property="activityIndicator" destination="86t-CF-IC3" id="tEk-rX-h8j"/>
+                <outlet property="bottomVisualEffectView" destination="t8S-Sb-zc0" id="qqb-ac-ipu"/>
+                <outlet property="bottomVisualEffectViewHeightConstraint" destination="0i4-2G-UXo" id="YA6-NB-N90"/>
+                <outlet property="contentView" destination="iN0-l3-epB" id="95R-01-J0r"/>
+                <outlet property="controllersInteractiveView" destination="LQJ-q3-jSy" id="JUI-eF-2Vl"/>
+                <outlet property="controllersInteractiveViewBottomConstraint" destination="moh-tv-fUh" id="R0N-Q4-LQT"/>
+                <outlet property="controllersInteractiveViewTopConstraint" destination="gkw-UB-6Xh" id="4oy-nd-S1h"/>
+                <outlet property="currentTimeLabel" destination="x6E-EA-kbe" id="ewI-zA-H9d"/>
+                <outlet property="durationLabel" destination="47I-Xc-nUC" id="mtu-7W-zJO"/>
+                <outlet property="kalturaPlayerView" destination="KHZ-39-Cm7" id="K8x-ne-RJ4"/>
+                <outlet property="mediaProgressSlider" destination="dr3-LS-fZ0" id="Ijp-6x-tbP"/>
+                <outlet property="middleVisualEffectView" destination="KcF-lL-Tj7" id="F0O-bf-gX2"/>
+                <outlet property="playPauseButton" destination="Hfw-nq-39W" id="j6c-QY-J0e"/>
+                <outlet property="settingsVisualEffectView" destination="Y64-Pv-fCP" id="Bkj-8i-siE"/>
+                <outlet property="topVisualEffectView" destination="aeh-PP-rae" id="BYG-19-AaK"/>
+                <outlet property="topVisualEffectViewHeightConstraint" destination="fSl-nA-0uh" id="hPJ-Ef-siK"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TAi-S1-QZi">
+                    <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                    <subviews>
+                        <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="KHZ-39-Cm7" customClass="KalturaPlayerView" customModule="KalturaPlayer">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="818"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LQJ-q3-jSy">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="818"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </view>
+                        <activityIndicatorView hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="86t-CF-IC3">
+                            <rect key="frame" x="188.5" y="390.5" width="37" height="37"/>
+                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                            <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>
+                        </activityIndicatorView>
+                        <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y64-Pv-fCP" userLabel="Settings Visual Effect View">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="818"/>
+                            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Iz9-Ug-QWF">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="818"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zN8-5t-XJI" userLabel="Close Button">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="818"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal">
+                                            <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="closeSettingsTouched:" destination="-1" eventType="touchUpInside" id="SdT-7x-WW3"/>
+                                        </connections>
+                                    </button>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="KPClose" translatesAutoresizingMaskIntoConstraints="NO" id="YLB-hH-DPr">
+                                        <rect key="frame" x="367" y="15" width="32" height="32"/>
+                                    </imageView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UxD-Dn-mWz">
+                                        <rect key="frame" x="116" y="336" width="182" height="146"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iwd-Wu-r8Z" userLabel="Tracks View">
+                                                <rect key="frame" x="0.0" y="0.0" width="182" height="76"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7zF-9e-0RA" userLabel="Audio Button">
+                                                        <rect key="frame" x="0.0" y="0.0" width="76" height="76"/>
+                                                        <state key="normal" image="KPAudioTrack"/>
+                                                        <connections>
+                                                            <action selector="speechTouched:" destination="-1" eventType="touchUpInside" id="8JG-J9-iwq"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lH9-Pw-tI9" userLabel="CC Button">
+                                                        <rect key="frame" x="106" y="0.0" width="76" height="76"/>
+                                                        <state key="normal" image="KPCC"/>
+                                                        <connections>
+                                                            <action selector="subtitleTouched:" destination="-1" eventType="touchUpInside" id="pA2-fh-okT"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="trailing" secondItem="lH9-Pw-tI9" secondAttribute="trailing" id="3qV-xw-at4"/>
+                                                    <constraint firstAttribute="bottom" secondItem="lH9-Pw-tI9" secondAttribute="bottom" id="DL9-H0-zva"/>
+                                                    <constraint firstItem="lH9-Pw-tI9" firstAttribute="top" secondItem="iwd-Wu-r8Z" secondAttribute="top" id="QvB-OC-kbn"/>
+                                                    <constraint firstItem="lH9-Pw-tI9" firstAttribute="leading" secondItem="7zF-9e-0RA" secondAttribute="trailing" constant="30" id="TgX-Xu-jkI"/>
+                                                    <constraint firstAttribute="bottom" secondItem="7zF-9e-0RA" secondAttribute="bottom" id="hYP-EX-paj"/>
+                                                    <constraint firstItem="7zF-9e-0RA" firstAttribute="top" secondItem="iwd-Wu-r8Z" secondAttribute="top" id="leJ-fZ-2MW"/>
+                                                    <constraint firstItem="7zF-9e-0RA" firstAttribute="leading" secondItem="iwd-Wu-r8Z" secondAttribute="leading" id="peI-d5-gth"/>
+                                                </constraints>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AV1-uZ-K7P">
+                                                <rect key="frame" x="0.0" y="86" width="182" height="60"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QkV-Hy-MoX" userLabel="Speed Rate Button">
+                                                        <rect key="frame" x="0.0" y="0.0" width="182" height="60"/>
+                                                        <state key="normal" image="KPSpeedRate"/>
+                                                        <connections>
+                                                            <action selector="speedRateTouched:" destination="-1" eventType="touchUpInside" id="4fZ-RD-Wfo"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="trailing" secondItem="QkV-Hy-MoX" secondAttribute="trailing" id="0l5-PN-BIK"/>
+                                                    <constraint firstItem="QkV-Hy-MoX" firstAttribute="top" secondItem="AV1-uZ-K7P" secondAttribute="top" id="CNv-E4-0lr"/>
+                                                    <constraint firstItem="QkV-Hy-MoX" firstAttribute="leading" secondItem="AV1-uZ-K7P" secondAttribute="leading" id="HpS-72-3Ut"/>
+                                                    <constraint firstAttribute="bottom" secondItem="QkV-Hy-MoX" secondAttribute="bottom" id="N8g-Oe-0KD"/>
+                                                </constraints>
+                                            </view>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="iwd-Wu-r8Z" secondAttribute="trailing" id="0NJ-Kv-4JD"/>
+                                            <constraint firstAttribute="trailing" secondItem="AV1-uZ-K7P" secondAttribute="trailing" id="AcU-hZ-sug"/>
+                                            <constraint firstAttribute="bottom" secondItem="AV1-uZ-K7P" secondAttribute="bottom" id="V2G-mo-7xi"/>
+                                            <constraint firstItem="AV1-uZ-K7P" firstAttribute="leading" secondItem="UxD-Dn-mWz" secondAttribute="leading" id="bY5-Xd-iON"/>
+                                            <constraint firstItem="AV1-uZ-K7P" firstAttribute="top" secondItem="iwd-Wu-r8Z" secondAttribute="bottom" constant="10" id="dCc-qY-9Yb"/>
+                                            <constraint firstItem="iwd-Wu-r8Z" firstAttribute="leading" secondItem="UxD-Dn-mWz" secondAttribute="leading" id="dub-er-cbG"/>
+                                            <constraint firstItem="iwd-Wu-r8Z" firstAttribute="top" secondItem="UxD-Dn-mWz" secondAttribute="top" id="zzh-L2-byo"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="YLB-hH-DPr" firstAttribute="top" secondItem="Iz9-Ug-QWF" secondAttribute="top" constant="15" id="FKU-sQ-Edh"/>
+                                    <constraint firstItem="UxD-Dn-mWz" firstAttribute="centerY" secondItem="Iz9-Ug-QWF" secondAttribute="centerY" id="JBZ-n8-8p1"/>
+                                    <constraint firstItem="zN8-5t-XJI" firstAttribute="leading" secondItem="Iz9-Ug-QWF" secondAttribute="leading" id="O5r-pi-pdf"/>
+                                    <constraint firstItem="UxD-Dn-mWz" firstAttribute="centerX" secondItem="Iz9-Ug-QWF" secondAttribute="centerX" id="T3F-P8-uTX"/>
+                                    <constraint firstItem="zN8-5t-XJI" firstAttribute="top" secondItem="Iz9-Ug-QWF" secondAttribute="top" id="T9D-Bv-X15"/>
+                                    <constraint firstAttribute="bottom" secondItem="zN8-5t-XJI" secondAttribute="bottom" id="hzf-i9-AL2"/>
+                                    <constraint firstAttribute="trailing" secondItem="zN8-5t-XJI" secondAttribute="trailing" id="qzc-7q-agS"/>
+                                    <constraint firstAttribute="trailing" secondItem="YLB-hH-DPr" secondAttribute="trailing" constant="15" id="rTr-8m-gXr"/>
+                                </constraints>
+                            </view>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <blurEffect style="dark"/>
+                        </visualEffectView>
+                        <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aeh-PP-rae" userLabel="Top Visual Effect View">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
+                            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="eJO-0G-ba3">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G9a-L8-YeD" userLabel="Settings Button">
+                                        <rect key="frame" x="20" y="5" width="40" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="HeP-6m-s0Q"/>
+                                            <constraint firstAttribute="width" constant="40" id="bQe-nS-YuI"/>
+                                        </constraints>
+                                        <state key="normal" image="KPSettingsIcon"/>
+                                        <connections>
+                                            <action selector="openSettingsTouched:" destination="-1" eventType="touchUpInside" id="27y-9T-F9v"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VTb-wU-31Q" userLabel="Close Button">
+                                        <rect key="frame" x="354" y="5" width="40" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="40" id="LzO-QU-XcD"/>
+                                            <constraint firstAttribute="height" constant="40" id="fnM-Je-roE"/>
+                                        </constraints>
+                                        <state key="normal" image="KPClose"/>
+                                        <connections>
+                                            <action selector="closeTouched:" destination="-1" eventType="touchUpInside" id="Y11-F9-eWg"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="VTb-wU-31Q" secondAttribute="bottom" constant="5" id="9R2-wM-8cY"/>
+                                    <constraint firstAttribute="trailing" secondItem="VTb-wU-31Q" secondAttribute="trailing" constant="20" id="FVN-VT-f5Q"/>
+                                    <constraint firstAttribute="bottom" secondItem="G9a-L8-YeD" secondAttribute="bottom" constant="5" id="ZUV-52-RMO"/>
+                                    <constraint firstItem="G9a-L8-YeD" firstAttribute="leading" secondItem="eJO-0G-ba3" secondAttribute="leading" constant="20" id="fHX-ug-7Rd"/>
+                                </constraints>
+                            </view>
+                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="50" id="fSl-nA-0uh"/>
+                            </constraints>
+                            <blurEffect style="dark"/>
+                        </visualEffectView>
+                        <visualEffectView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KcF-lL-Tj7" userLabel="Middle Visual Effect View">
+                            <rect key="frame" x="167" y="369" width="80" height="80"/>
+                            <view key="contentView" opaque="NO" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="QgY-17-FMj">
+                                <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hfw-nq-39W" customClass="PPRButton" customModule="KalturaPlayer" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="80" id="A3t-7I-aOz"/>
+                                            <constraint firstAttribute="width" constant="80" id="vBy-71-1gZ"/>
+                                        </constraints>
+                                        <state key="normal" image="KPPlay">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="playButtonTouched:" destination="-1" eventType="touchUpInside" id="Bzs-b7-ZrV"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="Hfw-nq-39W" firstAttribute="centerY" secondItem="QgY-17-FMj" secondAttribute="centerY" id="Xqb-uw-T9Q"/>
+                                    <constraint firstItem="Hfw-nq-39W" firstAttribute="centerX" secondItem="QgY-17-FMj" secondAttribute="centerX" id="ykn-TH-uKb"/>
+                                </constraints>
+                            </view>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="80" id="fa6-aQ-gby"/>
+                                <constraint firstAttribute="width" constant="80" id="pwU-Qq-jFv"/>
+                            </constraints>
+                            <blurEffect style="dark"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="30"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.maskToBounds" value="YES"/>
+                            </userDefinedRuntimeAttributes>
+                        </visualEffectView>
+                        <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t8S-Sb-zc0" userLabel="Bottom Visual Effect View">
+                            <rect key="frame" x="0.0" y="768" width="414" height="50"/>
+                            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="YOu-no-GBa">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x6E-EA-kbe">
+                                        <rect key="frame" x="5" y="14.5" width="75" height="21"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="75" id="EKE-Jd-89W"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="dr3-LS-fZ0" customClass="KPUISlider" customModule="KalturaPlayer" customModuleProvider="target">
+                                        <rect key="frame" x="83" y="10" width="248" height="31"/>
+                                        <color key="minimumTrackTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="maximumTrackTintColor" white="0.30644806340000003" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="thumbTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="bufferTintColor">
+                                                <color key="value" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="mediaProgressSliderTouchDown:" destination="-1" eventType="touchDown" id="Mzl-gP-weq"/>
+                                            <action selector="mediaProgressSliderTouchUpInside:" destination="-1" eventType="touchUpInside" id="Snu-ME-yIK"/>
+                                            <action selector="mediaProgressSliderTouchUpOutside:" destination="-1" eventType="touchUpOutside" id="eD8-LO-qN3"/>
+                                        </connections>
+                                    </slider>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="47I-Xc-nUC">
+                                        <rect key="frame" x="334" y="14.5" width="75" height="21"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="75" id="MNz-3u-BTn"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="dr3-LS-fZ0" firstAttribute="top" secondItem="YOu-no-GBa" secondAttribute="top" constant="10" id="9Gn-B5-L0R"/>
+                                    <constraint firstItem="47I-Xc-nUC" firstAttribute="centerY" secondItem="dr3-LS-fZ0" secondAttribute="centerY" id="P6X-Bs-ve8"/>
+                                    <constraint firstAttribute="trailing" secondItem="47I-Xc-nUC" secondAttribute="trailing" constant="5" id="WuI-CY-I8q"/>
+                                    <constraint firstItem="dr3-LS-fZ0" firstAttribute="leading" secondItem="x6E-EA-kbe" secondAttribute="trailing" constant="5" id="eke-Ib-me4"/>
+                                    <constraint firstItem="x6E-EA-kbe" firstAttribute="leading" secondItem="YOu-no-GBa" secondAttribute="leading" constant="5" id="iez-gA-O2G"/>
+                                    <constraint firstItem="47I-Xc-nUC" firstAttribute="leading" secondItem="dr3-LS-fZ0" secondAttribute="trailing" constant="5" id="sH2-de-bZT"/>
+                                    <constraint firstItem="x6E-EA-kbe" firstAttribute="centerY" secondItem="dr3-LS-fZ0" secondAttribute="centerY" id="shC-Ar-KPn"/>
+                                </constraints>
+                            </view>
+                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="50" id="0i4-2G-UXo"/>
+                            </constraints>
+                            <blurEffect style="dark"/>
+                        </visualEffectView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="KHZ-39-Cm7" firstAttribute="leading" secondItem="TAi-S1-QZi" secondAttribute="leading" id="0hd-RH-XLg"/>
+                        <constraint firstItem="KcF-lL-Tj7" firstAttribute="centerY" secondItem="TAi-S1-QZi" secondAttribute="centerY" id="1mq-eT-nZK"/>
+                        <constraint firstItem="86t-CF-IC3" firstAttribute="centerX" secondItem="TAi-S1-QZi" secondAttribute="centerX" id="4GD-UO-0Gn"/>
+                        <constraint firstAttribute="trailing" secondItem="KHZ-39-Cm7" secondAttribute="trailing" id="6mJ-HC-FcA"/>
+                        <constraint firstItem="86t-CF-IC3" firstAttribute="centerY" secondItem="TAi-S1-QZi" secondAttribute="centerY" id="7T6-44-f0r"/>
+                        <constraint firstItem="t8S-Sb-zc0" firstAttribute="leading" secondItem="TAi-S1-QZi" secondAttribute="leading" id="FPM-IY-O45"/>
+                        <constraint firstItem="Y64-Pv-fCP" firstAttribute="leading" secondItem="TAi-S1-QZi" secondAttribute="leading" id="GL6-mx-tOx"/>
+                        <constraint firstAttribute="trailing" secondItem="t8S-Sb-zc0" secondAttribute="trailing" id="P1R-QR-4AF"/>
+                        <constraint firstItem="KHZ-39-Cm7" firstAttribute="top" secondItem="TAi-S1-QZi" secondAttribute="top" id="Xbb-70-k21"/>
+                        <constraint firstItem="KcF-lL-Tj7" firstAttribute="centerX" secondItem="TAi-S1-QZi" secondAttribute="centerX" id="Z4W-e5-zFh"/>
+                        <constraint firstItem="aeh-PP-rae" firstAttribute="leading" secondItem="TAi-S1-QZi" secondAttribute="leading" id="aOJ-Ni-S5r"/>
+                        <constraint firstAttribute="bottom" secondItem="t8S-Sb-zc0" secondAttribute="bottom" id="aSM-LZ-vaH"/>
+                        <constraint firstAttribute="trailing" secondItem="aeh-PP-rae" secondAttribute="trailing" id="cW1-zG-R1M"/>
+                        <constraint firstAttribute="bottom" secondItem="Y64-Pv-fCP" secondAttribute="bottom" id="ffP-zc-yAg"/>
+                        <constraint firstItem="LQJ-q3-jSy" firstAttribute="top" secondItem="KHZ-39-Cm7" secondAttribute="top" id="gkw-UB-6Xh"/>
+                        <constraint firstItem="Y64-Pv-fCP" firstAttribute="top" secondItem="TAi-S1-QZi" secondAttribute="top" id="k3C-ob-xa7"/>
+                        <constraint firstItem="LQJ-q3-jSy" firstAttribute="bottom" secondItem="KHZ-39-Cm7" secondAttribute="bottom" id="moh-tv-fUh"/>
+                        <constraint firstAttribute="bottom" secondItem="KHZ-39-Cm7" secondAttribute="bottom" id="qBS-JV-ce3"/>
+                        <constraint firstItem="LQJ-q3-jSy" firstAttribute="leading" secondItem="KHZ-39-Cm7" secondAttribute="leading" id="r6B-lq-m2X"/>
+                        <constraint firstItem="LQJ-q3-jSy" firstAttribute="trailing" secondItem="KHZ-39-Cm7" secondAttribute="trailing" id="rYi-5y-Vjn"/>
+                        <constraint firstAttribute="trailing" secondItem="Y64-Pv-fCP" secondAttribute="trailing" id="ucQ-Cx-m3W"/>
+                        <constraint firstItem="aeh-PP-rae" firstAttribute="top" secondItem="TAi-S1-QZi" secondAttribute="top" id="xeJ-Au-0ya"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="TAi-S1-QZi" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="8LZ-ak-rmF"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="TAi-S1-QZi" secondAttribute="bottom" id="co4-Mu-PwU"/>
+                <constraint firstItem="TAi-S1-QZi" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="cwe-mm-rcA"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="TAi-S1-QZi" secondAttribute="trailing" id="siU-ZP-1Ms"/>
+            </constraints>
+            <point key="canvasLocation" x="243" y="18"/>
+        </view>
+    </objects>
+    <designables>
+        <designable name="dr3-LS-fZ0">
+            <size key="intrinsicContentSize" width="-1" height="30"/>
+        </designable>
+    </designables>
+    <resources>
+        <image name="KPAudioTrack" width="76" height="76"/>
+        <image name="KPCC" width="76" height="76"/>
+        <image name="KPClose" width="32" height="32"/>
+        <image name="KPPlay" width="109" height="109"/>
+        <image name="KPSettingsIcon" width="32" height="32"/>
+        <image name="KPSpeedRate" width="60" height="60"/>
+    </resources>
+</document>

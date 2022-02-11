@@ -55,7 +55,13 @@ import KalturaNetKit
             * mediaType: The media type.
             * mediaOptions: Additional media options. See `MediaOptions`.
      */
-    @objc public func setupMediaEntry(id: String, contentUrl: URL, drmData: [DRMParams]? = nil, mediaFormat: PKMediaSource.MediaFormat = .unknown, mediaType: MediaType = .unknown, mediaOptions: MediaOptions? = nil) {
+    @objc public func setupMediaEntry(id: String,
+                                      contentUrl: URL,
+                                      drmData: [DRMParams]? = nil,
+                                      mediaFormat: PKMediaSource.MediaFormat = .unknown,
+                                      mediaType: MediaType = .unknown,
+                                      mediaOptions: MediaOptions? = nil) {
+        
         let source = PKMediaSource(id, contentUrl: contentUrl, drmData: drmData, mediaFormat: mediaFormat)
         // setup media entry
         let mediaEntry = PKMediaEntry(id, sources: [source], duration: -1)
