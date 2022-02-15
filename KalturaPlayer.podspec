@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
   s.subspec 'Interceptor' do |sp|
     sp.source_files = 'Sources/Interceptor/*'
     
-    sp.dependency 'PlayKit', '~> 3.24'
+    sp.dependency 'PlayKit', '~> 3.25'
   end
   
   s.xcconfig = {
@@ -43,7 +43,7 @@ Pod::Spec.new do |s|
     sp.resources = 'Sources/OTT/*.xcdatamodeld'
     
     sp.dependency 'KalturaPlayer/Core'
-    sp.dependency 'PlayKitProviders', '~> 1.15'
+    sp.dependency 'PlayKitProviders', '~> 1.16'
     sp.dependency 'PlayKitKava', '~> 1.8'
   end
   
@@ -52,7 +52,7 @@ Pod::Spec.new do |s|
     sp.resources = 'Sources/OVP/*.xcdatamodeld'
     
     sp.dependency 'KalturaPlayer/Core'
-    sp.dependency 'PlayKitProviders', '~> 1.15'
+    sp.dependency 'PlayKitProviders', '~> 1.16'
     sp.dependency 'PlayKitKava', '~> 1.8'
   end
   
@@ -66,7 +66,7 @@ Pod::Spec.new do |s|
     sp.source_files = 'Sources/Offline/*', 'Sources/*', 'Sources/Basic/*', 'Sources/Interceptor/*', 'Sources/Playlist/*'
     
     sp.dependency 'DownloadToGo', '~> 3.17'
-    sp.dependency 'PlayKit', '~> 3.24'
+    sp.dependency 'PlayKit', '~> 3.25'
     
     sp.xcconfig = {
       ### The following is required for Xcode 12 (https://stackoverflow.com/questions/63607158/xcode-12-building-for-ios-simulator-but-linking-in-object-file-built-for-ios)
@@ -82,7 +82,7 @@ Pod::Spec.new do |s|
     sp.resources = 'Sources/OTT/*.xcdatamodeld'
     
     sp.dependency 'KalturaPlayer/Offline'
-    sp.dependency 'PlayKitProviders', '~> 1.15'
+    sp.dependency 'PlayKitProviders', '~> 1.16'
     sp.dependency 'PlayKitKava', '~> 1.8'
     
     sp.xcconfig = {
@@ -99,7 +99,7 @@ Pod::Spec.new do |s|
     sp.resources = 'Sources/OVP/*.xcdatamodeld'
     
     sp.dependency 'KalturaPlayer/Offline'
-    sp.dependency 'PlayKitProviders', '~> 1.15'
+    sp.dependency 'PlayKitProviders', '~> 1.16'
     sp.dependency 'PlayKitKava', '~> 1.8'
     
     sp.xcconfig = {
