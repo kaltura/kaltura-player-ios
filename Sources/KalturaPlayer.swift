@@ -176,7 +176,7 @@ public enum KalturaPlayerError: PKError {
         shouldPrepare = false
         // Create media config
         let mediaConfig: MediaConfig
-        if let startTime = mediaOptions?.startTime, startTime != TimeInterval.nan {
+        if let startTime = mediaOptions?.startTime, !startTime.isNaN {
             mediaConfig = MediaConfig(mediaEntry: mediaEntry, startTime: startTime)
         } else {
             mediaConfig = MediaConfig(mediaEntry: mediaEntry)
