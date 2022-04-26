@@ -209,7 +209,7 @@ public enum KalturaPlayerError: PKError {
 
         Upon setting to a new value, if the PlayerOption autoPlay or preload is set too true, prepare on the player will be automatically called.
      */
-    public var mediaEntry: PKMediaEntry? {
+    internal var mediaEntry: PKMediaEntry? {
         didSet {
             if mediaEntry == nil { return }
             shouldPrepare = true
@@ -217,6 +217,10 @@ public enum KalturaPlayerError: PKError {
                 prepare()
             }
         }
+    }
+    
+    @objc public var currentMediaEntryMetadata: [String: String]? {
+        return mediaEntry?.metadata
     }
     
     /// The player's settings.
