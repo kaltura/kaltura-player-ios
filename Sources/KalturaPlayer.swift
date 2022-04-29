@@ -77,6 +77,14 @@ public enum KalturaPlayerError: PKError {
         }
     }
     
+    internal func isPluginLoaded(pluginName name: String) -> Bool {
+        guard let player = pkPlayer as? PlayerPluginsDataSource else {
+            return false
+        }
+        
+        return player.isPluginLoaded(pluginName: name)
+    }
+    
     /// The player's view which the media will be displayed within.
     @objc public var view: KalturaPlayerView? {
         didSet {

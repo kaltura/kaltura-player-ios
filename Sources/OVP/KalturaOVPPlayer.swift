@@ -79,7 +79,7 @@ import PlayKitProviders
     }
     
     // MARK: - Private Methods
-    
+    // Set media and update plugins if needed.
     internal override func setMediaAndUpdatePlugins(mediaEntry: PKMediaEntry,
                                                     mediaOptions: MediaOptions?,
                                                     pluginConfig: PluginConfig?,
@@ -95,8 +95,10 @@ import PlayKitProviders
             return
         }
         
-        // Update KavaPlugin for specific Media
-        self.updateKavaPlugin(partnerId: ovpPartnerId, entryId: mediaEntry.id, mediaOptions: mediaOptions as? OVPMediaOptions)
+        if !self.isPluginLoaded(pluginName: KavaPlugin.pluginName) {
+            // Update KavaPlugin if it was not set explicitly for specific Media.
+            self.updateKavaPlugin(partnerId: ovpPartnerId, entryId: mediaEntry.id, mediaOptions: mediaOptions as? OVPMediaOptions)
+        }
         
         // If any custom plugin config has been sent use it instead.
         if let pluginConfig = pluginConfig {

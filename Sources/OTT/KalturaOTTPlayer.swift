@@ -112,10 +112,16 @@ import PlayKitKava
             ovpEntryId = entryId
         }
         
-        // Update KavaPlugin for specific Media
-        self.updateKavaPlugin(ovpPartnerId: ovpPartnerId, ovpEntryId: ovpEntryId, mediaOptions: mediaOptions as? OTTMediaOptions)
-        // Update PhoenixAnalyticsPlugin for specific Media
-        self.updatePhoenixAnalyticsPlugin()
+        if !self.isPluginLoaded(pluginName: KavaPlugin.pluginName) {
+            // Update KavaPlugin if it was not set explicitly for specific Media.
+            self.updateKavaPlugin(ovpPartnerId: ovpPartnerId, ovpEntryId: ovpEntryId, mediaOptions: mediaOptions as? OTTMediaOptions)
+        }
+        
+        if !self.isPluginLoaded(pluginName: PhoenixAnalyticsPlugin.pluginName) {
+            // Update PhoenixAnalyticsPlugin if it was not set explicitly for specific Media.
+            self.updatePhoenixAnalyticsPlugin()
+        }
+        
         // If any custom plugin config has been sent use it instead.
         if let pluginConfig = pluginConfig {
             pluginConfig.config.forEach { (name, config) in
