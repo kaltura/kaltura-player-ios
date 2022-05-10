@@ -137,7 +137,11 @@ import PlayKit
             }
         }
         
-        self.player?.addObserver(self, events: [AdEvent.allAdsCompleted, AdEvent.adLoaded], block: { [weak self] event in
+        let adEvents = [AdEvent.allAdsCompleted,
+                        AdEvent.adLoaded,
+                        AdEvent.adCuePointsUpdate]
+        
+        self.player?.addObserver(self, events: adEvents, block: { [weak self] event in
             guard let self = self else { return }
             
             DispatchQueue.main.async {
@@ -149,6 +153,10 @@ import PlayKit
                     }
                 case is AdEvent.AdLoaded:
                     self.allAdsFinished = false
+                case is AdEvent.AdCuePointsUpdate:
+                    if event.adCuePoints?.hasPostRoll ?? false, self.skipCountdownForPostRoll {
+                        self.resetCountdown()
+                    }
                 default: break
                 }
             }
