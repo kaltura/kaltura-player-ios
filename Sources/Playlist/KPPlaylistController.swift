@@ -29,6 +29,8 @@ import PlayKit
         }
     }
     
+    public var skipCountdownForPostRoll: Bool = false
+    
     internal weak var player: KalturaPlayer?
     private var entries: [PKMediaEntry]
     private var currentPlayingIndex: Int = -1
