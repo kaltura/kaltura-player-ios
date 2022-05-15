@@ -71,7 +71,9 @@ import PlayKitKava
         if (options.pluginConfig.config[KavaPlugin.pluginName] == nil) {
             // In case the DMS Configuration won't be available yet, setting the KavaPluginConfig with a placeholder cause an update is performed upon loadMedia without validating if the plugin was set.
             let partnerId = KalturaOTTPlayerManager.shared.cachedConfigData?.ovpPartnerId ?? KalturaOTTPlayerManager.shared.partnerId
-            options.pluginConfig.config[KavaPlugin.pluginName] = KavaPluginConfig(partnerId: Int(partnerId))
+            let kavaConfig = KavaPluginConfig(partnerId: Int(partnerId))
+            kavaConfig.defaultPluginConfig = true
+            options.pluginConfig.config[KavaPlugin.pluginName] = kavaConfig
         }
         
         if (options.pluginConfig.config[PhoenixAnalyticsPlugin.pluginName] == nil) {
@@ -112,15 +114,10 @@ import PlayKitKava
             ovpEntryId = entryId
         }
         
-        if !self.isPluginLoaded(pluginName: KavaPlugin.pluginName) {
-            // Update KavaPlugin if it was not set explicitly for specific Media.
-            self.updateKavaPlugin(ovpPartnerId: ovpPartnerId, ovpEntryId: ovpEntryId, mediaOptions: mediaOptions as? OTTMediaOptions)
-        }
-        
-        if !self.isPluginLoaded(pluginName: PhoenixAnalyticsPlugin.pluginName) {
-            // Update PhoenixAnalyticsPlugin if it was not set explicitly for specific Media.
-            self.updatePhoenixAnalyticsPlugin()
-        }
+        // Update KavaPlugin for Media.
+        self.updateKavaPlugin(ovpPartnerId: ovpPartnerId, ovpEntryId: ovpEntryId, mediaOptions: mediaOptions as? OTTMediaOptions)
+        // Update PhoenixAnalyticsPlugin for Media.
+        self.updatePhoenixAnalyticsPlugin()
         
         // If any custom plugin config has been sent use it instead.
         if let pluginConfig = pluginConfig {
@@ -134,17 +131,21 @@ import PlayKitKava
         }
     }
     
-    
     func updateKavaPlugin(ovpPartnerId: Int64, ovpEntryId: String, mediaOptions: OTTMediaOptions?) {
-        let kavaPluginConfig = KavaHelper.getPluginConfig(ovpPartnerId: ovpPartnerId,
-                                                          ovpEntryId: ovpEntryId,
-                                                          ks: playerOptions.ks,
-                                                          referrer: KalturaOTTPlayerManager.shared.referrer,
-                                                          playbackContext: mediaOptions?.playbackContextType.description,
-                                                          analyticsUrl: KalturaOTTPlayerManager.shared.cachedConfigData?.analyticsUrl,
-                                                          playlistId: nil)
         
-        self.updatePluginConfig(pluginName: KavaPlugin.pluginName, config: kavaPluginConfig)
+        if let config = playerOptions.pluginConfig.config[KavaPlugin.pluginName] as? KavaPluginConfig,
+           config.defaultPluginConfig {
+            
+            let kavaPluginConfig = KavaHelper.getPluginConfig(ovpPartnerId: ovpPartnerId,
+                                                              ovpEntryId: ovpEntryId,
+                                                              ks: playerOptions.ks,
+                                                              referrer: KalturaOTTPlayerManager.shared.referrer,
+                                                              playbackContext: mediaOptions?.playbackContextType.description,
+                                                              analyticsUrl: KalturaOTTPlayerManager.shared.cachedConfigData?.analyticsUrl,
+                                                              playlistId: nil)
+            
+            self.updatePluginConfig(pluginName: KavaPlugin.pluginName, config: kavaPluginConfig)
+        }
     }
     
     func updatePhoenixAnalyticsPlugin() {
@@ -197,7 +198,10 @@ import PlayKitKava
                 return
             }
             
-            self.setMediaAndUpdatePlugins(mediaEntry: mediaEntry, mediaOptions: options, pluginConfig: nil, callback: callback)
+            self.setMediaAndUpdatePlugins(mediaEntry: mediaEntry,
+                                          mediaOptions: options,
+                                          pluginConfig: nil,
+                                          callback: callback)
         }
     }
     
