@@ -449,6 +449,10 @@ public enum KalturaPlayerError: PKError {
         pkPlayer.seek(to: time)
     }
     
+    @objc public func seekToLiveEdge() {
+        pkPlayer.seekToLiveEdge()
+    }
+    
     /// Select a Track
     @objc public func selectTrack(trackId: String) {
         pkPlayer.selectTrack(trackId: trackId)
