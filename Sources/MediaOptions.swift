@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import PlayKit
 
 @objc public class MediaOptions: NSObject {
     
@@ -29,6 +30,13 @@ import Foundation
     @discardableResult
     @nonobjc public func set(startTime: TimeInterval) -> Self {
         self.startTime = startTime
+        return self
+    }
+    
+    @objc public var externalSubtitles: [PKExternalSubtitle]?
+    
+    @nonobjc public func set(externalSubtitles: [PKExternalSubtitle]) -> Self {
+        self.externalSubtitles = externalSubtitles
         return self
     }
     
