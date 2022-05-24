@@ -65,6 +65,11 @@ import PlayKit
     /// Default value is true.
     var autoContinue: Bool { get set }
     
+    /// Skipping (or not) countdown if post-roll available.
+    /// By default if countdown options added it will start at the defined time and post-roll will be ignored.
+    /// If playlist controller configured with this parameter countdown options will be ignored in case we have post-roll for that media.
+    var skipCountdownForPostRoll: Bool { get set }
+    
     /// Play next item if current cannot be loaded or any playback error occurred.
     /// Default value is true.
     var recoverOnError: Bool { get set }
