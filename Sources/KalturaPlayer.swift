@@ -480,7 +480,7 @@ extension KalturaPlayer {
     
     internal func updateMediaEntryWithLoadedInterceptors(_ mediaEntry: PKMediaEntry, callback: @escaping () -> Void) {
         guard var interceptors = self.interceptors, !interceptors.isEmpty,
-              let mediaEntry = mediaEntry.copy() as? PKMediaEntry else {
+              let entry = mediaEntry.copy() as? PKMediaEntry else {
                   self.mediaEntry = mediaEntry
                   callback()
                   return
@@ -498,7 +498,7 @@ extension KalturaPlayer {
             }
         }
         
-        update(entry: mediaEntry, withInterceptor: interceptors.removeFirst())
+        update(entry: entry, withInterceptor: interceptors.removeFirst())
     }
     
 }
