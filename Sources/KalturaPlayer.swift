@@ -219,6 +219,10 @@ public enum KalturaPlayerError: PKError {
         }
     }
     
+    @objc public var currentMediaEntryMetadata: [String: String]? {
+        return mediaEntry?.metadata
+    }
+    
     /// The player's settings.
     @objc public var settings: PKPlayerSettings {
         get {
