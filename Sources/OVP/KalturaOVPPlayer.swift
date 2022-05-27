@@ -97,7 +97,7 @@ import PlayKitProviders
             return
         }
         
-        // Update KavaPlugin if it was not set explicitly for specific Media.
+        // Update KavaPlugin for specific Media.
         self.updateKavaPlugin(partnerId: ovpPartnerId, entryId: mediaEntry.id, mediaOptions: mediaOptions as? OVPMediaOptions)
         
         // If any custom plugin config has been sent use it instead.
