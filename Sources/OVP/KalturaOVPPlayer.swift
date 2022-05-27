@@ -68,14 +68,16 @@ import PlayKitProviders
         sessionProvider = SimpleSessionProvider(serverURL: KalturaOVPPlayerManager.shared.serverURL,
                                                 partnerId: KalturaOVPPlayerManager.shared.partnerId,
                                                 ks: options.ks)
-        
+        var pluginKeys: [String] = []
         if (options.pluginConfig.config[KavaPlugin.pluginName] == nil) {
             // In case the Partner Configuration won't be available yet, setting the KavaPluginConfig with a placeholder cause an update is performed upon loadMedia without validating if the plugin was set.
             let partnerId = KalturaOVPPlayerManager.shared.cachedConfigData?.ovpPartnerId ?? KalturaOVPPlayerManager.shared.partnerId
+            pluginKeys.append(KavaPlugin.pluginName)
             options.pluginConfig.config[KavaPlugin.pluginName] = KavaPluginConfig(partnerId: Int(partnerId))
         }
         
         super.init(playerOptions: options)
+        self.defaultPluginConfigKeys.append(contentsOf: pluginKeys)
     }
     
     // MARK: - Private Methods
@@ -112,15 +114,20 @@ import PlayKitProviders
     }
     
     func updateKavaPlugin(partnerId: Int64, entryId: String, mediaOptions: OVPMediaOptions?) {
-        let kavaPluginConfig = KavaHelper.getPluginConfig(ovpPartnerId: partnerId,
-                                                          ovpEntryId: entryId,
-                                                          ks: playerOptions.ks,
-                                                          referrer: KalturaOVPPlayerManager.shared.referrer,
-                                                          playbackContext: nil,
-                                                          analyticsUrl: KalturaOVPPlayerManager.shared.cachedConfigData?.analyticsUrl,
-                                                          playlistId: self.playlistController?.playlist.id)
         
-        self.updatePluginConfig(pluginName: KavaPlugin.pluginName, config: kavaPluginConfig)
+        if self.defaultPluginConfigKeys.contains(KavaPlugin.pluginName) {
+            
+            let kavaPluginConfig = KavaHelper.getPluginConfig(ovpPartnerId: partnerId,
+                                                              ovpEntryId: entryId,
+                                                              ks: playerOptions.ks,
+                                                              referrer: KalturaOVPPlayerManager.shared.referrer,
+                                                              playbackContext: nil,
+                                                              analyticsUrl: KalturaOVPPlayerManager.shared.cachedConfigData?.analyticsUrl,
+                                                              playlistId: self.playlistController?.playlist.id)
+            
+            self.updatePluginConfig(pluginName: KavaPlugin.pluginName, config: kavaPluginConfig)
+            self.defaultPluginConfigKeys.append(KavaPlugin.pluginName)
+        }
     }
     
     // MARK: - Public Methods
