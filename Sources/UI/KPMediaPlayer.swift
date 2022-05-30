@@ -94,7 +94,6 @@ public class KPMediaPlayer: UIView {
         NotificationCenter.default.addObserver(forName: UIApplication.willResignActiveNotification, object: nil, queue: nil) { [weak self] (notification) in
             guard let self = self else { return }
             DispatchQueue.main.async {
-                self.player?.pause()
                 self.activityIndicator.stopAnimating()
             }
         }
