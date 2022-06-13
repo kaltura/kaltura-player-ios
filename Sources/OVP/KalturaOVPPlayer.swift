@@ -156,6 +156,14 @@ import PlayKitProviders
                 return
             }
             
+            if let subtitles = options.externalSubtitles {
+                if mediaEntry.externalSubtitles != nil {
+                    mediaEntry.externalSubtitles! += subtitles
+                } else {
+                    mediaEntry.externalSubtitles = subtitles
+                }
+            }
+            
             self.setMediaAndUpdatePlugins(mediaEntry: mediaEntry, mediaOptions: options, pluginConfig: nil, callback: callback)
         }
     }

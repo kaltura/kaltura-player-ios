@@ -9,7 +9,7 @@ import Foundation
 import PlayKit
 
 /// Main interface that MediaEntry Interceptor Plugin should adopt.
-@objc public protocol PKMediaEntryInterceptor: class {
+@objc public protocol PKMediaEntryInterceptor: AnyObject {
      /**
         The interceptor will receive a `PKMediaEntry` and perform the necessary changes to it.
         Consider making this method performing all logic in concurrent thread, if this logic is time consuming.
