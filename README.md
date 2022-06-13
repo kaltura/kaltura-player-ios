@@ -1,5 +1,48 @@
 # KalturaPlayer
 
+## Kaltura Player Features:
+
+#### Playback:
+
+* HLS
+* MP4
+* MP3
+* Multiple Codecs support
+* Live / Live DVR
+* TrackSelection (Video/Audio/Text)
+* Player Rate
+* VR /360
+* Change Media
+* Playlist
+* ID3 Timed Metadata
+* Playback Adapter - allow app to change the manifest url query param or headers changes
+
+#### DRM:
+
+* Fairplay
+* DRM Adapter - allow app to change license url query param or headers changes
+
+#### Analytics:
+
+* Kaltura Kava (Kaltura Advanced Video Analytics)
+* Phoenix Analytics
+* Youbora (NPAW)
+
+#### Monitization:
+* IMA 
+* DAI
+
+#### CDN:
+
+* Broadpeak
+* NPAW Smart Switch
+
+#### Offline:
+* Download to go 
+
+#### Casting:
+* Google Cast
+
 ## Getting Started
 
 To integrate KalturaPlayer into your Xcode project, specify it in your `Podfile`:

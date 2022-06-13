@@ -106,7 +106,7 @@ import PlayKitKava
         
         var ovpEntryId = ""
         
-        if let entryId = mediaEntry.metadata?["entryId"] {
+        if let entryId = mediaEntry.metadata?["entryId"], !entryId.isEmpty {
             ovpEntryId = entryId
         } else if let options = mediaOptions as? OTTMediaOptions, let entryId = options.assetId {
             ovpEntryId = entryId

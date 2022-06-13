@@ -176,7 +176,7 @@ public enum KalturaPlayerError: PKError {
         shouldPrepare = false
         // Create media config
         let mediaConfig: MediaConfig
-        if let startTime = mediaOptions?.startTime, startTime != TimeInterval.nan {
+        if let startTime = mediaOptions?.startTime, !startTime.isNaN {
             mediaConfig = MediaConfig(mediaEntry: mediaEntry, startTime: startTime)
         } else {
             mediaConfig = MediaConfig(mediaEntry: mediaEntry)
@@ -217,6 +217,10 @@ public enum KalturaPlayerError: PKError {
                 prepare()
             }
         }
+    }
+    
+    @objc public var currentMediaEntryMetadata: [String: String]? {
+        return mediaEntry?.metadata
     }
     
     /// The player's settings.
@@ -476,7 +480,7 @@ extension KalturaPlayer {
     
     internal func updateMediaEntryWithLoadedInterceptors(_ mediaEntry: PKMediaEntry, callback: @escaping () -> Void) {
         guard var interceptors = self.interceptors, !interceptors.isEmpty,
-              let mediaEntry = mediaEntry.copy() as? PKMediaEntry else {
+              let entry = mediaEntry.copy() as? PKMediaEntry else {
                   self.mediaEntry = mediaEntry
                   callback()
                   return
@@ -494,7 +498,7 @@ extension KalturaPlayer {
             }
         }
         
-        update(entry: mediaEntry, withInterceptor: interceptors.removeFirst())
+        update(entry: entry, withInterceptor: interceptors.removeFirst())
     }
     
 }
