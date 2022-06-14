@@ -67,11 +67,13 @@ import PlayKitKava
         sessionProvider = SimpleSessionProvider(serverURL: KalturaOTTPlayerManager.shared.serverURL,
                                                 partnerId: KalturaOTTPlayerManager.shared.partnerId,
                                                 ks: options.ks)
-        
+        var pluginKeys: [String] = []
         if (options.pluginConfig.config[KavaPlugin.pluginName] == nil) {
             // In case the DMS Configuration won't be available yet, setting the KavaPluginConfig with a placeholder cause an update is performed upon loadMedia without validating if the plugin was set.
             let partnerId = KalturaOTTPlayerManager.shared.cachedConfigData?.ovpPartnerId ?? KalturaOTTPlayerManager.shared.partnerId
-            options.pluginConfig.config[KavaPlugin.pluginName] = KavaPluginConfig(partnerId: Int(partnerId))
+            let kavaConfig = KavaPluginConfig(partnerId: Int(partnerId))
+            pluginKeys.append(KavaPlugin.pluginName)
+            options.pluginConfig.config[KavaPlugin.pluginName] = kavaConfig
         }
         
         if (options.pluginConfig.config[PhoenixAnalyticsPlugin.pluginName] == nil) {
@@ -80,11 +82,12 @@ import PlayKitKava
                                                                             timerInterval: PhoenixAnalyticsTimerInterval,
                                                                             ks: options.ks ?? "",
                                                                             partnerId: Int(KalturaOTTPlayerManager.shared.partnerId))
-            
+            pluginKeys.append(PhoenixAnalyticsPlugin.pluginName)
             options.pluginConfig.config[PhoenixAnalyticsPlugin.pluginName] = phoenixAnalyticsPluginConfig
         }
         
         super.init(playerOptions: options)
+        self.defaultPluginConfigKeys.append(contentsOf: pluginKeys)
     }
     
     // MARK: - Private Methods
@@ -112,10 +115,11 @@ import PlayKitKava
             ovpEntryId = entryId
         }
         
-        // Update KavaPlugin for specific Media
+        // Update KavaPlugin for Media.
         self.updateKavaPlugin(ovpPartnerId: ovpPartnerId, ovpEntryId: ovpEntryId, mediaOptions: mediaOptions as? OTTMediaOptions)
-        // Update PhoenixAnalyticsPlugin for specific Media
+        // Update PhoenixAnalyticsPlugin for Media.
         self.updatePhoenixAnalyticsPlugin()
+        
         // If any custom plugin config has been sent use it instead.
         if let pluginConfig = pluginConfig {
             pluginConfig.config.forEach { (name, config) in
@@ -128,29 +132,38 @@ import PlayKitKava
         }
     }
     
-    
     func updateKavaPlugin(ovpPartnerId: Int64, ovpEntryId: String, mediaOptions: OTTMediaOptions?) {
-        let kavaPluginConfig = KavaHelper.getPluginConfig(ovpPartnerId: ovpPartnerId,
-                                                          ovpEntryId: ovpEntryId,
-                                                          ks: playerOptions.ks,
-                                                          referrer: KalturaOTTPlayerManager.shared.referrer,
-                                                          playbackContext: mediaOptions?.playbackContextType.description,
-                                                          analyticsUrl: KalturaOTTPlayerManager.shared.cachedConfigData?.analyticsUrl,
-                                                          playlistId: nil)
         
-        self.updatePluginConfig(pluginName: KavaPlugin.pluginName, config: kavaPluginConfig)
+        if self.defaultPluginConfigKeys.contains(KavaPlugin.pluginName) {
+            
+            let kavaPluginConfig = KavaHelper.getPluginConfig(ovpPartnerId: ovpPartnerId,
+                                                              ovpEntryId: ovpEntryId,
+                                                              ks: playerOptions.ks,
+                                                              referrer: KalturaOTTPlayerManager.shared.referrer,
+                                                              playbackContext: mediaOptions?.playbackContextType.description,
+                                                              analyticsUrl: KalturaOTTPlayerManager.shared.cachedConfigData?.analyticsUrl,
+                                                              playlistId: nil)
+            
+            self.updatePluginConfig(pluginName: KavaPlugin.pluginName, config: kavaPluginConfig)
+            self.defaultPluginConfigKeys.append(KavaPlugin.pluginName)
+        }
     }
     
     func updatePhoenixAnalyticsPlugin() {
-        let phoenixAnalyticsPluginConfig = PhoenixAnalyticsPluginConfig(baseUrl: KalturaOTTPlayerManager.shared.serverURL,
-                                                                        timerInterval: PhoenixAnalyticsTimerInterval,
-                                                                        ks: playerOptions.ks ?? "",
-                                                                        partnerId: Int(KalturaOTTPlayerManager.shared.partnerId),
-                                                                        disableMediaHit: ottMediaOptions?.disableMediaHit ?? false,
-                                                                        disableMediaMark: ottMediaOptions?.disableMediaMark ?? false,
-                                                                        isExperimentalLiveMediaHit: ottMediaOptions?.isExperimentalLiveMediaHit ?? false)
         
-        self.updatePluginConfig(pluginName: PhoenixAnalyticsPlugin.pluginName, config: phoenixAnalyticsPluginConfig)
+        if self.defaultPluginConfigKeys.contains(PhoenixAnalyticsPlugin.pluginName) {
+            
+            let phoenixAnalyticsPluginConfig = PhoenixAnalyticsPluginConfig(baseUrl: KalturaOTTPlayerManager.shared.serverURL,
+                                                                            timerInterval: PhoenixAnalyticsTimerInterval,
+                                                                            ks: playerOptions.ks ?? "",
+                                                                            partnerId: Int(KalturaOTTPlayerManager.shared.partnerId),
+                                                                            disableMediaHit: ottMediaOptions?.disableMediaHit ?? false,
+                                                                            disableMediaMark: ottMediaOptions?.disableMediaMark ?? false,
+                                                                            isExperimentalLiveMediaHit: ottMediaOptions?.isExperimentalLiveMediaHit ?? false)
+            
+            self.updatePluginConfig(pluginName: PhoenixAnalyticsPlugin.pluginName, config: phoenixAnalyticsPluginConfig)
+            self.defaultPluginConfigKeys.append(PhoenixAnalyticsPlugin.pluginName)
+        }
     }
     
     // MARK: - Public Methods
@@ -191,7 +204,10 @@ import PlayKitKava
                 return
             }
             
-            self.setMediaAndUpdatePlugins(mediaEntry: mediaEntry, mediaOptions: options, pluginConfig: nil, callback: callback)
+            self.setMediaAndUpdatePlugins(mediaEntry: mediaEntry,
+                                          mediaOptions: options,
+                                          pluginConfig: nil,
+                                          callback: callback)
         }
     }
     
