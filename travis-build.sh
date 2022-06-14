@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -eou pipefail
+
 # Travis aborts the build if it doesn't get output for 10 minutes.
 keepAlive() {
   while [ -f $1 ]
@@ -13,21 +15,25 @@ buildiOSApp() {
   echo Building the iOS TestApp
   cd iOSTestApp
   pod install
-  xcodebuild clean build -workspace iOSTestApp.xcworkspace -scheme iOSTestApp ONLY_ACTIVE_ARCH=NO -destination 'platform=iOS Simulator,name=iPhone 11' | tee xcodebuild.log | xcpretty -r html && exit ${PIPESTATUS[0]}
+  CODE=0
+  xcodebuild clean build -workspace iOSTestApp.xcworkspace -scheme iOSTestApp ONLY_ACTIVE_ARCH=NO -destination 'platform=iOS Simulator,name=iPhone 11' | tee xcodebuild.log | xcpretty -r html || CODE=$?
   cd ../
+  export CODE
 }
 
 buildtvOSApp() {
   echo Building the tvOS TestApp
   cd tvOSTestApp
   pod install
-  xcodebuild clean build -workspace tvOSTestApp.xcworkspace -scheme tvOSTestApp ONLY_ACTIVE_ARCH=NO -destination 'platform=tvOS Simulator,name=Apple TV' | tee xcodebuild.log | xcpretty -r html && exit ${PIPESTATUS[0]}
+  CODE=0
+  xcodebuild clean build -workspace tvOSTestApp.xcworkspace -scheme tvOSTestApp ONLY_ACTIVE_ARCH=NO -destination 'platform=tvOS Simulator,name=Apple TV' | tee xcodebuild.log | xcpretty -r html || CODE=$?
   cd ../
+  export CODE
 }
 
 libLint() {
   echo Linting the pod
-  pod lib lint --allow-warnings
+  pod lib lint --fail-fast --allow-warnings
 }
 
 

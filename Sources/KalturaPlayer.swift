@@ -64,6 +64,8 @@ public enum KalturaPlayerError: PKError {
         }
     }
     
+    internal var defaultPluginConfigKeys: [String] = []
+    
     private var pkPlayer: Player!
     private var shouldPrepare: Bool = true
     
@@ -75,6 +77,14 @@ public enum KalturaPlayerError: PKError {
             
             return player.getLoadedPlugins(ofType: PKMediaEntryInterceptor.self)
         }
+    }
+    
+    internal func isPluginLoaded(pluginName name: String) -> Bool {
+        guard let player = pkPlayer as? PlayerPluginsDataSource else {
+            return false
+        }
+        
+        return player.isPluginLoaded(pluginName: name)
     }
     
     /// The player's view which the media will be displayed within.
@@ -219,6 +229,10 @@ public enum KalturaPlayerError: PKError {
         }
     }
     
+    @objc public var currentMediaEntryMetadata: [String: String]? {
+        return mediaEntry?.metadata
+    }
+    
     /// The player's settings.
     @objc public var settings: PKPlayerSettings {
         get {
@@ -297,6 +311,7 @@ public enum KalturaPlayerError: PKError {
            * config: The Plugin configuration object.
     */
     @objc public func updatePluginConfig(pluginName: String, config: Any) {
+        self.defaultPluginConfigKeys.removeAll { $0 == pluginName}
         playerOptions.pluginConfig.config[pluginName] = config
         pkPlayer.updatePluginConfig(pluginName: pluginName, config: config)
     }
@@ -480,7 +495,7 @@ extension KalturaPlayer {
     
     internal func updateMediaEntryWithLoadedInterceptors(_ mediaEntry: PKMediaEntry, callback: @escaping () -> Void) {
         guard var interceptors = self.interceptors, !interceptors.isEmpty,
-              let mediaEntry = mediaEntry.copy() as? PKMediaEntry else {
+              let entry = mediaEntry.copy() as? PKMediaEntry else {
                   self.mediaEntry = mediaEntry
                   callback()
                   return
@@ -498,7 +513,7 @@ extension KalturaPlayer {
             }
         }
         
-        update(entry: mediaEntry, withInterceptor: interceptors.removeFirst())
+        update(entry: entry, withInterceptor: interceptors.removeFirst())
     }
     
 }
