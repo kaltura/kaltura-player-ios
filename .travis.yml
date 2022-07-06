@@ -4,7 +4,7 @@ before_install:
   - gem install cocoapods xcpretty # Since Travis is not always on latest version
   - pod repo update
 script:
-  - travis_wait ./travis-build.sh
+  - travis_wait 20 ./travis-build.sh
 notifications:
   email:
     recipients:
