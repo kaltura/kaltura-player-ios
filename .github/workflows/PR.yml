@@ -4,6 +4,12 @@ on:
     pull_request:
         branches:
             - develop
+        paths-ignore:
+            - 'docs/**'
+            - 'iOSTestApp/**'
+            - 'tvOSTestApp/**'
+            - 'LICENSE'
+            - '*.md'
 
 concurrency:
     group: PR_${{ github.head_ref }}
