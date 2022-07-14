@@ -16,7 +16,7 @@ RELEASE_URL="https://github.com/$GITHUB_REPOSITORY/releases/tag/$TARGET_TAG"
 cat << EOF > post.json
 {
   "name": "v$VERSION",
-  "body": "# Kaltura OTT Client Library\n\n## Cocoapods install\n\`pod '$POD', '~> $VERSION'\`",
+  "body": "#$POD\n\n[TBD]\n\n## Cocoapods install\n\`pod '$POD', '~> $VERSION'\`",
   "tag_name": "$TARGET_TAG",
   "target_commitish": "$GITHUB_SHA"
 }
