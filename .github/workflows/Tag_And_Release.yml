@@ -26,5 +26,7 @@ jobs:
         needs: TAGGING
         
         steps:
+        # Check out repository so that the job can access it
+        - uses: actions/checkout@v3
         - run: |
             PODS_USER=${{ secrets.PODS_USER }} PODS_PASS=${{ secrets.PODS_PASS }} sh .github/publish.sh
