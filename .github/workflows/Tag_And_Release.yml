@@ -5,7 +5,7 @@ on:
     workflow_dispatch:
 
 jobs:
-    tag:
+    taging:
         runs-on: macos-latest
         environment: Tag
         
@@ -23,7 +23,7 @@ jobs:
     push:
         runs-on: macos-latest
         environment: CocoaPods
-        needs: tag
+        needs: taging
         
         steps:
         - run: |
