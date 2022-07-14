@@ -1,0 +1,35 @@
+name: PR
+
+on:
+    pull_request:
+        branches:
+            - develop
+        paths-ignore:
+            - 'docs/**'
+            - 'iOSTestApp/**'
+            - 'tvOSTestApp/**'
+            - 'LICENSE'
+            - '*.md'
+
+concurrency:
+    group: PR_${{ github.head_ref }}
+    cancel-in-progress: true
+
+jobs:
+    DEV:
+        runs-on: macos-latest
+        
+        steps:
+        - run: |
+            echo "Triggered by ${{ github.event_name }} ${{ github.head_ref }}."
+            echo "${{ github.repository }} branch ${{ github.ref }}"
+            echo "Running on a ${{ runner.os }} server hosted by GitHub!"
+        
+        # Check out repository so that the job can access it
+        - uses: actions/checkout@v3
+        
+        - name: Updating CocoaPods repo
+          run: pod repo update
+        
+        - name: Pod lint
+          run: pod lib lint --allow-warnings --fail-fast --verbose

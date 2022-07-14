@@ -1,0 +1,30 @@
+name: Tag And Release
+
+on:
+    # Manual
+    workflow_dispatch:
+
+jobs:
+    TAGGING:
+        runs-on: macos-latest
+        environment: Tag
+        
+        steps:
+        # Check out repository so that the job can access it
+        - uses: actions/checkout@v3
+        
+        - name: Updating CocoaPods repo
+          run: pod repo update
+        
+        - name: Tag
+          run: |
+            GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} sh .github/tag.sh
+
+    PUSH:
+        runs-on: macos-latest
+        environment: CocoaPods
+        needs: TAGGING
+        
+        steps:
+        - run: |
+            PODS_USER=${{ secrets.PODS_USER }} PODS_PASS=${{ secrets.PODS_PASS }} sh .github/publish.sh
