@@ -20,7 +20,7 @@ jobs:
             echo "Running on a ${{ runner.os }} server hosted by GitHub!"
         
         - name: Check out repository code
-            uses: actions/checkout@v3
+        - uses: actions/checkout@v3
             run: echo "Repository has been cloned to the runner."
         
         - name: Updating CocoaPods repo

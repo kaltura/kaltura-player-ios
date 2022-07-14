@@ -8,7 +8,7 @@ jobs:
         
         steps:
         - name: Check out repository code
-            uses: actions/checkout@v3
+        - uses: actions/checkout@v3
             run: echo "Repository has been cloned to the runner."
         
         - name: Updating CocoaPods repo
@@ -23,5 +23,5 @@ jobs:
         needs: tag
         
         steps:
-            - run: |
+        - run: |
         PODS_USER=${{ secrets.PODS_USER }} PODS_PASS=${{ secrets.PODS_PASS }} sh .github/publish.sh
