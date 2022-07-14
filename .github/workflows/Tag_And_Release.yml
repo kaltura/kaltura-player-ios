@@ -14,10 +14,10 @@ jobs:
         - uses: actions/checkout@v3
         
         - name: Updating CocoaPods repo
-        run: pod repo update
+          run: pod repo update
         
         - name: Tag
-        run: |
+          run: |
             GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} sh .github/tag.sh
 
     PUSH:
