@@ -1,0 +1,27 @@
+name: Manual - Tag and Release - Only performed on stg branches
+
+
+jobs:
+    tag:
+        runs-on: macos-latest
+        environment: Tag
+        
+        steps:
+        - name: Check out repository code
+            uses: actions/checkout@v3
+            run: echo "Repository has been cloned to the runner."
+        
+        - name: Updating CocoaPods repo
+            run: pod repo update
+        - name: Tag
+            run: |
+            GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} sh .github/tag.sh
+
+    push:
+        runs-on: macos-latest
+        environment: CocoaPods
+        needs: tag
+        
+        steps:
+            - run: |
+        PODS_USER=${{ secrets.PODS_USER }} PODS_PASS=${{ secrets.PODS_PASS }} sh .github/publish.sh

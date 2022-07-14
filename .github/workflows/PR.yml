@@ -1,0 +1,31 @@
+name: PR
+
+on:
+    pull_request:
+        branches:
+            - develop
+
+concurrency:
+    group: PR_${{ github.head_ref }}
+    cancel-in-progress: true
+
+jobs:
+    build:
+        runs-on: macos-latest
+        
+        steps:
+        - run: |
+            echo "Triggered by ${{ github.event_name }} ${{ github.head_ref }}."
+            echo "${{ github.repository }} branch ${{ github.ref }}"
+            echo "Running on a ${{ runner.os }} server hosted by GitHub!"
+        
+        - name: Check out repository code
+            uses: actions/checkout@v3
+            run: echo "Repository has been cloned to the runner."
+        
+        - name: Updating CocoaPods repo
+            run: pod repo update
+        
+        - name: Pod lint
+            run: pod lib lint --allow-warnings --fail-fast --verbose
+
