@@ -223,6 +223,7 @@ extension KPMediaPlayer {
         handleBufferedProgress()
         handleDuration()
         handleError()
+        handleAdEvents()
     }
     
     private func registerPlaybackEvents() {
@@ -376,6 +377,32 @@ extension KPMediaPlayer {
             
             self.delegate?.errorOccurred(event.error, onMediaPlayer: self)
         }
+    }
+    
+    private func handleAdEvents() {
+        
+        player?.addObserver(self, events: [AdEvent.adDidProgressToTime, AdEvent.adStarted, AdEvent.adComplete], block: { event in
+            guard let event = event as? AdEvent else { return }
+            
+            DispatchQueue.main.async {
+                switch event {
+                case is AdEvent.AdDidProgressToTime:
+                    guard let adMediaTime = event.adMediaTime?.floatValue,
+                          let adTotalTime = event.adTotalTime?.floatValue
+                    else { return }
+                    
+                    self.mediaProgressSlider.value = adMediaTime / adTotalTime
+                case is AdEvent.AdStarted:
+                    self.mediaProgressSlider.isEnabled = false
+                    self.mediaProgressSlider.maximumTrackTintColor = UIColor.orange
+                case is AdEvent.AdComplete:
+                    self.mediaProgressSlider.isEnabled = true
+                    self.mediaProgressSlider.maximumTrackTintColor = UIColor.lightGray.withAlphaComponent(0.5)
+                default:
+                    break
+                }
+            }
+        })
     }
     
     // MARK: - IMA Events
