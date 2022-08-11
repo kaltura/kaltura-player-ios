@@ -102,6 +102,7 @@ public class KPMediaPlayer: UIView {
         middleVisualEffectView.layer.cornerRadius = 40.0
         playPauseButton.displayState = .play
         activityIndicator.layer.cornerRadius = 15.0
+        liveStatusLabel.isHidden = true
     }
     
     // MARK: - Private
@@ -120,6 +121,8 @@ public class KPMediaPlayer: UIView {
     @IBOutlet private weak var bottomVisualEffectViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet private weak var middleVisualEffectView: UIVisualEffectView!
     @IBOutlet private weak var settingsVisualEffectView: UIVisualEffectView!
+    @IBOutlet private weak var liveStatusLabel: UILabel!
+    
     private let topBottomVisualEffectViewHeight: Float = 50.0
     
     @IBOutlet private weak var playPauseButton: PPRButton!
@@ -246,6 +249,7 @@ extension KPMediaPlayer {
                         self.showPlayerControllers(true)
                     }
                 case is KPPlayerEvent.LoadedMetadata:
+                    self.liveStatusLabel.isHidden = !player.isLive()
                     if player.isLive() {
                         self.mediaProgressSlider.thumbTintColor = UIColor.red
                     } else {
