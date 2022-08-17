@@ -137,6 +137,7 @@ public class KPMediaPlayer: UIView {
     
     private var audioTracks: [KPTrack]?
     private var textTracks: [KPTrack]?
+    private var currentTextTrackID: String = "sbtl:-1"
     
     private var mediaEnded: Bool = false
     private var adsLoaded: Bool = false
@@ -326,6 +327,10 @@ extension KPMediaPlayer {
             self.audioTracks = tracks.audioTracks
             self.textTracks = tracks.textTracks
         }
+        
+        player?.addObserver(self, event: KPPlayerEvent.textTrackChanged) { [weak self] event in
+            self?.currentTextTrackID = event.selectedTrack?.id ?? "sbtl:-1"
+        }
     }
     
     private func handleProgress() {
@@ -454,10 +459,14 @@ extension KPMediaPlayer {
         let alertController = UIAlertController(title: "Select Speech", message: nil, preferredStyle: UIAlertController.Style.actionSheet)
         
         for track in tracks {
-            alertController.addAction(UIAlertAction(title: track.title, style: UIAlertAction.Style.default, handler: { (alertAction) in
+            alertController.addAction(UIAlertAction(title: track.title,
+                                                    style: UIAlertAction.Style.default,
+                                                    handler: { (alertAction) in
                 self.player?.selectTrack(trackId: track.id)
             }))
         }
+        
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         
         if let popoverController = alertController.popoverPresentationController {
             popoverController.sourceView = button
@@ -474,10 +483,14 @@ extension KPMediaPlayer {
         let alertController = UIAlertController(title: "Select Subtitle", message: nil, preferredStyle: UIAlertController.Style.actionSheet)
         
         for track in tracks {
-            alertController.addAction(UIAlertAction(title: track.title, style: UIAlertAction.Style.default, handler: { (alertAction) in
+            alertController.addAction(UIAlertAction(title: track.id == currentTextTrackID ? "-> " + track.title : track.title,
+                                                    style: UIAlertAction.Style.default,
+                                                    handler: { (alertAction) in
                 self.player?.selectTrack(trackId: track.id)
             }))
         }
+        
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         
         if let popoverController = alertController.popoverPresentationController {
             popoverController.sourceView = button
