@@ -10,5 +10,4 @@ EOF
 
 chmod 0600 ~/.netrc
 
-pod spec lint --allow-warnings --fail-fast --verbose
-#pod trunk push --allow-warnings --fail-fast --verbose
+pod trunk push --verbose
