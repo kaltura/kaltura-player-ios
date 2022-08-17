@@ -453,7 +453,6 @@ extension KPMediaPlayer {
     }
     
     @IBAction private func speechTouched(_ button: UIButton) {
-        
         guard let tracks = audioTracks else { return }
         
         let alertController = UIAlertController(title: "Select Speech", message: nil, preferredStyle: UIAlertController.Style.actionSheet)
