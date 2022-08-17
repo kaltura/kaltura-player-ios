@@ -489,9 +489,9 @@ extension KPMediaPlayer {
     }
     
     @IBAction private func speedRateTouched(_ button: UIButton) {
-        let alertController = UIAlertController(title: "Select Speed Rate", message: nil, preferredStyle: UIAlertController.Style.actionSheet)
-        
         guard let player = player else { return }
+        
+        let alertController = UIAlertController(title: "Select Speed Rate", message: nil, preferredStyle: UIAlertController.Style.actionSheet)
         
         alertController.addAction(UIAlertAction(title: (player.rate == 1.0 ? "-> " : "") + "Normal",
                                                 style: UIAlertAction.Style.default,
