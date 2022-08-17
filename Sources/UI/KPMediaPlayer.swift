@@ -223,7 +223,6 @@ extension KPMediaPlayer {
         handleBufferedProgress()
         handleDuration()
         handleError()
-        handleAdEvents()
     }
     
     private func registerPlaybackEvents() {
@@ -379,36 +378,10 @@ extension KPMediaPlayer {
         }
     }
     
-    private func handleAdEvents() {
-        
-        player?.addObserver(self, events: [AdEvent.adDidProgressToTime, AdEvent.adStarted, AdEvent.adComplete], block: { event in
-            guard let event = event as? AdEvent else { return }
-            
-            DispatchQueue.main.async {
-                switch event {
-                case is AdEvent.AdDidProgressToTime:
-                    guard let adMediaTime = event.adMediaTime?.floatValue,
-                          let adTotalTime = event.adTotalTime?.floatValue
-                    else { return }
-                    
-                    self.mediaProgressSlider.value = adMediaTime / adTotalTime
-                case is AdEvent.AdStarted:
-                    self.mediaProgressSlider.isEnabled = false
-                    self.mediaProgressSlider.maximumTrackTintColor = UIColor.orange
-                case is AdEvent.AdComplete:
-                    self.mediaProgressSlider.isEnabled = true
-                    self.mediaProgressSlider.maximumTrackTintColor = UIColor.lightGray.withAlphaComponent(0.5)
-                default:
-                    break
-                }
-            }
-        })
-    }
-    
     // MARK: - IMA Events
     
     private func registerAdEvents() {
-        player?.addObserver(self, events: [KPAdEvent.adLoaded, KPAdEvent.adPaused, KPAdEvent.adResumed, KPAdEvent.adStartedBuffering, KPAdEvent.adPlaybackReady, KPAdEvent.adStarted, KPAdEvent.adComplete, KPAdEvent.adSkipped, KPAdEvent.allAdsCompleted, KPAdEvent.adDidRequestContentPause, KPAdEvent.adDidRequestContentResume]) { [weak self] adEvent in
+        player?.addObserver(self, events: [KPAdEvent.adLoaded, KPAdEvent.adPaused, KPAdEvent.adResumed, KPAdEvent.adStartedBuffering, KPAdEvent.adPlaybackReady, KPAdEvent.adStarted, KPAdEvent.adComplete, KPAdEvent.adSkipped, KPAdEvent.allAdsCompleted, KPAdEvent.adDidRequestContentPause, KPAdEvent.adDidRequestContentResume, AdEvent.adDidProgressToTime]) { [weak self] adEvent in
             guard let self = self, let player = self.player else { return }
             
             PKLog.info("Event triggered: " + adEvent.description)
@@ -432,8 +405,10 @@ extension KPMediaPlayer {
                     self.activityIndicator.stopAnimating()
                     self.playPauseButton.displayState = .pause
                     self.mediaProgressSlider.isEnabled = false
+                    self.mediaProgressSlider.maximumTrackTintColor = UIColor.orange
                 case is KPAdEvent.AdComplete:
                     self.mediaProgressSlider.isEnabled = true
+                    self.mediaProgressSlider.maximumTrackTintColor = UIColor.lightGray.withAlphaComponent(0.5)
                 case is KPAdEvent.AdSkipped:
                     self.mediaProgressSlider.isEnabled = true
                 case is KPAdEvent.AllAdsCompleted:
@@ -448,6 +423,13 @@ extension KPMediaPlayer {
                 case is KPAdEvent.AdDidRequestContentResume:
                     self.adIsPlaying = false
                     player.rate = self.preferredPlaybackRate
+                case is KPAdEvent.AdDidProgressToTime:
+                    guard let event = adEvent as? AdEvent,
+                          let adMediaTime = event.adMediaTime?.floatValue,
+                          let adTotalTime = event.adTotalTime?.floatValue
+                    else { return }
+                    
+                    self.mediaProgressSlider.value = adMediaTime / adTotalTime
                 default:
                     break
                 }
