@@ -431,11 +431,17 @@ extension KPMediaPlayer {
                     player.rate = self.preferredPlaybackRate
                 case is KPAdEvent.AdDidProgressToTime:
                     guard let event = adEvent as? AdEvent,
-                          let adMediaTime = event.adMediaTime?.floatValue,
-                          let adTotalTime = event.adTotalTime?.floatValue
+                          let adMediaTime = event.adMediaTime?.doubleValue,
+                          let adTotalTime = event.adTotalTime?.doubleValue
                     else { return }
                     
-                    self.mediaProgressSlider.value = adMediaTime / adTotalTime
+                    self.mediaProgressSlider.value = Float(adMediaTime / adTotalTime)
+                                        
+                    let currentTime = self.getTimeRepresentation(adMediaTime)
+                    self.currentTimeLabel.text = currentTime
+                    
+                    let duration = self.getTimeRepresentation(adTotalTime)
+                    self.durationLabel.text = duration
                 default:
                     break
                 }
