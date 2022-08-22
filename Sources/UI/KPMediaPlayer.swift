@@ -416,6 +416,7 @@ extension KPMediaPlayer {
                     self.mediaProgressSlider.maximumTrackTintColor = UIColor.lightGray.withAlphaComponent(0.5)
                 case is KPAdEvent.AdSkipped:
                     self.mediaProgressSlider.isEnabled = true
+                    self.mediaProgressSlider.maximumTrackTintColor = UIColor.lightGray.withAlphaComponent(0.5)
                 case is KPAdEvent.AllAdsCompleted:
                     self.allAdsCompleted = true
                     // In case of a post-roll the media has ended
