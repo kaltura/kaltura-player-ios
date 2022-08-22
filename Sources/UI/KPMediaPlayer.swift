@@ -179,6 +179,13 @@ public class KPMediaPlayer: UIView {
         preferredPlaybackRate = 1.0
     }
     
+    private func updateLiveStatus() {
+        guard let player = self.player else { return }
+        
+        self.liveStatusLabel.isHidden = !player.isLive()
+        self.mediaProgressSlider.thumbTintColor = player.isLive() ? .red : .white
+    }
+    
     @objc private func controllersInteractiveViewTapped() {
         let show = !(topVisualEffectViewHeightConstraint.constant == CGFloat(topBottomVisualEffectViewHeight))
         showPlayerControllers(show)
@@ -238,6 +245,7 @@ extension KPMediaPlayer {
             DispatchQueue.main.async {
                 switch event {
                 case is KPPlayerEvent.SourceSelected:
+                    self.updateLiveStatus()
                     self.resetStates()
                     self.activityIndicator.startAnimating()
                     
@@ -250,12 +258,7 @@ extension KPMediaPlayer {
                         self.showPlayerControllers(true)
                     }
                 case is KPPlayerEvent.LoadedMetadata:
-                    self.liveStatusLabel.isHidden = !player.isLive()
-                    if player.isLive() {
-                        self.mediaProgressSlider.thumbTintColor = UIColor.red
-                    } else {
-                        self.mediaProgressSlider.thumbTintColor = UIColor.white
-                    }
+                    self.updateLiveStatus()
                 case is KPPlayerEvent.Ended:
                     self.mediaEnded = true
                     if self.adsLoaded == false || self.allAdsCompleted {
