@@ -453,7 +453,6 @@ extension KPMediaPlayer {
     }
     
     @IBAction private func speechTouched(_ button: UIButton) {
-        
         guard let tracks = audioTracks else { return }
         
         let alertController = UIAlertController(title: "Select Speech", message: nil, preferredStyle: UIAlertController.Style.actionSheet)
@@ -502,16 +501,27 @@ extension KPMediaPlayer {
     }
     
     @IBAction private func speedRateTouched(_ button: UIButton) {
+        guard let player = player else { return }
+        
         let alertController = UIAlertController(title: "Select Speed Rate", message: nil, preferredStyle: UIAlertController.Style.actionSheet)
-        alertController.addAction(UIAlertAction(title: "Normal", style: UIAlertAction.Style.default, handler: { (alertAction) in
+        
+        alertController.addAction(UIAlertAction(title: (player.rate == 1.0 ? "-> " : "") + "Normal",
+                                                style: UIAlertAction.Style.default,
+                                                handler: { (alertAction) in
             self.preferredPlaybackRate = 1
         }))
-        alertController.addAction(UIAlertAction(title: "x1.5", style: UIAlertAction.Style.default, handler: { (alertAction) in
+        alertController.addAction(UIAlertAction(title: (player.rate == 1.5 ? "-> " : "") + "x1.5",
+                                                style: UIAlertAction.Style.default,
+                                                handler: { (alertAction) in
             self.preferredPlaybackRate = 1.5
         }))
-        alertController.addAction(UIAlertAction(title: "x2", style: UIAlertAction.Style.default, handler: { (alertAction) in
+        alertController.addAction(UIAlertAction(title: (player.rate == 2.0 ? "-> " : "") + "x2",
+                                                style: UIAlertAction.Style.default,
+                                                handler: { (alertAction) in
             self.preferredPlaybackRate = 2
         }))
+        
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         
         if let popoverController = alertController.popoverPresentationController {
             popoverController.sourceView = button
