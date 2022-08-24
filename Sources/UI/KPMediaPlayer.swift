@@ -410,13 +410,20 @@ extension KPMediaPlayer {
                     self.activityIndicator.stopAnimating()
                     self.playPauseButton.displayState = .pause
                     self.mediaProgressSlider.isEnabled = false
+                    self.mediaProgressSlider.bufferProgressView.isHidden = true
                     self.mediaProgressSlider.maximumTrackTintColor = UIColor.orange
                 case is KPAdEvent.AdComplete:
                     self.mediaProgressSlider.isEnabled = true
+                    self.mediaProgressSlider.bufferProgressView.isHidden = false
                     self.mediaProgressSlider.maximumTrackTintColor = UIColor.lightGray.withAlphaComponent(0.5)
+                    let duration = self.getTimeRepresentation(player.duration)
+                    self.durationLabel.text = duration
                 case is KPAdEvent.AdSkipped:
                     self.mediaProgressSlider.isEnabled = true
+                    self.mediaProgressSlider.bufferProgressView.isHidden = false
                     self.mediaProgressSlider.maximumTrackTintColor = UIColor.lightGray.withAlphaComponent(0.5)
+                    let duration = self.getTimeRepresentation(player.duration)
+                    self.durationLabel.text = duration
                 case is KPAdEvent.AllAdsCompleted:
                     self.allAdsCompleted = true
                     // In case of a post-roll the media has ended
