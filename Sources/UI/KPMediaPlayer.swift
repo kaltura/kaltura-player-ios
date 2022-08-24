@@ -102,6 +102,7 @@ public class KPMediaPlayer: UIView {
         middleVisualEffectView.layer.cornerRadius = 40.0
         playPauseButton.displayState = .play
         activityIndicator.layer.cornerRadius = 15.0
+        liveStatusLabel.isHidden = true
     }
     
     // MARK: - Private
@@ -120,6 +121,8 @@ public class KPMediaPlayer: UIView {
     @IBOutlet private weak var bottomVisualEffectViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet private weak var middleVisualEffectView: UIVisualEffectView!
     @IBOutlet private weak var settingsVisualEffectView: UIVisualEffectView!
+    @IBOutlet private weak var liveStatusLabel: UILabel!
+    
     private let topBottomVisualEffectViewHeight: Float = 50.0
     
     @IBOutlet private weak var playPauseButton: PPRButton!
@@ -174,6 +177,13 @@ public class KPMediaPlayer: UIView {
         allAdsCompleted = false
         adIsPlaying = false
         preferredPlaybackRate = 1.0
+    }
+    
+    private func updateLiveStatus() {
+        guard let player = self.player else { return }
+        
+        self.liveStatusLabel.isHidden = !player.isLive()
+        self.mediaProgressSlider.thumbTintColor = player.isLive() ? .red : .white
     }
     
     @objc private func controllersInteractiveViewTapped() {
@@ -235,6 +245,7 @@ extension KPMediaPlayer {
             DispatchQueue.main.async {
                 switch event {
                 case is KPPlayerEvent.SourceSelected:
+                    self.updateLiveStatus()
                     self.resetStates()
                     self.activityIndicator.startAnimating()
                     
@@ -247,11 +258,7 @@ extension KPMediaPlayer {
                         self.showPlayerControllers(true)
                     }
                 case is KPPlayerEvent.LoadedMetadata:
-                    if player.isLive() {
-                        self.mediaProgressSlider.thumbTintColor = UIColor.red
-                    } else {
-                        self.mediaProgressSlider.thumbTintColor = UIColor.white
-                    }
+                    self.updateLiveStatus()
                 case is KPPlayerEvent.Ended:
                     self.mediaEnded = true
                     if self.adsLoaded == false || self.allAdsCompleted {
