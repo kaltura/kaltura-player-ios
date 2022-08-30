@@ -393,7 +393,7 @@ extension KPMediaPlayer {
     // MARK: - IMA Events
     
     private func registerAdEvents() {
-        player?.addObserver(self, events: [KPAdEvent.adLoaded, KPAdEvent.adPaused, KPAdEvent.adResumed, KPAdEvent.adStartedBuffering, KPAdEvent.adPlaybackReady, KPAdEvent.adStarted, KPAdEvent.adComplete, KPAdEvent.adSkipped, KPAdEvent.allAdsCompleted, KPAdEvent.adDidRequestContentPause, KPAdEvent.adDidRequestContentResume]) { [weak self] adEvent in
+        player?.addObserver(self, events: [KPAdEvent.adLoaded, KPAdEvent.adPaused, KPAdEvent.adResumed, KPAdEvent.adStartedBuffering, KPAdEvent.adPlaybackReady, KPAdEvent.adStarted, KPAdEvent.adComplete, KPAdEvent.adSkipped, KPAdEvent.allAdsCompleted, KPAdEvent.adDidRequestContentPause, KPAdEvent.adDidRequestContentResume, AdEvent.adDidProgressToTime]) { [weak self] adEvent in
             guard let self = self, let player = self.player else { return }
             
             PKLog.info("Event triggered: " + adEvent.description)
@@ -417,10 +417,20 @@ extension KPMediaPlayer {
                     self.activityIndicator.stopAnimating()
                     self.playPauseButton.displayState = .pause
                     self.mediaProgressSlider.isEnabled = false
+                    self.mediaProgressSlider.bufferProgressView.isHidden = true
+                    self.mediaProgressSlider.maximumTrackTintColor = UIColor.orange
                 case is KPAdEvent.AdComplete:
                     self.mediaProgressSlider.isEnabled = true
+                    self.mediaProgressSlider.bufferProgressView.isHidden = false
+                    self.mediaProgressSlider.maximumTrackTintColor = UIColor.lightGray.withAlphaComponent(0.5)
+                    let duration = self.getTimeRepresentation(player.duration)
+                    self.durationLabel.text = duration
                 case is KPAdEvent.AdSkipped:
                     self.mediaProgressSlider.isEnabled = true
+                    self.mediaProgressSlider.bufferProgressView.isHidden = false
+                    self.mediaProgressSlider.maximumTrackTintColor = UIColor.lightGray.withAlphaComponent(0.5)
+                    let duration = self.getTimeRepresentation(player.duration)
+                    self.durationLabel.text = duration
                 case is KPAdEvent.AllAdsCompleted:
                     self.allAdsCompleted = true
                     // In case of a post-roll the media has ended
@@ -433,6 +443,19 @@ extension KPMediaPlayer {
                 case is KPAdEvent.AdDidRequestContentResume:
                     self.adIsPlaying = false
                     player.rate = self.preferredPlaybackRate
+                case is KPAdEvent.AdDidProgressToTime:
+                    guard let event = adEvent as? AdEvent,
+                          let adMediaTime = event.adMediaTime?.doubleValue,
+                          let adTotalTime = event.adTotalTime?.doubleValue
+                    else { return }
+                    
+                    self.mediaProgressSlider.value = Float(adMediaTime / adTotalTime)
+                                        
+                    let currentTime = self.getTimeRepresentation(adMediaTime)
+                    self.currentTimeLabel.text = currentTime
+                    
+                    let duration = self.getTimeRepresentation(adTotalTime)
+                    self.durationLabel.text = duration
                 default:
                     break
                 }
