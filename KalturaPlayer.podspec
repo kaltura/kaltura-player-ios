@@ -1,4 +1,4 @@
-suffix = '.0000'   # Dev mode
+suffix = ''   # Dev mode
 # suffix = ''       # Release
 
 
