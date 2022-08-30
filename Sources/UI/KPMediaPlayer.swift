@@ -102,6 +102,7 @@ public class KPMediaPlayer: UIView {
         middleVisualEffectView.layer.cornerRadius = 40.0
         playPauseButton.displayState = .play
         activityIndicator.layer.cornerRadius = 15.0
+        liveStatusLabel.isHidden = true
     }
     
     // MARK: - Private
@@ -120,6 +121,8 @@ public class KPMediaPlayer: UIView {
     @IBOutlet private weak var bottomVisualEffectViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet private weak var middleVisualEffectView: UIVisualEffectView!
     @IBOutlet private weak var settingsVisualEffectView: UIVisualEffectView!
+    @IBOutlet private weak var liveStatusLabel: UILabel!
+    
     private let topBottomVisualEffectViewHeight: Float = 50.0
     
     @IBOutlet private weak var playPauseButton: PPRButton!
@@ -174,6 +177,13 @@ public class KPMediaPlayer: UIView {
         allAdsCompleted = false
         adIsPlaying = false
         preferredPlaybackRate = 1.0
+    }
+    
+    private func updateLiveStatus() {
+        guard let player = self.player else { return }
+        
+        self.liveStatusLabel.isHidden = !player.isLive()
+        self.mediaProgressSlider.thumbTintColor = player.isLive() ? .red : .white
     }
     
     @objc private func controllersInteractiveViewTapped() {
@@ -235,6 +245,7 @@ extension KPMediaPlayer {
             DispatchQueue.main.async {
                 switch event {
                 case is KPPlayerEvent.SourceSelected:
+                    self.updateLiveStatus()
                     self.resetStates()
                     self.activityIndicator.startAnimating()
                     
@@ -247,11 +258,7 @@ extension KPMediaPlayer {
                         self.showPlayerControllers(true)
                     }
                 case is KPPlayerEvent.LoadedMetadata:
-                    if player.isLive() {
-                        self.mediaProgressSlider.thumbTintColor = UIColor.red
-                    } else {
-                        self.mediaProgressSlider.thumbTintColor = UIColor.white
-                    }
+                    self.updateLiveStatus()
                 case is KPPlayerEvent.Ended:
                     self.mediaEnded = true
                     if self.adsLoaded == false || self.allAdsCompleted {
@@ -386,7 +393,7 @@ extension KPMediaPlayer {
     // MARK: - IMA Events
     
     private func registerAdEvents() {
-        player?.addObserver(self, events: [KPAdEvent.adLoaded, KPAdEvent.adPaused, KPAdEvent.adResumed, KPAdEvent.adStartedBuffering, KPAdEvent.adPlaybackReady, KPAdEvent.adStarted, KPAdEvent.adComplete, KPAdEvent.adSkipped, KPAdEvent.allAdsCompleted, KPAdEvent.adDidRequestContentPause, KPAdEvent.adDidRequestContentResume]) { [weak self] adEvent in
+        player?.addObserver(self, events: [KPAdEvent.adLoaded, KPAdEvent.adPaused, KPAdEvent.adResumed, KPAdEvent.adStartedBuffering, KPAdEvent.adPlaybackReady, KPAdEvent.adStarted, KPAdEvent.adComplete, KPAdEvent.adSkipped, KPAdEvent.allAdsCompleted, KPAdEvent.adDidRequestContentPause, KPAdEvent.adDidRequestContentResume, AdEvent.adDidProgressToTime]) { [weak self] adEvent in
             guard let self = self, let player = self.player else { return }
             
             PKLog.info("Event triggered: " + adEvent.description)
@@ -410,10 +417,20 @@ extension KPMediaPlayer {
                     self.activityIndicator.stopAnimating()
                     self.playPauseButton.displayState = .pause
                     self.mediaProgressSlider.isEnabled = false
+                    self.mediaProgressSlider.bufferProgressView.isHidden = true
+                    self.mediaProgressSlider.maximumTrackTintColor = UIColor.orange
                 case is KPAdEvent.AdComplete:
                     self.mediaProgressSlider.isEnabled = true
+                    self.mediaProgressSlider.bufferProgressView.isHidden = false
+                    self.mediaProgressSlider.maximumTrackTintColor = UIColor.lightGray.withAlphaComponent(0.5)
+                    let duration = self.getTimeRepresentation(player.duration)
+                    self.durationLabel.text = duration
                 case is KPAdEvent.AdSkipped:
                     self.mediaProgressSlider.isEnabled = true
+                    self.mediaProgressSlider.bufferProgressView.isHidden = false
+                    self.mediaProgressSlider.maximumTrackTintColor = UIColor.lightGray.withAlphaComponent(0.5)
+                    let duration = self.getTimeRepresentation(player.duration)
+                    self.durationLabel.text = duration
                 case is KPAdEvent.AllAdsCompleted:
                     self.allAdsCompleted = true
                     // In case of a post-roll the media has ended
@@ -426,6 +443,19 @@ extension KPMediaPlayer {
                 case is KPAdEvent.AdDidRequestContentResume:
                     self.adIsPlaying = false
                     player.rate = self.preferredPlaybackRate
+                case is KPAdEvent.AdDidProgressToTime:
+                    guard let event = adEvent as? AdEvent,
+                          let adMediaTime = event.adMediaTime?.doubleValue,
+                          let adTotalTime = event.adTotalTime?.doubleValue
+                    else { return }
+                    
+                    self.mediaProgressSlider.value = Float(adMediaTime / adTotalTime)
+                                        
+                    let currentTime = self.getTimeRepresentation(adMediaTime)
+                    self.currentTimeLabel.text = currentTime
+                    
+                    let duration = self.getTimeRepresentation(adTotalTime)
+                    self.durationLabel.text = duration
                 default:
                     break
                 }
@@ -453,7 +483,6 @@ extension KPMediaPlayer {
     }
     
     @IBAction private func speechTouched(_ button: UIButton) {
-        
         guard let tracks = audioTracks else { return }
         
         let alertController = UIAlertController(title: "Select Speech", message: nil, preferredStyle: UIAlertController.Style.actionSheet)
@@ -502,16 +531,27 @@ extension KPMediaPlayer {
     }
     
     @IBAction private func speedRateTouched(_ button: UIButton) {
+        guard let player = player else { return }
+        
         let alertController = UIAlertController(title: "Select Speed Rate", message: nil, preferredStyle: UIAlertController.Style.actionSheet)
-        alertController.addAction(UIAlertAction(title: "Normal", style: UIAlertAction.Style.default, handler: { (alertAction) in
+        
+        alertController.addAction(UIAlertAction(title: (player.rate == 1.0 ? "-> " : "") + "Normal",
+                                                style: UIAlertAction.Style.default,
+                                                handler: { (alertAction) in
             self.preferredPlaybackRate = 1
         }))
-        alertController.addAction(UIAlertAction(title: "x1.5", style: UIAlertAction.Style.default, handler: { (alertAction) in
+        alertController.addAction(UIAlertAction(title: (player.rate == 1.5 ? "-> " : "") + "x1.5",
+                                                style: UIAlertAction.Style.default,
+                                                handler: { (alertAction) in
             self.preferredPlaybackRate = 1.5
         }))
-        alertController.addAction(UIAlertAction(title: "x2", style: UIAlertAction.Style.default, handler: { (alertAction) in
+        alertController.addAction(UIAlertAction(title: (player.rate == 2.0 ? "-> " : "") + "x2",
+                                                style: UIAlertAction.Style.default,
+                                                handler: { (alertAction) in
             self.preferredPlaybackRate = 2
         }))
+        
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         
         if let popoverController = alertController.popoverPresentationController {
             popoverController.sourceView = button

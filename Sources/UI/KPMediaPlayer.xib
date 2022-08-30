@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -20,6 +20,7 @@
                 <outlet property="currentTimeLabel" destination="x6E-EA-kbe" id="ewI-zA-H9d"/>
                 <outlet property="durationLabel" destination="47I-Xc-nUC" id="mtu-7W-zJO"/>
                 <outlet property="kalturaPlayerView" destination="KHZ-39-Cm7" id="K8x-ne-RJ4"/>
+                <outlet property="liveStatusLabel" destination="S9s-5F-UON" id="xuX-ED-9ms"/>
                 <outlet property="mediaProgressSlider" destination="dr3-LS-fZ0" id="Ijp-6x-tbP"/>
                 <outlet property="middleVisualEffectView" destination="KcF-lL-Tj7" id="F0O-bf-gX2"/>
                 <outlet property="playPauseButton" destination="Hfw-nq-39W" id="j6c-QY-J0e"/>
@@ -238,50 +239,60 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x6E-EA-kbe">
-                                        <rect key="frame" x="5" y="14.5" width="75" height="21"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="epM-rq-lnC">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x6E-EA-kbe">
+                                                <rect key="frame" x="0.0" y="0.0" width="75" height="50"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="75" id="EKE-Jd-89W"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="dr3-LS-fZ0" customClass="KPUISlider" customModule="KalturaPlayer" customModuleProvider="target">
+                                                <rect key="frame" x="79" y="0.0" width="217.5" height="51"/>
+                                                <color key="minimumTrackTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="maximumTrackTintColor" white="0.30644806340000003" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="thumbTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="bufferTintColor">
+                                                        <color key="value" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="mediaProgressSliderTouchDown:" destination="-1" eventType="touchDown" id="Mzl-gP-weq"/>
+                                                    <action selector="mediaProgressSliderTouchUpInside:" destination="-1" eventType="touchUpInside" id="Snu-ME-yIK"/>
+                                                    <action selector="mediaProgressSliderTouchUpOutside:" destination="-1" eventType="touchUpOutside" id="eD8-LO-qN3"/>
+                                                </connections>
+                                            </slider>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Live" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S9s-5F-UON">
+                                                <rect key="frame" x="300.5" y="0.0" width="32.5" height="50"/>
+                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                                <color key="textColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="47I-Xc-nUC">
+                                                <rect key="frame" x="339" y="0.0" width="75" height="50"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="75" id="MNz-3u-BTn"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
                                         <constraints>
-                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="75" id="EKE-Jd-89W"/>
+                                            <constraint firstAttribute="height" constant="50" id="eNX-qJ-jSR"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="dr3-LS-fZ0" customClass="KPUISlider" customModule="KalturaPlayer" customModuleProvider="target">
-                                        <rect key="frame" x="83" y="10" width="248" height="31"/>
-                                        <color key="minimumTrackTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <color key="maximumTrackTintColor" white="0.30644806340000003" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <color key="thumbTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="bufferTintColor">
-                                                <color key="value" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="mediaProgressSliderTouchDown:" destination="-1" eventType="touchDown" id="Mzl-gP-weq"/>
-                                            <action selector="mediaProgressSliderTouchUpInside:" destination="-1" eventType="touchUpInside" id="Snu-ME-yIK"/>
-                                            <action selector="mediaProgressSliderTouchUpOutside:" destination="-1" eventType="touchUpOutside" id="eD8-LO-qN3"/>
-                                        </connections>
-                                    </slider>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="47I-Xc-nUC">
-                                        <rect key="frame" x="334" y="14.5" width="75" height="21"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="75" id="MNz-3u-BTn"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
+                                    </stackView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="dr3-LS-fZ0" firstAttribute="top" secondItem="YOu-no-GBa" secondAttribute="top" constant="10" id="9Gn-B5-L0R"/>
-                                    <constraint firstItem="47I-Xc-nUC" firstAttribute="centerY" secondItem="dr3-LS-fZ0" secondAttribute="centerY" id="P6X-Bs-ve8"/>
-                                    <constraint firstAttribute="trailing" secondItem="47I-Xc-nUC" secondAttribute="trailing" constant="5" id="WuI-CY-I8q"/>
-                                    <constraint firstItem="dr3-LS-fZ0" firstAttribute="leading" secondItem="x6E-EA-kbe" secondAttribute="trailing" constant="5" id="eke-Ib-me4"/>
-                                    <constraint firstItem="x6E-EA-kbe" firstAttribute="leading" secondItem="YOu-no-GBa" secondAttribute="leading" constant="5" id="iez-gA-O2G"/>
-                                    <constraint firstItem="47I-Xc-nUC" firstAttribute="leading" secondItem="dr3-LS-fZ0" secondAttribute="trailing" constant="5" id="sH2-de-bZT"/>
-                                    <constraint firstItem="x6E-EA-kbe" firstAttribute="centerY" secondItem="dr3-LS-fZ0" secondAttribute="centerY" id="shC-Ar-KPn"/>
+                                    <constraint firstItem="epM-rq-lnC" firstAttribute="leading" secondItem="YOu-no-GBa" secondAttribute="leading" id="QBM-C9-KiM"/>
+                                    <constraint firstItem="epM-rq-lnC" firstAttribute="top" secondItem="YOu-no-GBa" secondAttribute="top" id="XO3-gW-ZMS"/>
+                                    <constraint firstAttribute="trailing" secondItem="epM-rq-lnC" secondAttribute="trailing" id="bKi-Vv-Aly"/>
                                 </constraints>
                             </view>
                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -326,7 +337,7 @@
                 <constraint firstItem="TAi-S1-QZi" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="cwe-mm-rcA"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="TAi-S1-QZi" secondAttribute="trailing" id="siU-ZP-1Ms"/>
             </constraints>
-            <point key="canvasLocation" x="243" y="18"/>
+            <point key="canvasLocation" x="242.0289855072464" y="17.410714285714285"/>
         </view>
     </objects>
     <designables>
