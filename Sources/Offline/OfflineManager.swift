@@ -163,6 +163,37 @@ public enum OfflineManagerError: PKError {
     }
     
     /**
+        Set the referrer.
+     
+        * Parameters:
+            * referrer: The desired referrer.
+     */
+    public func setReferrer(_ referrer: String) {
+        guard let contentManager = ContentManager.shared as? ContentManager else { return }
+        contentManager.referrer = referrer
+    }
+    
+    /**
+        Set a custom request adapter for the manifest.
+     
+        * Parameters:
+            * requestAdapter: The desired adapter.
+     */
+    public func setManifestRequestAdapter(requestAdapter: DTGRequestParamsAdapter) {
+        ContentManager.shared.setManifestRequestAdapter(adapter: requestAdapter)
+    }
+    
+    /**
+        Set a custom request adapter for the chunks.
+     
+        * Parameters:
+            * requestAdapter: The desired adapter.
+     */
+    public func setChunksRequestAdapter(requestAdapter: DTGRequestParamsAdapter) {
+        ContentManager.shared.setChunksRequestAdapter(adapter: requestAdapter)
+    }
+    
+    /**
         Call this function to prepare the asset in order to start downloading the media.
             
         The function will fetch the preferred `PKMediaSource` for download purposes, taking into account the capabilities of the device. If a media source was not retrieved, an `OfflineManagerError.noMediaSourceToDownload` is returned.
