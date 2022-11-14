@@ -168,7 +168,7 @@ public enum OfflineManagerError: PKError {
         * Parameters:
             * referrer: The desired referrer.
      */
-    public func setReferrer(_ referrer: String) {
+    @objc public func setReferrer(_ referrer: String) {
         guard let contentManager = ContentManager.shared as? ContentManager else { return }
         contentManager.referrer = referrer
     }
