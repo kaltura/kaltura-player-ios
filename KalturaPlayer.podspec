@@ -5,7 +5,7 @@ suffix = '.0000'   # Dev mode
 Pod::Spec.new do |s|
   
   s.name             = 'KalturaPlayer'
-  s.version          = '4.7.1' + suffix
+  s.version          = '4.8.0' + suffix
   s.summary          = 'KalturaPlayer -- Kaltura Player for iOS and tvOS'
   s.homepage         = 'https://github.com/kaltura/kaltura-player-ios'
   s.license          = { :type => 'AGPLv3', :file => 'LICENSE' }
@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
   s.subspec 'Interceptor' do |sp|
     sp.source_files = 'Sources/Interceptor/*'
     
-    sp.dependency 'PlayKit', '~> 3.26'
+    sp.dependency 'PlayKit', '~> 3.27'
   end
   
   s.xcconfig = {
@@ -43,7 +43,7 @@ Pod::Spec.new do |s|
     sp.resources = 'Sources/OTT/*.xcdatamodeld'
     
     sp.dependency 'KalturaPlayer/Core'
-    sp.dependency 'PlayKitProviders', '~> 1.17'
+    sp.dependency 'PlayKitProviders', '~> 1.18'
     sp.dependency 'PlayKitKava', '~> 1.10'
   end
   
@@ -52,7 +52,7 @@ Pod::Spec.new do |s|
     sp.resources = 'Sources/OVP/*.xcdatamodeld'
     
     sp.dependency 'KalturaPlayer/Core'
-    sp.dependency 'PlayKitProviders', '~> 1.17'
+    sp.dependency 'PlayKitProviders', '~> 1.18'
     sp.dependency 'PlayKitKava', '~> 1.10'
   end
   
@@ -65,8 +65,8 @@ Pod::Spec.new do |s|
     
     sp.source_files = 'Sources/Offline/*', 'Sources/*', 'Sources/Basic/*', 'Sources/Interceptor/*', 'Sources/Playlist/*'
     
-    sp.dependency 'DownloadToGo', '~> 3.17'
-    sp.dependency 'PlayKit', '~> 3.26'
+    sp.dependency 'DownloadToGo', '~> 3.18'
+    sp.dependency 'PlayKit', '~> 3.27'
     
     sp.xcconfig = {
       ### The following is required for Xcode 12 (https://stackoverflow.com/questions/63607158/xcode-12-building-for-ios-simulator-but-linking-in-object-file-built-for-ios)
@@ -82,7 +82,7 @@ Pod::Spec.new do |s|
     sp.resources = 'Sources/OTT/*.xcdatamodeld'
     
     sp.dependency 'KalturaPlayer/Offline'
-    sp.dependency 'PlayKitProviders', '~> 1.17'
+    sp.dependency 'PlayKitProviders', '~> 1.18'
     sp.dependency 'PlayKitKava', '~> 1.10'
     
     sp.xcconfig = {
@@ -99,7 +99,7 @@ Pod::Spec.new do |s|
     sp.resources = 'Sources/OVP/*.xcdatamodeld'
     
     sp.dependency 'KalturaPlayer/Offline'
-    sp.dependency 'PlayKitProviders', '~> 1.17'
+    sp.dependency 'PlayKitProviders', '~> 1.18'
     sp.dependency 'PlayKitKava', '~> 1.10'
     
     sp.xcconfig = {
