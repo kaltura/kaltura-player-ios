@@ -2,6 +2,7 @@
 
 import Foundation
 import PlayKit
+import Interceptor
 
 public typealias KPPlayerEvent = PlayerEvent
 public typealias KPTrack = Track

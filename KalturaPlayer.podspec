@@ -33,7 +33,7 @@ Pod::Spec.new do |s|
     sp.ios.deployment_target = '10.0'
     sp.tvos.deployment_target = '10.0'
     
-    sp.source_files = 'Sources/*', 'Sources/Basic/*', 'Sources/Playlist/*'
+    sp.source_files = 'Sources/Core/*', 'Sources/Basic/*', 'Sources/Playlist/*'
     
     sp.dependency 'KalturaPlayer/Interceptor'
   end
