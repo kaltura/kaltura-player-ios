@@ -26,6 +26,8 @@ let package = Package(
         .package(name: "PlayKitKava",
                  url: "https://github.com/kaltura/playkit-ios-kava.git",
                  .branch("FEC-12640")),
+        .package(url: "https://github.com/Quick/Quick.git", .upToNextMajor(from: "5.0.0")),
+        .package(url: "https://github.com/Quick/Nimble.git", .upToNextMajor(from: "9.0.0")),
     ],
     targets: [
         
@@ -68,7 +70,16 @@ let package = Package(
                     .product(name: "PlayKit", package: "PlayKit"),
                     .product(name: "PlayKitKava", package: "PlayKitKava")
                 ],
-                path: "Sources/Common")
+                path: "Sources/Common"),
+        
+        .testTarget(name: "KalturaPlayerTests",
+                    dependencies: [
+                        "KalturaPlayer",
+                        "Quick",
+                        "Nimble"
+                    ],
+                    path: "Tests/Basic",
+                    exclude: [])
     ]
 //    swiftLanguageVersions: [
 //            SwiftVersion.v5,
