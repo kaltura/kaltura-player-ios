@@ -21,7 +21,8 @@ jobs:
     name: "CocoaPods linting"
     environment: PR
     runs-on: macos-latest
-
+    needs: SPM
+    
     steps:
     - uses: actions/checkout@v3
 
@@ -32,7 +33,7 @@ jobs:
       run: pod lib lint --fail-fast --verbose --allow-warnings
       
   SPM:
-    name: "Build SPM"
+    name: "Test SPM"
     environment: PR
     runs-on: macos-latest
     strategy:
@@ -48,4 +49,4 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: ${{ matrix.name }}
-        run: set -o pipefail && env NSUnbufferedIO=YES xcodebuild -scheme "${{ matrix.scheme }}" -destination "${{ matrix.destination }}" clean build | xcpretty
+        run: set -o pipefail && env NSUnbufferedIO=YES xcodebuild -scheme "${{ matrix.scheme }}" -destination "${{ matrix.destination }}" clean test | xcpretty
