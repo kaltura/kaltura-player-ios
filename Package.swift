@@ -8,11 +8,11 @@ let package = Package(
                 .tvOS(.v11)],
     products: [
         .library(name: "KalturaPlayer",
-                 targets: ["KalturaPlayer", "Interceptor"]),
-//               .library(name: "KalturaPlayerOTT",
-//                        targets: ["KalturaPlayerOTT"]),
-//               .library(name: "KalturaPlayerOVP",
-//                        targets: ["KalturaPlayerOVP"]),
+                 targets: ["KalturaPlayer"]),
+        .library(name: "KalturaPlayerOTT",
+                 targets: ["KalturaPlayerOTT", "Common", "KalturaPlayer"]),
+        .library(name: "KalturaPlayerOVP",
+                 targets: ["KalturaPlayerOVP", "Common", "KalturaPlayer"]),
         .library(name: "Interceptor",
                  targets: ["Interceptor"])
     ],
@@ -28,37 +28,47 @@ let package = Package(
                  .branch("FEC-12640")),
     ],
     targets: [
+        
         .target(name: "Interceptor",
                 dependencies: [
                     .product(name: "PlayKit", package: "PlayKit")
                 ],
                 path: "Sources/Interceptor/"),
+        
         .target(name: "KalturaPlayer",
+                dependencies: ["Interceptor"],
+                path: "Sources/Player"),
+        
+        .target(name: "KalturaPlayerOTT",
                 dependencies: [
-                    "Interceptor"
+                    "KalturaPlayer",
+                    "Common",
+                    .product(name: "PlayKitProviders", package: "PlayKitProviders"),
+                    .product(name: "PlayKitKava", package: "PlayKitKava")
                 ],
-                path: "Sources/",
-                exclude: ["Interceptor/", "OTT/", "OVP/", "Common/", "Offline/", "UI/"]),
-//        .target(name: "KalturaPlayerOTT",
-//                dependencies: [
-//                    "KalturaPlayer",
-//                    .product(name: "PlayKitProviders", package: "PlayKitProviders"),
-//                    .product(name: "PlayKitKava", package: "PlayKitKava")
-//                ],
-//                path: "Sources/",
-//                sources: ["Sources/Common/", "Sources/OTT/"],
-//                resources: [
-//                    .process("Sources/OTT/KPOTTDMSConfigModel.xcdatamodeld")]),
-//        .target(name: "KalturaPlayerOVP",
-//                dependencies: [
-//                    "KalturaPlayer",
-//                    .product(name: "PlayKitProviders", package: "PlayKitProviders"),
-//                    .product(name: "PlayKitKava", package: "PlayKitKava")
-//                ],
-//                path: "Sources/",
-//                sources: ["Sources/Common/", "Sources/OVP/"],
-//                resources: [
-//                    .process("Sources/OVP/KPOVPConfigModel.xcdatamodeld")]),
+                path: "Sources/OTT",
+                swiftSettings: [
+                    .define("KalturaPlayerOTT_Package")
+                ]),
+        
+        .target(name: "KalturaPlayerOVP",
+                dependencies: [
+                    "KalturaPlayer",
+                    "Common",
+                    .product(name: "PlayKitProviders", package: "PlayKitProviders"),
+                    .product(name: "PlayKitKava", package: "PlayKitKava")
+                ],
+                path: "Sources/OVP",
+                swiftSettings: [
+                    .define("KalturaPlayerOVP_Package")
+                ]),
+        
+        .target(name: "Common",
+                dependencies: [
+                    .product(name: "PlayKit", package: "PlayKit"),
+                    .product(name: "PlayKitKava", package: "PlayKitKava")
+                ],
+                path: "Sources/Common")
     ]
 //    swiftLanguageVersions: [
 //            SwiftVersion.v5,

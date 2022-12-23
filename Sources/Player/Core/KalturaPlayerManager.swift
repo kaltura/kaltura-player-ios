@@ -12,18 +12,26 @@ protocol KalturaPlayerOffline {
     static func setup()
 }
 
-struct ConfigData {
-    var analyticsUrl: String
-    var ovpPartnerId: Int64
-    var createdDate: Date
+public struct ConfigData {
+    public var analyticsUrl: String
+    public var ovpPartnerId: Int64
+    public var createdDate: Date
+    
+    public init(analyticsUrl: String,
+                ovpPartnerId: Int64,
+                createdDate: Date) {
+        self.analyticsUrl = analyticsUrl
+        self.ovpPartnerId = ovpPartnerId
+        self.createdDate = createdDate
+    }
 }
 
-class KalturaPlayerManager: NSObject {
+open class KalturaPlayerManager: NSObject {
     
     let domain = "com.kaltura.player"
-    var referrer: String
+    public var referrer: String
     
-    internal override init() {
+    public override init() {
         referrer = PKUtils.referrer
         super.init()
         
@@ -39,9 +47,9 @@ class KalturaPlayerManager: NSObject {
     private var retryCount = 0
     private let maxRetries = 3
     
-    internal private(set) var cachedConfigData: ConfigData?
+    open private(set) var cachedConfigData: ConfigData?
     
-    internal func fetchConfiguration() {
+    open func fetchConfiguration() {
         retryCount = 0
         let cachedData = fetchCachedConfigData()
         
@@ -71,7 +79,7 @@ class KalturaPlayerManager: NSObject {
         }
     }
     
-    private func requestConfigData() {
+    open func requestConfigData() {
         requestConfigData { [weak self] (configData, error) in
             guard let self = self else { return }
             if let configData = configData {
@@ -85,11 +93,11 @@ class KalturaPlayerManager: NSObject {
         }
     }
     
-    internal func fetchCachedConfigData() -> ConfigData? {
+    open func fetchCachedConfigData() -> ConfigData? {
         fatalError("Function fetchCachedConfigData not implemented in sub class")
     }
     
-    internal func requestConfigData(callback: @escaping (ConfigData?, Error?) -> Void) {
+    open func requestConfigData(callback: @escaping (ConfigData?, Error?) -> Void) {
         fatalError("Function requestConfigData not implemented in sub class")
     }
     

@@ -7,12 +7,13 @@
 
 import Foundation
 import PlayKit
+import KalturaPlayer
 
 @objc public class KPOVPPlaylistController: KPPlaylistController {
     
     internal var originalOVPMediaOptions: [OVPMediaOptions]?
     
-    override internal func prepareMediaOptions(forMediaEntry entry: PKMediaEntry) -> MediaOptions? {
+    override public func prepareMediaOptions(forMediaEntry entry: PKMediaEntry) -> MediaOptions? {
         
         let options: MediaOptions
         

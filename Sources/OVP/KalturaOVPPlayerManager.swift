@@ -8,6 +8,7 @@
 import Foundation
 import KalturaNetKit
 import PlayKit
+import KalturaPlayer
 
 class KalturaOVPPlayerManager: KalturaPlayerManager {
 

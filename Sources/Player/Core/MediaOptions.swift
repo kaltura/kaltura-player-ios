@@ -8,7 +8,7 @@
 import Foundation
 import PlayKit
 
-@objc public class MediaOptions: NSObject {
+@objc open class MediaOptions: NSObject {
     
     /**
         Sets the media with a start time if set with a value.

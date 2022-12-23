@@ -10,6 +10,13 @@ import PlayKit
 import PlayKitProviders
 import PlayKitKava
 
+#if canImport(KalturaPlayer)
+import KalturaPlayer
+#endif
+#if canImport(Common)
+import Common
+#endif
+
 @objc public class KalturaOTTPlayer: KalturaPlayer {
 
     private var ottMediaOptions: OTTMediaOptions? {
@@ -92,10 +99,10 @@ import PlayKitKava
     
     // MARK: - Private Methods
     
-    internal override func setMediaAndUpdatePlugins(mediaEntry: PKMediaEntry,
-                                                    mediaOptions: MediaOptions?,
-                                                    pluginConfig: PluginConfig?,
-                                                    callback: @escaping (_ error: NSError?) -> Void) {
+    public override func setMediaAndUpdatePlugins(mediaEntry: PKMediaEntry,
+                                                  mediaOptions: MediaOptions?,
+                                                  pluginConfig: PluginConfig?,
+                                                  callback: @escaping (_ error: NSError?) -> Void) {
         
         if let options = mediaOptions as? OTTMediaOptions {
             ottMediaOptions = options
@@ -289,7 +296,7 @@ extension KalturaOTTPlayer {
 
 extension KalturaOTTPlayer: EntryLoader {
     
-    internal func loadMedia(options: MediaOptions, callback: @escaping (_ entry: PKMediaEntry?, _ error: NSError?) -> Void) {
+    public func loadMedia(options: MediaOptions, callback: @escaping (_ entry: PKMediaEntry?, _ error: NSError?) -> Void) {
         guard let mediaOptions = options as? OTTMediaOptions else {
             callback(nil, KalturaPlayerError.invalidMediaOptions.asNSError)
             return

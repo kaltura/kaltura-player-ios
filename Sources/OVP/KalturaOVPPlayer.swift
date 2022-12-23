@@ -10,6 +10,13 @@ import PlayKit
 import PlayKitKava
 import PlayKitProviders
 
+#if canImport(KalturaPlayer)
+import KalturaPlayer
+#endif
+#if canImport(Common)
+import Common
+#endif
+
 @objc public class KalturaOVPPlayer: KalturaPlayer {
     
     private var ovpMediaOptions: OVPMediaOptions? {
@@ -82,7 +89,7 @@ import PlayKitProviders
     
     // MARK: - Private Methods
     // Set media and update plugins if needed.
-    internal override func setMediaAndUpdatePlugins(mediaEntry: PKMediaEntry,
+    public override func setMediaAndUpdatePlugins(mediaEntry: PKMediaEntry,
                                                     mediaOptions: MediaOptions?,
                                                     pluginConfig: PluginConfig?,
                                                     callback: @escaping (_ error: NSError?) -> Void) {
@@ -276,7 +283,7 @@ extension KalturaOVPPlayer {
 
 extension KalturaOVPPlayer: EntryLoader {
     
-    internal func loadMedia(options: MediaOptions, callback: @escaping (_ entry: PKMediaEntry?, _ error: NSError?) -> Void) {
+    public func loadMedia(options: MediaOptions, callback: @escaping (_ entry: PKMediaEntry?, _ error: NSError?) -> Void) {
         guard let mediaOptions = options as? OVPMediaOptions else {
             callback(nil, KalturaPlayerError.invalidMediaOptions.asNSError)
             return
