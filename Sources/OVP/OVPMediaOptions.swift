@@ -32,6 +32,8 @@ import PlayKitProviders
         ovpMediaProvider.set(referenceId: referenceId)
         ovpMediaProvider.set(uiconfId: uiconfId)
         
+        ovpMediaProvider.set(redirectFromEntryId: true)
+        
         return ovpMediaProvider
     }
     
