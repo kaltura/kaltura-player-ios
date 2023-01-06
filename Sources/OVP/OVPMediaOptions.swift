@@ -14,7 +14,7 @@ import PlayKitProviders
     @objc public var referenceId: String?
     @objc public var uiconfId: NSNumber?
     
-    @objc public var redirectFromEntryId: Bool = false
+    @objc public var redirectFromEntryId: Bool = true
     
     @discardableResult
     @nonobjc public func set(entryId: String?) -> Self {
