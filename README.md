@@ -1,3 +1,10 @@
+![Swift 3.0+](https://img.shields.io/badge/Swift-3.0+-orange.svg)
+[![CI Status](https://github.com/kaltura/kaltura-player-ios/actions/workflows/ci.yml/badge.svg)](https://github.com/kaltura/kaltura-player-ios/actions/workflows/ci.yml)
+[![Version](https://img.shields.io/cocoapods/v/KalturaPlayer.svg?style=flat)](https://cocoapods.org/pods/KalturaPlayer)
+[![License](https://img.shields.io/cocoapods/l/KalturaPlayer.svg?style=flat)](https://cocoapods.org/pods/KalturaPlayer)
+[![Platform](https://img.shields.io/cocoapods/p/KalturaPlayer.svg?style=flat)](https://cocoapods.org/pods/KalturaPlayer)
+
+
 # KalturaPlayer
 
 ## Kaltura Player Features:
