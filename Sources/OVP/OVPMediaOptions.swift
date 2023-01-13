@@ -14,6 +14,8 @@ import PlayKitProviders
     @objc public var referenceId: String?
     @objc public var uiconfId: NSNumber?
     
+    @objc public var redirectFromEntryId: Bool = true
+    
     @discardableResult
     @nonobjc public func set(entryId: String?) -> Self {
         self.entryId = entryId
@@ -26,11 +28,18 @@ import PlayKitProviders
         return self
     }
     
+    @discardableResult
+    @nonobjc public func set(redirectFromEntryId: Bool) -> Self {
+        self.redirectFromEntryId = redirectFromEntryId
+        return self
+    }
+    
     internal func mediaProvider() -> OVPMediaProvider {
         let ovpMediaProvider = OVPMediaProvider()
         ovpMediaProvider.set(entryId: entryId)
         ovpMediaProvider.set(referenceId: referenceId)
         ovpMediaProvider.set(uiconfId: uiconfId)
+        ovpMediaProvider.set(redirectFromEntryId: redirectFromEntryId)
         
         return ovpMediaProvider
     }

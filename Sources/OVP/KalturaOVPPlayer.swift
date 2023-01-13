@@ -219,8 +219,12 @@ extension KalturaOVPPlayer {
             }
             
             let controller = KPOVPPlaylistController(playlistConfig: nil,
-                                                  playlist: playList,
-                                                  player: self)
+                                                     playlist: playList,
+                                                     player: self)
+            
+            controller.originalOVPMediaOptions = playList.medias?.map({
+                OVPMediaOptions().set(entryId: $0.id).set(redirectFromEntryId: options.redirectFromEntryId)
+            })
             
             self.playlistController = controller
             
