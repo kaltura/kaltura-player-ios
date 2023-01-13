@@ -12,7 +12,9 @@ import PlayKitProviders
     
     @objc public var ks: String?
     @objc public var playlistId: String?
-
+    
+    @objc public var redirectFromEntryId: Bool = true
+    
     internal func playlistProvider() -> OVPPlaylistProvider {
         let ovpPlaylistProvider = OVPPlaylistProvider()
         ovpPlaylistProvider.set(playlistId: playlistId)
