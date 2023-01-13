@@ -25,6 +25,7 @@ jobs:
         run: set -o pipefail && env NSUnbufferedIO=YES xcodebuild -scheme "${{ matrix.scheme }}" -destination "${{ matrix.destination }}" clean test | xcpretty
 
   TAGGING:
+    name: "Add Git Tag"
     runs-on: macos-latest
     environment: Tag
     needs: SPM
@@ -45,6 +46,7 @@ jobs:
           GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} sh .github/tag.sh
           
   PODS_PUSH:
+    name: "CocoaPods push"
     runs-on: macos-latest
     environment: CocoaPods
     needs: TAGGING
