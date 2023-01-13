@@ -7,6 +7,7 @@
 
 import Foundation
 import PlayKitProviders
+import KalturaPlayer
 
 @objc public class OVPMediaOptions: MediaOptions {
     

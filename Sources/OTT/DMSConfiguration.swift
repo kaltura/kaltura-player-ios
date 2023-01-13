@@ -11,7 +11,7 @@ struct DMSConfiguration: Codable {
     var params: DMSConfigParams
 }
 
-struct DMSConfigParams: Codable {
+public struct DMSConfigParams: Codable {
     var analyticsUrl: String
     var ovpServiceUrl: String
     var ovpPartnerId: Int64

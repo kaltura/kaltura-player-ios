@@ -30,7 +30,13 @@ class KPOVPConfigModel {
     private init() {}
     
     lazy var persistanteContainer: NSPersistentContainer = {
-        let dmsConfigModelBundle = Bundle(for: KPOVPConfigModel.self)
+        
+        var dmsConfigModelBundle = Bundle(for: KPOVPConfigModel.self)
+        
+        #if KalturaPlayerOVP_Package
+        dmsConfigModelBundle = Bundle.module
+        #endif
+        
         guard let modelURL = dmsConfigModelBundle.url(forResource: "KPOVPConfigModel", withExtension: "momd"),
             let managedObjectModel =  NSManagedObjectModel(contentsOf: modelURL) else {
             fatalError("KPOVPConfigModel is missing from the bundle!")

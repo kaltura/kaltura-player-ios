@@ -7,12 +7,13 @@
 
 import Foundation
 import PlayKit
+import KalturaPlayer
 
 @objc public class KPOTTPlaylistController: KPPlaylistController {
     
     internal var originalOTTMediaOptions: [OTTMediaOptions]?
     
-    override internal func prepareMediaOptions(forMediaEntry entry: PKMediaEntry) -> MediaOptions? {
+    override public func prepareMediaOptions(forMediaEntry entry: PKMediaEntry) -> MediaOptions? {
         let options: OTTMediaOptions
         
         if let ottOptions = self.originalOTTMediaOptions?.first(where: { $0.assetId == entry.id }) {

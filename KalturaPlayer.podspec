@@ -33,7 +33,7 @@ Pod::Spec.new do |s|
     sp.ios.deployment_target = '10.0'
     sp.tvos.deployment_target = '10.0'
     
-    sp.source_files = 'Sources/*', 'Sources/Basic/*', 'Sources/Playlist/*'
+    sp.source_files = 'Sources/Player/Core/*', 'Sources/Player/Basic/*', 'Sources/Player/Playlist/*'
     
     sp.dependency 'KalturaPlayer/Interceptor'
   end
@@ -63,9 +63,9 @@ Pod::Spec.new do |s|
   s.subspec 'Offline' do |sp|
     sp.ios.deployment_target = '10.0'
     
-    sp.source_files = 'Sources/Offline/*', 'Sources/*', 'Sources/Basic/*', 'Sources/Interceptor/*', 'Sources/Playlist/*'
+    sp.source_files = 'Sources/Offline/*', 'Sources/Player/Core/*', 'Sources/Player/Basic/*', 'Sources/Interceptor/*', 'Sources/Player/Playlist/*'
     
-    sp.dependency 'DownloadToGo', '~> 3.18'
+    sp.dependency 'DownloadToGo', '~> 3.17'
     sp.dependency 'PlayKit', '~> 3.27'
     
     sp.xcconfig = {

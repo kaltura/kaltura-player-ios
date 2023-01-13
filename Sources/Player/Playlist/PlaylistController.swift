@@ -140,7 +140,7 @@ import PlayKit
     func playlistController(_ controller: PlaylistController, countdownOptionsForMediaEntry mediaEntry: PKMediaEntry, atIndex mediaItemIndex: Int) -> CountdownOptions?
 }
 
-internal protocol EntryLoader {
+public protocol EntryLoader {
     
     func loadMedia(options: MediaOptions, callback: @escaping (_ entry: PKMediaEntry?, _ error: NSError?) -> Void)
 }

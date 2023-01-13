@@ -2,6 +2,9 @@
 
 import Foundation
 import PlayKit
+#if canImport(Interceptor)
+import Interceptor
+#endif
 
 public typealias KPPlayerEvent = PlayerEvent
 public typealias KPTrack = Track
@@ -50,10 +53,10 @@ public enum KalturaPlayerError: PKError {
     }
 }
 
-@objc public class KalturaPlayer: NSObject {
+@objc open class KalturaPlayer: NSObject {
     
-    internal var playerOptions: PlayerOptions
-    internal var mediaOptions: MediaOptions? {
+    public var playerOptions: PlayerOptions
+    public var mediaOptions: MediaOptions? {
         didSet {
             guard let mediaOptions = mediaOptions else { return }
             guard let ks = mediaOptions.ks else { return }
@@ -64,7 +67,7 @@ public enum KalturaPlayerError: PKError {
         }
     }
     
-    internal var defaultPluginConfigKeys: [String] = []
+    public var defaultPluginConfigKeys: [String] = []
     
     private var pkPlayer: Player!
     private var shouldPrepare: Bool = true
@@ -97,7 +100,7 @@ public enum KalturaPlayerError: PKError {
         }
     }
     
-    internal init(playerOptions: PlayerOptions) {
+    public init(playerOptions: PlayerOptions) {
         self.playerOptions = playerOptions
         pkPlayer = PlayKitManager.shared.loadPlayer(pluginConfig: self.playerOptions.pluginConfig)
         super.init()
@@ -117,7 +120,7 @@ public enum KalturaPlayerError: PKError {
            * pluginConfig: The Plugin configuration object.
            * callback: Error handler callback.
     */
-    internal func setMediaAndUpdatePlugins(mediaEntry: PKMediaEntry,
+    open func setMediaAndUpdatePlugins(mediaEntry: PKMediaEntry,
                                            mediaOptions: MediaOptions?,
                                            pluginConfig: PluginConfig?,
                                            callback: @escaping (_ error: NSError?) -> Void) {
@@ -219,7 +222,7 @@ public enum KalturaPlayerError: PKError {
 
         Upon setting to a new value, if the PlayerOption autoPlay or preload is set too true, prepare on the player will be automatically called.
      */
-    internal var mediaEntry: PKMediaEntry? {
+    public var mediaEntry: PKMediaEntry? {
         didSet {
             if mediaEntry == nil { return }
             shouldPrepare = true
@@ -494,7 +497,7 @@ public enum KalturaPlayerError: PKError {
 
 extension KalturaPlayer {
     
-    internal func updateMediaEntryWithLoadedInterceptors(_ mediaEntry: PKMediaEntry, callback: @escaping () -> Void) {
+    public func updateMediaEntryWithLoadedInterceptors(_ mediaEntry: PKMediaEntry, callback: @escaping () -> Void) {
         guard var interceptors = self.interceptors, !interceptors.isEmpty,
               let entry = mediaEntry.copy() as? PKMediaEntry else {
                   self.mediaEntry = mediaEntry

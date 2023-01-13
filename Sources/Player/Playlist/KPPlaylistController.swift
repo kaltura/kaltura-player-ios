@@ -8,7 +8,7 @@
 import Foundation
 import PlayKit
 
-@objc public class KPPlaylistController: NSObject, PlaylistController {
+@objc open class KPPlaylistController: NSObject, PlaylistController {
     
     public weak var delegate: PlaylistControllerDelegate?
     
@@ -47,7 +47,7 @@ import PlayKit
     
     private var navigationDirection: PlaylistNavigationDirection = .forward
     
-    required init(playlistConfig: Any?, playlist: PKPlaylist, player: KalturaPlayer) {
+    required public init(playlistConfig: Any?, playlist: PKPlaylist, player: KalturaPlayer) {
         self.playlist = playlist
         self.entries = playlist.medias ?? []
         self.player = player
@@ -423,7 +423,7 @@ import PlayKit
         }
     }
     
-    internal func prepareMediaOptions(forMediaEntry entry: PKMediaEntry) -> MediaOptions? {
+    open func prepareMediaOptions(forMediaEntry entry: PKMediaEntry) -> MediaOptions? {
         return MediaOptions()
     }
     

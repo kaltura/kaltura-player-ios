@@ -9,9 +9,9 @@ import Foundation
 import PlayKit
 import PlayKitKava
 
-class KavaHelper {
+public class KavaHelper {
     
-    static func getPluginConfig(ovpPartnerId: Int64,
+    static public func getPluginConfig(ovpPartnerId: Int64,
                                 ovpEntryId: String,
                                 ks: String?,
                                 referrer: String,

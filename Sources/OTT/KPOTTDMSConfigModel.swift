@@ -19,7 +19,7 @@ enum DMSConfigEntityAttribute: String {
     case createdDate
 }
 
-struct OTTDMSConfig {
+public struct OTTDMSConfig {
     var analyticsUrl: String
     var ovpPartnerId: Int64
     var ovpServiceUrl: String
@@ -34,7 +34,13 @@ class KPOTTDMSConfigModel {
     private init() {}
     
     lazy var persistanteContainer: NSPersistentContainer = {
-        let dmsConfigModelBundle = Bundle(for: KPOTTDMSConfigModel.self)
+        
+        var dmsConfigModelBundle = Bundle(for: KPOTTDMSConfigModel.self)
+        
+        #if KalturaPlayerOTT_Package
+        dmsConfigModelBundle = Bundle.module
+        #endif
+        
         guard let modelURL = dmsConfigModelBundle.url(forResource: "KPOTTDMSConfigModel", withExtension: "momd"),
             let managedObjectModel =  NSManagedObjectModel(contentsOf: modelURL) else {
             fatalError("KPOTTDMSConfigModel is missing from the bundle!")

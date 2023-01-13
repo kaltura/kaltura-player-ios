@@ -10,6 +10,7 @@ import KalturaNetKit
 import PlayKit
 import PlayKitKava
 import PlayKitProviders
+import KalturaPlayer
 
 class KalturaOTTPlayerManager: KalturaPlayerManager {
     
