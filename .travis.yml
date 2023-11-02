@@ -10,8 +10,7 @@ notifications:
     recipients:
       - noam.tamim@kaltura.com
       - nilit.danan@kaltura.com
-      - gilad.nadav@kaltura.com
+      - israel.berezin@kaltura.com
       - oren.melamed@kaltura.com
-      - sergey.chausov@kaltura.com
     on_success: change
     on_failure: always
