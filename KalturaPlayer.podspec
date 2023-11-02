@@ -5,7 +5,7 @@ suffix = '.0000'   # Dev mode
 Pod::Spec.new do |s|
   
   s.name             = 'KalturaPlayer'
-  s.version          = '4.8.1' + suffix
+  s.version          = '4.9.0' + suffix
   s.summary          = 'KalturaPlayer -- Kaltura Player for iOS and tvOS'
   s.homepage         = 'https://github.com/kaltura/kaltura-player-ios'
   s.license          = { :type => 'AGPLv3', :file => 'LICENSE' }
@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
   s.subspec 'Interceptor' do |sp|
     sp.source_files = 'Sources/Interceptor/*'
     
-    sp.dependency 'PlayKit', '~> 3.27'
+    sp.dependency 'PlayKit', '~> 3.28'
   end
   
   s.xcconfig = {
@@ -66,7 +66,7 @@ Pod::Spec.new do |s|
     sp.source_files = 'Sources/Offline/*', 'Sources/*', 'Sources/Basic/*', 'Sources/Interceptor/*', 'Sources/Playlist/*'
     
     sp.dependency 'DownloadToGo', '~> 3.18'
-    sp.dependency 'PlayKit', '~> 3.27'
+    sp.dependency 'PlayKit', '~> 3.28'
     
     sp.xcconfig = {
       ### The following is required for Xcode 12 (https://stackoverflow.com/questions/63607158/xcode-12-building-for-ios-simulator-but-linking-in-object-file-built-for-ios)
