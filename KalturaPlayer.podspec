@@ -22,10 +22,13 @@ Pod::Spec.new do |s|
     sp.dependency 'PlayKit', '~> 3.30'
   end
   
-  s.xcconfig = {
-    ### The following is required for Xcode 12 (https://stackoverflow.com/questions/63607158/xcode-12-building-for-ios-simulator-but-linking-in-object-file-built-for-ios)
-    'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64'
-  }
+  # Fix pod lint error: could not find module for target 'arm64-apple-ios-simulator'
+  # This error indicates that a pod dependency in your project doesn't have a compiled version for the arm64 architecture of the iOS simulator.
+  # This is because Apple Silicon Macs (M1, M2, etc.) use arm64 architecture, while Intel Macs use x86_64.
+  # see: https://stackoverflow.com/a/63955114/1571228
+  s.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
+  s.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
+
   
   ################################################################
   
@@ -38,7 +41,7 @@ Pod::Spec.new do |s|
     sp.dependency 'KalturaPlayer/Interceptor'
   end
   
-  s.subspec 'OTT' do |sp|
+    s.subspec 'OTT' do |sp|
     sp.source_files = 'Sources/OTT/*', 'Sources/Common'
     sp.resources = 'Sources/OTT/*.xcdatamodeld'
     
@@ -57,6 +60,7 @@ Pod::Spec.new do |s|
   end
   
   ################################################################
+  
   ###             Offline Supported only in iOS                ###
   ################################################################
   
@@ -65,17 +69,11 @@ Pod::Spec.new do |s|
     
     sp.source_files = 'Sources/Offline/*', 'Sources/*', 'Sources/Basic/*', 'Sources/Interceptor/*', 'Sources/Playlist/*'
     
-    sp.dependency 'DownloadToGo', '~> 3.19'
+    sp.dependency 'DownloadToGo', '~> 3.20.0'
     sp.dependency 'PlayKit', '~> 3.30'
-    
-    sp.xcconfig = {
-      ### The following is required for Xcode 12 (https://stackoverflow.com/questions/63607158/xcode-12-building-for-ios-simulator-but-linking-in-object-file-built-for-ios)
-      'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64'
-    }
-    
   end
   
-  s.subspec 'Offline_OTT' do |sp|
+   s.subspec 'Offline_OTT' do |sp|
     sp.ios.deployment_target = '15.0'
     
     sp.source_files =  'Sources/Offline/OTT/*', 'Sources/OTT/*', 'Sources/Common'
@@ -84,12 +82,6 @@ Pod::Spec.new do |s|
     sp.dependency 'KalturaPlayer/Offline'
     sp.dependency 'PlayKitProviders', '~> 1.19'
     sp.dependency 'PlayKitKava', '~> 1.11'
-    
-    sp.xcconfig = {
-      ### The following is required for Xcode 12 (https://stackoverflow.com/questions/63607158/xcode-12-building-for-ios-simulator-but-linking-in-object-file-built-for-ios)
-      'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64'
-    }
-    
   end
   
   s.subspec 'Offline_OVP' do |sp|
@@ -101,12 +93,6 @@ Pod::Spec.new do |s|
     sp.dependency 'KalturaPlayer/Offline'
     sp.dependency 'PlayKitProviders', '~> 1.19'
     sp.dependency 'PlayKitKava', '~> 1.11'
-    
-    sp.xcconfig = {
-      ### The following is required for Xcode 12 (https://stackoverflow.com/questions/63607158/xcode-12-building-for-ios-simulator-but-linking-in-object-file-built-for-ios)
-      'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64'
-    }
-    
   end
   
   ################################################################
@@ -120,9 +106,8 @@ Pod::Spec.new do |s|
     sp.resources = [ 'Sources/UI/Assets/*']
     
     sp.dependency 'KalturaPlayer/Core'
-    
   end
-  
+ 
   ################################################################
   
   s.default_subspec = 'Core'
