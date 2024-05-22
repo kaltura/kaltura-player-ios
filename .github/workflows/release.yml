@@ -6,13 +6,13 @@ on:
 jobs:
 
   TAGGING:
-    runs-on: macos-latest
+    runs-on: macos-13
     environment: Tag
     outputs:
       output1: ${{ steps.tagging.outputs.tag }}
         
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         
       - name: Switching Podspec to release mode
         run: |
@@ -24,13 +24,16 @@ jobs:
           GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} sh .github/tag.sh
           
   PODS_PUSH:
-    runs-on: macos-latest
+    runs-on: macos-13
     environment: CocoaPods
     needs: TAGGING
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - run: git pull
+
+    - name: Updating Cocoapods
+      run: gem install cocoapods
     
     - name: Updating CocoaPods repo
       run: pod repo update
