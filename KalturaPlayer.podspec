@@ -5,7 +5,7 @@ suffix = '.0000'   # Dev mode
 Pod::Spec.new do |s|
   
   s.name             = 'KalturaPlayer'
-  s.version          = '4.10.0' + suffix
+  s.version          = '4.10.1' + suffix
   s.summary          = 'KalturaPlayer -- Kaltura Player for iOS and tvOS'
   s.homepage         = 'https://github.com/kaltura/kaltura-player-ios'
   s.license          = { :type => 'AGPLv3', :file => 'LICENSE' }
@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
   s.subspec 'Interceptor' do |sp|
     sp.source_files = 'Sources/Interceptor/*'
     
-    sp.dependency 'PlayKit', '~> 3.30'
+    sp.dependency 'PlayKit', '~> 3.31'
   end
   
   # Fix pod lint error: could not find module for target 'arm64-apple-ios-simulator'
@@ -70,7 +70,7 @@ Pod::Spec.new do |s|
     sp.source_files = 'Sources/Offline/*', 'Sources/*', 'Sources/Basic/*', 'Sources/Interceptor/*', 'Sources/Playlist/*'
     
     sp.dependency 'DownloadToGo', '~> 3.20.0'
-    sp.dependency 'PlayKit', '~> 3.30'
+    sp.dependency 'PlayKit', '~> 3.31'
   end
   
    s.subspec 'Offline_OTT' do |sp|
