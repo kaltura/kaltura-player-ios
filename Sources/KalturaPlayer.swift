@@ -488,6 +488,17 @@ public enum KalturaPlayerError: PKError {
         pkPlayer.startBuffering()
     }
     
+    //AG!
+    ///////////////////////////////
+    
+    // MARK: Seeking thumbnails
+    
+    @objc public func getThumbnailInfo(for position: Float64, params: ThumbnailRequestParams?, completion: @escaping (ThumbnailInfo?) -> Void) {
+        pkPlayer.getThumbnailInfo(for: position, params: params, completion: completion)
+    }
+    
+    ///////////////////////////////
+    
 }
 
 // MARK: - Interceptor
