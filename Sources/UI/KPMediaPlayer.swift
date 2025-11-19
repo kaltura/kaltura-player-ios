@@ -33,6 +33,18 @@ public protocol KPMediaPlayerDelegate: AnyObject {
     
     func closeButtonClicked(onMediaPlayer mediaPlayer: KPMediaPlayer)
     func errorOccurred(_ error: NSError?, onMediaPlayer mediaPlayer: KPMediaPlayer)
+    
+    func mediaProgressSliderDidTouchDown()
+    func mediaProgressSliderDidTouchUpOutside()
+    func mediaProgressSliderDidTouchUpInside()
+    func mediaProgressSliderValueChanged(value: Double)
+}
+
+public extension KPMediaPlayerDelegate {
+    func mediaProgressSliderDidTouchDown() {}
+    func mediaProgressSliderDidTouchUpOutside() {}
+    func mediaProgressSliderDidTouchUpInside() {}
+    func mediaProgressSliderValueChanged(value: Double) {}
 }
 
 @IBDesignable
@@ -568,10 +580,12 @@ extension KPMediaPlayer {
     
     @IBAction func mediaProgressSliderTouchDown(_ sender: UISlider) {
         userSeekInProgress = true
+        delegate?.mediaProgressSliderDidTouchDown()
     }
     
     @IBAction func mediaProgressSliderTouchUpOutside(_ sender: UISlider) {
         userSeekInProgress = false
+        delegate?.mediaProgressSliderDidTouchUpOutside()
     }
     
     @IBAction func mediaProgressSliderTouchUpInside(_ sender: UISlider) {
@@ -580,6 +594,13 @@ extension KPMediaPlayer {
         let currentValue = Double(sender.value)
         let seekTo = currentValue * player.duration
         player.seek(to: seekTo)
+        
+        delegate?.mediaProgressSliderDidTouchUpInside()
+    }
+    
+    @IBAction func mediaProgressSliderValueChanged(_ sender: UISlider) {
+        let currentValue = Double(sender.value)
+        delegate?.mediaProgressSliderValueChanged(value: currentValue)
     }
     
     @IBAction private func playButtonTouched(_ sender: Any) {
