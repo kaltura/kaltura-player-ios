@@ -6,7 +6,7 @@ on:
 jobs:
 
   TAGGING:
-    runs-on: macos-13
+    runs-on: macos-26
     environment: Tag
     outputs:
       output1: ${{ steps.tagging.outputs.tag }}
@@ -24,7 +24,7 @@ jobs:
           GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} sh .github/tag.sh
           
   PODS_PUSH:
-    runs-on: macos-13
+    runs-on: macos-26
     environment: CocoaPods
     needs: TAGGING
 
